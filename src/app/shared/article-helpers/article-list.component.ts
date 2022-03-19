@@ -1,6 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 import { Article, ArticleListConfig, ArticlesService } from '../../core';
+import {Task} from '../../tasks-hierarchy/models/task.model';
+import {ApiError} from '../../settings/api-error.model';
+import { MessageBoxService } from '../../settings/message-box.service';
+
+import {TaskManagementService} from '../../tasks-hierarchy/task-management-service';
 @Component({
   selector: 'app-article-list',
   styleUrls: ['article-list.component.css'],
@@ -8,7 +13,9 @@ import { Article, ArticleListConfig, ArticlesService } from '../../core';
 })
 export class ArticleListComponent {
   constructor (
-    private articlesService: ArticlesService
+    private articlesService: ArticlesService,
+    private taskManagementService: TaskManagementService,
+    private messageBoxService: MessageBoxService
   ) {}
 
   @Input() limit: number;
@@ -22,7 +29,7 @@ export class ArticleListComponent {
   }
 
   query: ArticleListConfig;
-  results: Article[];
+  results: Task[];
   loading = false;
   currentPage = 1;
   totalPages: Array<number> = [1];
@@ -41,14 +48,22 @@ export class ArticleListComponent {
       this.query.filters.limit = this.limit;
       this.query.filters.offset =  (this.limit * (this.currentPage - 1));
     }
-
+    /*
     this.articlesService.query(this.query)
     .subscribe(data => {
       this.loading = false;
       this.results = data.articles;
+      */
 
-      // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/
-      this.totalPages = Array.from(new Array(Math.ceil(data.articlesCount / this.limit)), (val, index) => index + 1);
-    });
+    this.taskManagementService.getTaskList(null, 'children').subscribe(
+      {
+        next: (taskList: Task[]) => {
+          console.log(taskList);
+          this.results = taskList;
+
+          console.log(this.results);
+        },
+        error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
+      });
   }
 }

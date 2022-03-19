@@ -4,13 +4,15 @@ import { Observable } from 'rxjs';
 
 import { Article, ArticlesService, UserService } from '../core';
 import { catchError } from 'rxjs/operators';
+import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
 
 @Injectable()
 export class ArticleResolver implements Resolve<Article> {
   constructor(
     private articlesService: ArticlesService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private taskManagementService: TaskManagementService,
   ) {}
 
   resolve(
@@ -18,7 +20,7 @@ export class ArticleResolver implements Resolve<Article> {
     state: RouterStateSnapshot
   ): Observable<any> {
 
-    return this.articlesService.get(route.params['slug'])
-      .pipe(catchError((err) => this.router.navigateByUrl('/')));
+    return this.taskManagementService.getTaskList(null, 'children').
+    pipe(catchError((err) => this.router.navigateByUrl('/')));
   }
 }

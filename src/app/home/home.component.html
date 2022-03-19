@@ -17,14 +17,14 @@
               <a class="nav-link"
                  [ngClass]="{'active': listConfig.type === 'feed'}"
                  (click)="setListTo('feed')">
-                 Your Feed
+                 Priority Task
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link"
                  [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
                  (click)="setListTo('all')">
-                 Global Feed
+                 Need Urgent attention
               </a>
             </li>
             <li class="nav-item" [hidden]="!listConfig.filters.tag">
@@ -40,25 +40,63 @@
 
       <div class="col-md-3">
         <div class="sidebar">
-          <p>Popular Tags</p>
+          <h3>Search Bar</h3>
+          <br/>
+          <br />
 
-          <div class="tag-list">
-            <a *ngFor="let tag of tags"
-               (click)="setListTo('all', {tag: tag})"
-               class="tag-default tag-pill">
-               {{ tag }}
-            </a>
-          </div>
+          <form class="example-form">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>by tags</mat-label>
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
 
-          <div [hidden]="tagsLoaded">
-            Loading tags...
-          </div>
+            <br/>
+            <br/>
 
-          <div [hidden]="!tagsLoaded || tags.length > 0">
-            No tags are here... yet.
-          </div>
-        </div>
-      </div>
+            <mat-form-field>
+              <mat-label>Created By</mat-label>
+              <mat-select [(value)]="createdBy">
+                <mat-option></mat-option>
+                <mat-option [value]="user" *ngFor="let  user of UserList" >
+                  {{user}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <br/>
+            <br/>
+
+            <mat-form-field>
+              <label >Created After</label>
+              <input matInput [formControl]="createdAfter" [matDatepicker]="picker" >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+              <label >Deadline before</label>
+              <input matInput [formControl]="createdAfter" [matDatepicker]="picker" >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </form>
+
+          <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="onSearch()">
+            Search
+          </button>
+
+
+
 
     </div>
   </div>

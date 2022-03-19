@@ -1,59 +1,50 @@
-import { Component, Inject } from '@angular/core';
-import { TaskManagementService } from '../task-management-service';
-import { ChecklistManagementService } from '../checklist-management.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ArticlesService, CommentsService, UserService} from '../core';
+import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
+import {Task} from '../tasks-hierarchy/models/task.model';
+import {Component, OnInit} from '@angular/core';
+import {CheckListItem} from '../tasks-hierarchy/models/check-list-item.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import { Task } from '../models/task.model';
-import {CheckListItem} from '../models/check-list-item.model';
-import { MessageBoxService } from '../../settings/message-box.service';
+import {AddOrEditChecklistDialogComponent} from './add-or-edit-checklist-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {AddOrEditChecklistDialogComponent} from '../../article/add-or-edit-checklist-dialog.component';
-
-
+import {ViewChecklistDialogComponent} from '../tasks-hierarchy/tasks-l1/view-checklist-dialog.component';
+import {MessageBoxService} from '../settings/message-box.service';
 
 @Component({
-  selector: 'app-create-store-order-dialog',
-  templateUrl: './view-checklist-dialog.component.html',
+  selector: 'app-view-checklist',
+  templateUrl: './view-checklist.component.html',
+  styleUrls: ['article.component.css']
 })
-export class ViewChecklistDialogComponent {
 
-  private taskManagementService: TaskManagementService;
-  private messageBoxService: MessageBoxService;
-  private checklistManagementService: ChecklistManagementService;
+export class ViewChecklistComponent implements OnInit {
+  task: Task;
+  checkListItemList: CheckListItem[] = [];
+  selectedCheckListItem = '';
+  constructor(
+    private route: ActivatedRoute,
+    private checkListManagementService: ChecklistManagementService,
+    private dialog: MatDialog,
+    private snackBarService: MatSnackBar,
+    private dialogRef: MatDialogRef<AddOrEditChecklistDialogComponent>,
+    private  messageBoxService: MessageBoxService
+  ) {
+  }
 
-  public Task: Task = new  Task();
-  public isEdit: boolean ;
-  public Tasks: string[] = ['1', '2', '3'];
-  private readonly TaskId: string;
-  private CheckIdList: string;
-  public checkListItemList: CheckListItem[] = [];
-  public selectedCheckListItem: string;
-  private dialog: MatDialog;
-  private snackBarService: MatSnackBar;
+  ngOnInit() {
 
+    // Retreive the prefetched article
+    this.route.data.subscribe(
+      (data: { article: Task[] }) => {
+        this.task = data.article.find(x => x.taskId === this.route.snapshot.params['slug']);
 
-  constructor(snackBarService: MatSnackBar, dialog: MatDialog, public dialogRef: MatDialogRef<ViewChecklistDialogComponent>, taskManagementService: TaskManagementService,
-              @Inject(MAT_DIALOG_DATA) data,
-              messageBoxService: MessageBoxService, checklistManagementService: ChecklistManagementService) {
-
-    this.taskManagementService = taskManagementService;
-    this.isEdit = data.isEdit;
-    this.messageBoxService = messageBoxService;
-    this.dialog = dialog;
-    this.TaskId = data.taskId;
-    this.snackBarService = snackBarService;
-    this.checklistManagementService = checklistManagementService;
-
+      }
+    );
     this.loadCheckList();
-
   }
 
   loadCheckList() {
 
-    // this.checkListItemList = this.jsonFileReadingService.getJSON("blaa")
-
-
-
-    this.checklistManagementService.getCheckList(this.TaskId, 'items').subscribe(
+    this.checkListManagementService.getCheckList(this.task.taskId, 'items').subscribe(
       {
         // the response is already deserialized and it is in the form of an array or object
         next: (checkListItems: CheckListItem[]) => {
@@ -65,10 +56,8 @@ export class ViewChecklistDialogComponent {
 
   }
 
-
-
   OnInit() {
-    this.dialogRef.updateSize('70%', '90%');
+    this.dialogRef.updateSize('100%', '90%');
   }
 
   onNoClick(): void {
@@ -82,7 +71,7 @@ export class ViewChecklistDialogComponent {
     dialogConfig.data = {
 
       isEdit: false,
-      taskId: this.TaskId
+      taskId: this.task.taskId
 
     };
 
@@ -111,7 +100,7 @@ export class ViewChecklistDialogComponent {
     dialogConfig.data = {
 
       isEdit: true,
-      taskId: this.TaskId,
+      taskId: this.task.taskId,
       checkListItem : this.checkListItemList.filter(x => x.checkListItemId === checkListItemId)[0]
 
     };
@@ -134,6 +123,8 @@ export class ViewChecklistDialogComponent {
     );
   }
 
+
+
   onDeleteCheckListItemClick(checkListItemId: string): void {
 
     // Open a dialog box to ask for confirmation
@@ -149,7 +140,7 @@ export class ViewChecklistDialogComponent {
         if (proceed) {
 
           // send request to server to delete the PTL station
-          this.checklistManagementService.deleteCheckListItem(checkListItemId).subscribe({
+          this.checkListManagementService.deleteCheckListItem(checkListItemId).subscribe({
             next: () => {
               this.loadCheckList();
               // show acknowledgement to user
@@ -174,11 +165,4 @@ export class ViewChecklistDialogComponent {
     window.open(url, '_blank'); // open link in new tab
 
   }
-
-
-
-
-
-
 }
-

@@ -2,35 +2,23 @@
 
   <div class="banner">
     <div class="container">
-      <h1>{{ article.title }}</h1>
+      <h1>{{ task.taskId }}</h1>
 
-      <app-article-meta [article]="article">
+      <app-article-meta [Task]="task">
 
-          <span [hidden]="!canModify">
+          <span>
           <a class="btn btn-sm btn-outline-secondary"
-             [routerLink]="['/editor', article.slug]">
+             [routerLink]="['/editor', task.taskId]">
             <i class="ion-edit"></i> Edit Article
           </a>
 
           <button class="btn btn-sm btn-outline-danger"
-            [ngClass]="{disabled: isDeleting}"
-            (click)="deleteArticle()">
+                  [ngClass]="{disabled: isDeleting}"
+                  (click)="deleteArticle()">
             <i class="ion-trash-a"></i> Delete Article
           </button>
         </span>
 
-        <span [hidden]="canModify">
-          <app-follow-button
-            [profile]="article.author"
-            (toggle)="onToggleFollowing($event)">
-          </app-follow-button>
-
-          <app-favorite-button
-            [article]="article"
-            (toggle)="onToggleFavorite($event)">
-            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>
-          </app-favorite-button>
-        </span>
 
       </app-article-meta>
     </div>
@@ -38,73 +26,58 @@
 
   <div class="container page">
 
-    <div class="row article-content">
-      <div class="col-md-12">
+ <app-task-form></app-task-form>
 
-        <div [innerHTML]="article.body | markdown"></div>
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+         See in Task Tree
+    </button>
 
-        <ul class="tag-list">
-          <li *ngFor="let tag of article.tagList"
-            class="tag-default tag-pill tag-outline">
-            {{ tag }}
-          </li>
-        </ul>
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+      Go to Parent Task
+    </button>
 
-      </div>
-    </div>
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+      Start Task
+    </button>
 
-    <hr />
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+     Stop Task
+    </button>
+
+    <p><strong>Complete Task Description</strong></p>
+    <div [innerHTML]="task.description| markdown"></div>
+
+
+    <app-view-checklist></app-view-checklist>
+
+
+
+
+
+    <hr/>
 
     <div class="article-actions">
-      <app-article-meta [article]="article">
 
-          <span [hidden]="!canModify">
-          <a class="btn btn-sm btn-outline-secondary"
-             [routerLink]="['/editor', article.slug]">
-            <i class="ion-edit"></i> Edit Article
-          </a>
-
-          <button class="btn btn-sm btn-outline-danger"
-            [ngClass]="{disabled: isDeleting}"
-            (click)="deleteArticle()">
-            <i class="ion-trash-a"></i> Delete Article
-          </button>
-        </span>
-
-        <span [hidden]="canModify">
-          <app-follow-button
-            [profile]="article.author"
-            (toggle)="onToggleFollowing($event)">
-          </app-follow-button>
-
-          <app-favorite-button
-            [article]="article"
-            (toggle)="onToggleFavorite($event)">
-            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>
-          </app-favorite-button>
-        </span>
-
-      </app-article-meta>
     </div>
 
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2">
 
         <div *appShowAuthed="true">
-          <app-list-errors [errors]="commentFormErrors"></app-list-errors>
+          <app-list-errors></app-list-errors>
           <form class="card comment-form" (ngSubmit)="addComment()">
             <fieldset [disabled]="isSubmitting">
               <div class="card-block">
                 <textarea class="form-control"
-                  placeholder="Write a comment..."
-                  rows="3"
-                  [formControl]="commentControl"
+                          placeholder="Write a comment..."
+                          rows="3"
+                          [formControl]="commentControl"
                 ></textarea>
               </div>
               <div class="card-footer">
-                <img [src]="currentUser.image" class="comment-author-img" />
+                <img [src]="currentUser.image" class="comment-author-img"/>
                 <button class="btn btn-sm btn-primary" type="submit">
-                 Post Comment
+                  Post Comment
                 </button>
               </div>
             </fieldset>
@@ -112,7 +85,8 @@
         </div>
 
         <div *appShowAuthed="false">
-          <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on this article.
+          <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on
+          this article.
         </div>
 
         <app-article-comment

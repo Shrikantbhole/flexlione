@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-
+import {Task} from '../../tasks-hierarchy/models/task.model';
 import { Article } from '../../core';
 
 @Component({
@@ -7,5 +7,5 @@ import { Article } from '../../core';
   templateUrl: './article-meta.component.html'
 })
 export class ArticleMetaComponent {
-  @Input() article: Article;
+  @Input() Task: Task;
 }

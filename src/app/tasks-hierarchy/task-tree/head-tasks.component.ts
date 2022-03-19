@@ -10,6 +10,7 @@ import {ApiError} from '../../settings/api-error.model';
 import {AddOrEditTaskDialogComponent} from './add-or-edit-task-dialog.component';
 import {CheckListTemplate} from '../models/check-list-template.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -35,14 +36,16 @@ export class HeadTasksComponent {
   private messageBoxService: MessageBoxService;
   private snackBarService: MatSnackBar;
   private taskManagementService: TaskManagementService;
+  private router: Router;
 
 
   constructor(dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
-              taskManagementService: TaskManagementService) {
+              taskManagementService: TaskManagementService, router: Router) {
     this.dialog = dialog;
     this.messageBoxService = messageBoxService;
     this.snackBarService = snackBarService;
     this.taskManagementService = taskManagementService;
+    this.router = router;
 
 
     this.l1TaskId = '1';
@@ -120,6 +123,13 @@ export class HeadTasksComponent {
   onAddFromTemplate(): void {
 
     console.log('Start distribution button clicked.');
+
+
+  }
+
+  onVisitTask(): void {
+
+   this.router.navigateByUrl('/article/' + this.selectedTaskId);
 
 
   }

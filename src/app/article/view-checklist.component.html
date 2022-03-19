@@ -1,0 +1,58 @@
+<p><strong> Task Checklist</strong></p>
+<button style=" display: inline-block ;" mat-raised-button color="primary" (click)="onCreateNewCheckListItemClick()">
+  Create new Checklist Item
+</button>
+<br/>
+<br/>
+<br/>
+<table class='table' *ngIf="checkListItemList">
+  <thead>
+  <tr>
+    <th>Item Id</th>
+    <th>Item Description</th>
+    <th>Status</th>
+    <th>Comment</th>
+    <th>Attachment</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let checkListItem of checkListItemList"
+      [ngClass]="{highlight: checkListItem.checkListItemId == selectedCheckListItem}"
+  >
+
+    <td>{{ checkListItem.checkListItemId }}</td>
+    <td>{{ checkListItem.description }}</td>
+    <td>{{ checkListItem.status }} </td>
+    <td>{{checkListItem.comment}}</td>
+
+
+    <td>
+      <button mat-flat-button color="primary" *ngIf="checkListItem.attachment" (click)="onRowClick(checkListItem.attachment)">View</button>
+
+      <button mat-flat-button color="primary" *ngIf="!checkListItem.attachment"  (click) = "onEditCheckListItemClick(checkListItem.checkListItemId)">Attach</button>
+    </td>
+    <td>
+      <button mat-flat-button color="primary"[matMenuTriggerFor]="menu">
+        Menu
+      </button>
+
+      <mat-menu #menu="matMenu">
+
+        <button mat-menu-item  (click)="onEditCheckListItemClick(checkListItem.checkListItemId)">
+
+          <span>Edit</span>
+        </button>
+
+        <button mat-menu-item  (click)= "onDeleteCheckListItemClick(checkListItem.checkListItemId)" >
+
+          <span>Delete</span>
+        </button>
+
+      </mat-menu>
+
+      <mat-divider></mat-divider>
+    </td>
+  </tr>
+  </tbody>
+</table>

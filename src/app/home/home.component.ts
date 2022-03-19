@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ArticleListConfig, TagsService, UserService } from '../core';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-page',
@@ -9,6 +12,15 @@ import { ArticleListConfig, TagsService, UserService } from '../core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  myControl = new FormControl();
+  options: string[] = ['Castor Deck', 'Conveyor design', 'Conveyor manufacturing'];
+  filteredOptions: Observable<string[]>;
+  createdBy = '';
+  UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
+    'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
+  createdAfter: FormControl = new FormControl(new Date());
+
+
   constructor(
     private router: Router,
     private tagsService: TagsService,
@@ -34,14 +46,12 @@ export class HomeComponent implements OnInit {
         } else {
           this.setListTo('all');
         }
-      }
-    );
+      });
 
-    this.tagsService.getAll()
-    .subscribe(tags => {
-      this.tags = tags;
-      this.tagsLoaded = true;
-    });
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+    );
   }
 
   setListTo(type: string = '', filters: Object = {}) {
@@ -54,4 +64,11 @@ export class HomeComponent implements OnInit {
     // Otherwise, set the list object
     this.listConfig = {type: type, filters: filters};
   }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  onSearch() { }
 }
