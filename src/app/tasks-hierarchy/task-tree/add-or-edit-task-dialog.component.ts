@@ -175,7 +175,7 @@ export class AddOrEditTaskDialogComponent {
   getDate(date: any): Date {
     const _date = new Date(date);
     return new Date(
-      Date.UTC(_date.getFullYear(), _date.getMonth(), _date.getDate())
+      Date.UTC(_date.getFullYear(), _date.getMonth() , _date.getDate())
     );
   }
 

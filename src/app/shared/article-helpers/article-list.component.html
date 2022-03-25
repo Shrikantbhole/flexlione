@@ -1,17 +1,9 @@
 <app-article-preview
-  *ngFor="let task of results"
-  [task]="task">
+  *ngFor="let task of results | async"
+  [SearchTask] ="task">
 </app-article-preview>
 
-<div class="app-article-preview"
-  [hidden]="!loading">
-  Loading tasks...
-</div>
 
-<div class="app-article-preview"
-  [hidden]="loading || results.length">
-  No tasks are here... yet.
-</div>
 
 <nav [hidden]="loading || totalPages.length <= 1">
   <ul class="pagination">

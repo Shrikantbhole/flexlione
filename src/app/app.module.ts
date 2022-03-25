@@ -21,6 +21,8 @@ import {ServerConfigService} from './settings/server-config.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import {taskReducer} from './home/store/task.reducer';
 
 
 @NgModule({
@@ -33,11 +35,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     HomeModule,
     AuthModule,
     AppRoutingModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    StoreModule.forRoot({
+      searchTaskView: taskReducer
+    })
   ],
   providers: [TaskManagementService, ChecklistManagementService, HandlerError, MessageBoxService, ServerConfigService],
-    exports: []
-    ,
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -24,6 +24,7 @@
     "@angular/platform-browser": "11.2.8",
     "@angular/platform-browser-dynamic": "11.2.8",
     "@angular/router": "11.2.8",
+    "@ngrx/store": "^11.1.1",
     "core-js": "^2.4.1",
     "marked": "^0.3.9",
     "rxjs": "^6.4.0",

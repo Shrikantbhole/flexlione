@@ -1,10 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-
-import { ArticleListConfig, TagsService, UserService } from '../core';
+import {ArticleListConfig, TagsService, User, UserService} from '../core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {Task} from '../tasks-hierarchy/models/task.model';
+import {SearchManagementService} from './search-management.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../app.state';
+import {ApiError} from '../settings/api-error.model';
+import {SearchQuery} from './models/searchQuery.model';
+import * as TaskActions from './store/task.action';
+import {MessageBoxService} from '../settings/message-box.service';
+import {setAnalyticsConfig} from '@angular/cli/models/analytics';
 
 @Component({
   selector: 'app-home-page',
@@ -12,20 +20,19 @@ import {map, startWith} from 'rxjs/operators';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  myControl = new FormControl();
-  options: string[] = ['Castor Deck', 'Conveyor design', 'Conveyor manufacturing'];
-  filteredOptions: Observable<string[]>;
-  createdBy = '';
-  UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
-    'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
-  createdAfter: FormControl = new FormControl(new Date());
-
-
+  @Input() taskList: Task[];
+  currentUser: User;
   constructor(
     private router: Router,
     private tagsService: TagsService,
-    private userService: UserService
+    private userService: UserService,
+    private  searchManagementService: SearchManagementService,
+    private store: Store<AppState>,
+    private  messageBoxService: MessageBoxService,
+    public globalSearch: SearchQuery,
+    public personalSearch: SearchQuery
   ) {}
+
 
   isAuthenticated: boolean;
   listConfig: ArticleListConfig = {
@@ -33,42 +40,46 @@ export class HomeComponent implements OnInit {
     filters: {}
   };
   tags: Array<string> = [];
-  tagsLoaded = false;
-
   ngOnInit() {
+    this.globalSearch = this.searchManagementService.getGlobalSearch();
+    this.personalSearch = this.searchManagementService.getPersonalSearch();
     this.userService.isAuthenticated.subscribe(
       (authenticated) => {
         this.isAuthenticated = authenticated;
 
         // set the article list accordingly
         if (authenticated) {
-          this.setListTo('feed');
+          this.setListTo(this.searchManagementService.getPersonalSearch());
         } else {
-          this.setListTo('all');
+          this.setListTo(this.searchManagementService.getGlobalSearch());
         }
       });
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value)),
+    this.userService.currentUser.subscribe(
+      (userData) => {
+      this.personalSearch.AssignedTo = [userData.username];
+      }
     );
   }
 
-  setListTo(type: string = '', filters: Object = {}) {
-    // If feed is requested but user is not authenticated, redirect to login
-    if (type === 'feed' && !this.isAuthenticated) {
-      this.router.navigateByUrl('/login');
-      return;
-    }
+  setListTo(query: SearchQuery) {
+
+    this.searchManagementService.getTaskSearchList(query)
+      .subscribe({
+        next: (taskList) => {
+          console.log(taskList);
+          this.store.dispatch(new TaskActions.RemoveTask());
+          for ( let i = 0; i < taskList.length; i++) {
+            // Add Search result in Store
+            this.store.dispatch(new TaskActions.AddTask(taskList[i]));
+          }
+        },
+        error: (apiError: ApiError) => {
+          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+        }
+      });
 
     // Otherwise, set the list object
-    this.listConfig = {type: type, filters: filters};
+    this.listConfig = {type: '', filters: null};
   }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
-  onSearch() { }
 }

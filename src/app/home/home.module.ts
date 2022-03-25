@@ -12,6 +12,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
+import {SearchFormComponent} from './search-form.component';
+import {SearchManagementService} from './search-management.service';
+import {StoreModule} from '@ngrx/store';
+import {taskReducer} from './store/task.reducer'
+import {DatePipe} from '@angular/common';
+import {SearchQuery} from './models/searchQuery.model';
 
 @NgModule({
   imports: [
@@ -26,10 +32,14 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    SearchFormComponent
   ],
   providers: [
-    HomeAuthResolver
+    HomeAuthResolver,
+    SearchManagementService,
+    DatePipe,
+    SearchQuery
   ]
 })
 export class HomeModule {}

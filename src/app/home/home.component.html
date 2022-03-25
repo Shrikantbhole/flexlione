@@ -10,94 +10,40 @@
   <div class="container page">
     <div class="row">
 
-      <div class="col-md-9">
-        <div class="feed-toggle">
-          <ul class="nav nav-pills outline-active">
-            <li class="nav-item">
-              <a class="nav-link"
-                 [ngClass]="{'active': listConfig.type === 'feed'}"
-                 (click)="setListTo('feed')">
-                 Priority Task
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"
-                 [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
-                 (click)="setListTo('all')">
-                 Need Urgent attention
-              </a>
-            </li>
-            <li class="nav-item" [hidden]="!listConfig.filters.tag">
-              <a class="nav-link active">
-                <i class="ion-pound"></i> {{ listConfig.filters.tag }}
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <app-article-list [limit]="10" [config]="listConfig"></app-article-list>
-      </div>
-
       <div class="col-md-3">
         <div class="sidebar">
           <h3>Search Bar</h3>
           <br/>
           <br />
 
-          <form class="example-form">
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>by tags</mat-label>
-            <input type="text"
-                   placeholder="Pick one"
-                   aria-label="Number"
-                   matInput
-                   [formControl]="myControl"
-                   [matAutocomplete]="auto">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
+         <app-home-search-form> </app-home-search-form>
 
-            <br/>
-            <br/>
+        </div>
+      </div>
 
-            <mat-form-field>
-              <mat-label>Created By</mat-label>
-              <mat-select [(value)]="createdBy">
-                <mat-option></mat-option>
-                <mat-option [value]="user" *ngFor="let  user of UserList" >
-                  {{user}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+      <div class="col-md-9">
+        <div class="feed-toggle">
+          <ul class="nav nav-pills outline-active">
+            <li class="nav-item">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'feed'}"
+                 (click)="setListTo(this.globalSearch)">
+                 Global Feed
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
+                 (click)="setListTo(this.personalSearch)">
+                 Personal Feed
+              </a>
+            </li>
 
-            <br/>
-            <br/>
+          </ul>
+        </div>
 
-            <mat-form-field>
-              <label >Created After</label>
-              <input matInput [formControl]="createdAfter" [matDatepicker]="picker" >
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-              <label >Deadline before</label>
-              <input matInput [formControl]="createdAfter" [matDatepicker]="picker" >
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </form>
-
-          <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="onSearch()">
-            Search
-          </button>
-
-
-
-
+        <app-article-list [limit]="10"  [config]="listConfig"></app-article-list>
+      </div>
     </div>
   </div>
 </div>
