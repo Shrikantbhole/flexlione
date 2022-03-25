@@ -1,0 +1,17 @@
+<div class="article-meta">
+  <a [routerLink]="['/profile',SearchTask.taskId]">
+    <img [src]="SearchTask.taskId" />
+  </a>
+
+  <div class="info">
+    <a class="author"
+      [routerLink]="['/profile', SearchTask.taskId]">
+      {{ SearchTask.taskId }}
+    </a>
+    <span class="date">
+      {{ SearchTask.parentTaskId| date: 'longDate' }}
+    </span>
+  </div>
+
+  <ng-content></ng-content>
+</div>

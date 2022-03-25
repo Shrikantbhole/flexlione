@@ -1,0 +1,85 @@
+<style>
+  mat-header-cell {
+    color: black;
+    font-size: 14px;
+    font-weight: bold
+  }
+    .highlight {
+      background-color: #e8f0fe;
+    }
+  .is-active {
+    background-color: mediumaquamarine;
+  }
+
+</style>
+
+
+<div class="col-sm-12">
+
+  <br />
+  <h4 *ngIf="!l2TaskId">Please select a Task.</h4>
+  <h4 *ngIf="l2TaskId && !l2TaskList">Loading...</h4>
+
+  <div *ngIf="l2TaskList?.length == 0 && l2TaskId">
+    <br />
+    <h4 >No Task Exist.</h4>
+    <br />
+    <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
+      <mat-icon>add</mat-icon> Create Child Task
+    </button>
+  </div>
+
+
+
+
+  <div *ngIf="l2TaskList?.length > 0 && l2TaskId">
+
+    <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
+      <mat-icon>add</mat-icon> Create Child Task
+    </button>
+
+    <br />
+    <br />
+
+    <mat-list>
+      <mat-divider></mat-divider>
+      <mat-list-item *ngFor="let task of l2TaskList"
+                     [ngClass]="{highlight: task.taskId == selectedTaskId}"
+                     (click)="onRowClick(task.taskId)"
+                     [routerLink]='["/task-tree"]' [queryParams]="{L1: l1TaskId, L2: l2TaskId, L3: task.taskId}">
+
+
+        <div mat-line>{{task.taskId}}</div>
+        <div mat-line> {{task.description}} </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+
+          <button mat-menu-item (click)="onEditTaskButtonClick(task.taskId)">
+            <mat-icon>view</mat-icon>
+            <span>View</span>
+          </button>
+
+
+          <button mat-menu-item (click)="onDeleteTaskButtonClick(task.taskId)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+
+          <button mat-menu-item (click)="onCheckListButtonClick(task.taskId)">
+            <mat-icon>edit</mat-icon>
+            <span>CheckList</span>
+          </button>
+
+        </mat-menu>
+
+        <mat-divider></mat-divider>
+      </mat-list-item>
+
+
+    </mat-list>
+
+  </div>
+</div>

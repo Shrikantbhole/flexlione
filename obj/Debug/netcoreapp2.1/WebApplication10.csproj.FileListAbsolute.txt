@@ -1,0 +1,14 @@
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.csprojAssemblyReference.cache
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.csproj.CoreCompileInputs.cache
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.RazorAssemblyInfo.cache
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.RazorAssemblyInfo.cs
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.AssemblyInfoInputs.cache
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.AssemblyInfo.cs
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\bin\Debug\netcoreapp2.1\WebApplication10.deps.json
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\bin\Debug\netcoreapp2.1\WebApplication10.runtimeconfig.json
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\bin\Debug\netcoreapp2.1\WebApplication10.runtimeconfig.dev.json
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\bin\Debug\netcoreapp2.1\WebApplication10.dll
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\bin\Debug\netcoreapp2.1\WebApplication10.pdb
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.RazorTargetAssemblyInfo.cache
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.dll
+C:\Users\bhole\Desktop\angular-realworld-example-app-master\obj\Debug\netcoreapp2.1\WebApplication10.pdb

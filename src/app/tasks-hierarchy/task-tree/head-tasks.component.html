@@ -1,0 +1,108 @@
+<style>
+  mat-header-cell {
+    color: black;
+    font-size: 14px;
+    font-weight: bold
+  }
+
+  .highlight {
+    background-color: #e8f0fe;
+  }
+
+  .is-active {
+    background-color: mediumaquamarine;
+  }
+
+  /* code inspired from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidebar_responsive */
+  .master {
+    width: 320px;
+    position: fixed;
+    height: 90%;
+    overflow: auto;
+    border-right: 2px solid #dbdbdb;
+  }
+
+  div.detail {
+    margin-left: 320px;
+  }
+</style>
+
+<!-- the html tags for master and detail components are needed. They are same as selector tags
+  mentioned in the component ts file. -->
+<!-- master view component -->
+<div class='master'>
+
+  <div class="col-sm-12">
+
+    <p *ngIf="!Tasks">Loading Projects...</p>
+
+    <div *ngIf="Tasks">
+
+      <br />
+      <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
+        Create Head Task
+      </button>
+
+      <br />
+      <br />
+
+      <button mat-raised-button color="primary" (click)="onAddFromTemplate()">
+         Add from template
+      </button>
+
+      <p *ngIf="Tasks?.length == 0">No project exists.</p>
+
+      <mat-list>
+        <mat-divider></mat-divider>
+        <mat-list-item *ngFor="let Task of Tasks"
+                       (click)="onRowClick(Task.taskId)"
+                       [ngClass]="{highlight: Task.taskId == selectedTaskId}"
+                       [routerLinkActive]="['is-active']"
+                       [routerLink]='["/task-tree"]' [queryParams]="{L1: Task.taskId}">
+
+        <div mat-line>{{Task.taskId}}</div>
+          <div mat-line>{{Task.description}} </div>
+
+
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
+          Menu </button>
+
+          <mat-menu #menu="matMenu">
+
+            <button mat-menu-item (click)="onVisitTask()">
+            Edit </button>
+
+
+            <button mat-menu-item (click)="onDeleteTaskButtonClick(Task.taskId)">
+            Delete </button>
+
+            <button mat-menu-item (click)="onCheckListButtonClick(Task.taskId)">
+            Checklist</button>
+          </mat-menu>
+
+          <mat-divider></mat-divider>
+        </mat-list-item>
+
+
+      </mat-list>
+
+    </div>
+  </div>
+</div>
+
+<!-- detail view component -->
+<div class='detail'>
+  <div class='master'>
+    <app-tasks-l1></app-tasks-l1>
+  </div>
+  <div class='detail'>
+    <div class='master'>
+      <app-tasks-l2></app-tasks-l2>
+    </div>
+    <div class='detail'>
+      <app-tasks-l3></app-tasks-l3>
+    </div>
+
+  </div>
+</div>
+

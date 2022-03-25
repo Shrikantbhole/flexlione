@@ -1,0 +1,102 @@
+<div class="article-page">
+
+  <div class="banner">
+    <div class="container">
+      <h1>{{ task.taskId }}</h1>
+
+      <app-article-meta [SearchTask] ="task">
+
+          <span>
+          <a class="btn btn-sm btn-outline-secondary"
+             [routerLink]="['/editor', task.taskId]">
+            <i class="ion-edit"></i> Edit Article
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger"
+                  [ngClass]="{disabled: isDeleting}"
+                  (click)="deleteArticle()">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </span>
+
+
+      </app-article-meta>
+    </div>
+  </div>
+
+  <div class="container page">
+
+ <app-task-form></app-task-form>
+
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+         See in Task Tree
+    </button>
+
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+      Go to Parent Task
+    </button>
+
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+      Start Task
+    </button>
+
+    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+     Stop Task
+    </button>
+
+    <p><strong>Complete Task Description</strong></p>
+    <div [innerHTML]="task.description| markdown"></div>
+
+
+    <app-view-checklist></app-view-checklist>
+
+
+
+
+
+    <hr/>
+
+    <div class="article-actions">
+
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-8 offset-md-2">
+
+        <div *appShowAuthed="true">
+          <app-list-errors></app-list-errors>
+          <form class="card comment-form" (ngSubmit)="addComment()">
+            <fieldset [disabled]="isSubmitting">
+              <div class="card-block">
+                <textarea class="form-control"
+                          placeholder="Write a comment..."
+                          rows="3"
+                          [formControl]="commentControl"
+                ></textarea>
+              </div>
+              <div class="card-footer">
+                <img [src]="currentUser.image" class="comment-author-img"/>
+                <button class="btn btn-sm btn-primary" type="submit">
+                  Post Comment
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
+        <div *appShowAuthed="false">
+          <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on
+          this article.
+        </div>
+
+        <app-article-comment
+          *ngFor="let comment of comments"
+          [comment]="comment"
+          (deleteComment)="onDeleteComment(comment)">
+        </app-article-comment>
+
+      </div>
+    </div>
+
+  </div>
+</div>

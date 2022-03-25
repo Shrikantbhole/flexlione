@@ -1,0 +1,49 @@
+<div class="home-page">
+
+  <div class="banner" *appShowAuthed="false">
+    <div class="container">
+      <h1 class="logo-font">Flexli</h1>
+      <p>A place to share your <i>Angular</i> knowledge.</p>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="sidebar">
+          <h3>Search Bar</h3>
+          <br/>
+          <br />
+
+         <app-home-search-form> </app-home-search-form>
+
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="feed-toggle">
+          <ul class="nav nav-pills outline-active">
+            <li class="nav-item">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'feed'}"
+                 (click)="setListTo(this.globalSearch)">
+                 Global Feed
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
+                 (click)="setListTo(this.personalSearch)">
+                 Personal Feed
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <app-article-list [limit]="10"  [config]="listConfig"></app-article-list>
+      </div>
+    </div>
+  </div>
+</div>

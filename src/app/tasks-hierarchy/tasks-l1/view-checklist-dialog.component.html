@@ -1,0 +1,82 @@
+<style>
+  .center {
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>
+
+<div class="col-sm-12" >
+
+
+  <br>
+
+  <p *ngIf="!checkListItemList">Loading Checklist...</p>
+  <div *ngIf="checkListItemList">
+
+    <div mat-dialog-actions align="end">
+      <button mat-flat-button color="primary" (click)="onCreateNewCheckListItemClick()">Add Item</button>
+    </div>
+
+
+
+    <table class='table' *ngIf="checkListItemList">
+     <thead>
+        <tr>
+          <th>Item Id</th>
+          <th>Item Description</th>
+          <th>Status</th>
+          <th>Comment</th>
+          <th>Attachment</th>
+
+       </tr>
+     </thead>
+      <tbody>
+        <tr *ngFor="let checkListItem of checkListItemList"
+         [ngClass]="{highlight: checkListItem.checkListItemId == selectedCheckListItem}"
+         >
+
+          <td>{{ checkListItem.checkListItemId }}</td>
+          <td>{{ checkListItem.description }}</td>
+          <td>{{ checkListItem.status }} </td>
+          <td>{{checkListItem.comment}}</td>
+
+
+          <td>
+            <button mat-flat-button color="primary" *ngIf="checkListItem.attachment" (click)="onRowClick((checkListItem.attachment))">View</button>
+
+            <button mat-flat-button color="primary" *ngIf="!checkListItem.attachment"  (click) = "onRowClick((checkListItem.attachment))">Attach</button>
+         </td>
+
+          <td>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+          <mat-menu #menu="matMenu">
+
+            <button mat-menu-item  (click)="onEditCheckListItemClick(checkListItem.checkListItemId)">
+
+             <span>Edit</span>
+           </button>
+
+            <button mat-menu-item  (click)="onDeleteCheckListItemClick(checkListItem.checkListItemId)">
+
+              <span>Delete</span>
+            </button>
+
+          </mat-menu>
+
+        <mat-divider></mat-divider>
+        </td>
+       </tr>
+      </tbody>
+    </table>
+
+    <div mat-dialog-actions align="end">
+      <button mat-flat-button color="primary" (click)="onNoClick()">Close</button>
+    </div>
+
+  </div>
+</div>
+
+

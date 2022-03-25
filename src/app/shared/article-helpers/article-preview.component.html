@@ -1,0 +1,18 @@
+<div class="article-preview">
+  <app-article-meta [SearchTask] ="SearchTask">
+
+  </app-article-meta>
+
+  <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
+    <h1>{{SearchTask.taskId }}</h1>
+    <h3>{{ SearchTask.description }}</h3>
+    <h5>Assigned to:  {{ SearchTask.assignedTo }}</h5>
+    <h5>Deadline:  {{ SearchTask.deadline}}</h5>
+    <P>Status:  {{ SearchTask.status }}</P>
+    <P>Created by:  {{ SearchTask.createdBy }}</P>
+    <span>Read more...</span>
+    <ul class="tag-list">
+
+    </ul>
+  </a>
+</div>
