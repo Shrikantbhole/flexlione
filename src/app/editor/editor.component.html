@@ -1,59 +1,23 @@
-<div class="editor-page">
-  <div class="container page">
-    <div class="row">
-      <div class="col-md-10 offset-md-1 col-xs-12">
+<button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="onAddFromTemplate()">
+  Add From Template
+</button>
 
-        <app-list-errors [errors]="errors"></app-list-errors>
 
-        <form [formGroup]="articleForm">
-          <fieldset [disabled]="isSubmitting">
+<div class="home-page">
 
-            <fieldset class="form-group">
-              <input class="form-control form-control-lg"
-                formControlName="title"
-                type="text"
-                placeholder="Article Title" />
-            </fieldset>
-
-            <fieldset class="form-group">
-              <input class="form-control"
-                formControlName="description"
-                type="text"
-                placeholder="What's this article about?" />
-            </fieldset>
-
-            <fieldset class="form-group">
-              <textarea class="form-control"
-                formControlName="body"
-                rows="8"
-                placeholder="Write your article (in markdown)">
-              </textarea>
-            </fieldset>
-
-            <fieldset class="form-group">
-              <input class="form-control"
-                type="text"
-                placeholder="Enter tags"
-                [formControl]="tagField"
-                (keyup.enter)="addTag()" />
-
-              <div class="tag-list">
-                <span *ngFor="let tag of article.tagList"
-                  class="tag-default tag-pill">
-                  <i class="ion-close-round" (click)="removeTag(tag)"></i>
-                  {{ tag }}
-                </span>
-              </div>
-            </fieldset>
-
-            <button class="btn btn-lg pull-xs-right btn-primary" type="button" (click)="submitForm()">
-              Publish Article
-            </button>
-
-          </fieldset>
-        </form>
-
-      </div>
+  <div class="banner" *appShowAuthed="false">
+    <div class="container">
+      <h1 class="logo-font">Flexli</h1>
+      <p>A place to share your <i>Angular</i> knowledge.</p>
     </div>
   </div>
+
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-12">
+        <app-task-form [task]="newTask">> </app-task-form>
+    </div>
+  </div>
+  </div>
 </div>
+

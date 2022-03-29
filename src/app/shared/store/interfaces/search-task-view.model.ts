@@ -8,7 +8,7 @@ export interface SearchTaskViewModel {
   assignedTo: string;
   status: string;
   description: string;
-  deadline: DateTimeFormat;
+  deadline: Date;
 }
 
 

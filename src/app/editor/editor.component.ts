@@ -1,8 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Article, ArticlesService } from '../core';
+import {Article, ArticlesService, UserService} from '../core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../app.state';
+import {CreateTaskModel} from '../shared/store/interfaces/create-task.model';
+import {Task} from '../tasks-hierarchy/models/task.model';
+import {getUserList} from '../shared/shared-lists/user-list';
+import {error} from 'protractor';
+import {DatePipe} from '@angular/common';
+import * as TaskActions from '../shared/store/create-task.action';
+
+
 
 @Component({
   selector: 'app-editor-page',
@@ -14,12 +24,16 @@ export class EditorComponent implements OnInit {
   tagField = new FormControl();
   errors: Object = {};
   isSubmitting = false;
-
+  newTask: Task = new Task();
+  private results: any;
   constructor(
     private articlesService: ArticlesService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private userService: UserService,
+    private Datepipe: DatePipe
   ) {
     // use the FormBuilder to create a form group
     this.articleForm = this.fb.group({
@@ -36,47 +50,39 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If there's an article prefetched, load it
-    this.route.data.subscribe((data: { article: Article }) => {
-      if (data.article) {
-        this.article = data.article;
-        this.articleForm.patchValue(data.article);
+    const user = this.userService.getCurrentUser().username.toLowerCase();
+    this.store.select('createTask').subscribe({
+      next: (x) => {
+        if (x === undefined) {
+          return;
+        }
+        this.newTask = this.createTask(x[0]);
+        console.log('Parent Task is ' + this.newTask.parentTaskId);
       }
     });
+
+
   }
 
-  addTag() {
-    // retrieve tag control
-    const tag = this.tagField.value;
-    // only add tag if it does not exist yet
-    if (this.article.tagList.indexOf(tag) < 0) {
-      this.article.tagList.push(tag);
-    }
-    // clear the input
-    this.tagField.reset('');
+  createTask(receivedTask: CreateTaskModel): Task {
+    const newTask = new Task();
+    newTask.taskId = '';
+    newTask.parentTaskId = receivedTask.parentTaskId === undefined ? 'dump' : receivedTask.parentTaskId ;
+    newTask.description = receivedTask.description === undefined ? '' : receivedTask.description ;
+    newTask.createdBy = getUserList().filter(x => x.toLowerCase()
+      === this.userService.getCurrentUser().username.toLowerCase())[0];
+    newTask.assignedTo =  receivedTask.assignedTo === undefined ? '' : receivedTask.assignedTo.toLowerCase() ;
+    newTask.status = receivedTask.status === undefined ? 'yetToStart' : receivedTask.status;
+    newTask.deadline = receivedTask.deadline === undefined ? this.Datepipe.transform
+    (new Date().toLocaleDateString(), 'yyyy-MM-dd') : receivedTask.deadline ;
+
+    newTask.positionAfter = '';
+    newTask.score = 0;
+    return newTask;
   }
 
-  removeTag(tagName: string) {
-    this.article.tagList = this.article.tagList.filter(tag => tag !== tagName);
+  onAddFromTemplate(): void {
+    this.router.navigateByUrl('/master');
   }
 
-  submitForm() {
-    this.isSubmitting = true;
-
-    // update the model
-    this.updateArticle(this.articleForm.value);
-
-    // post the changes
-    this.articlesService.save(this.article).subscribe(
-      article => this.router.navigateByUrl('/article/' + article.slug),
-      err => {
-        this.errors = err;
-        this.isSubmitting = false;
-      }
-    );
-  }
-
-  updateArticle(values: Object) {
-    Object.assign(this.article, values);
-  }
 }

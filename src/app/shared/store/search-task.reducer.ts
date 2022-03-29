@@ -1,6 +1,7 @@
 
-import {SearchTaskViewModel} from '../interfaces/search-task-view.model';
-import * as TaskActions from '../store/task.action';
+import {SearchTaskViewModel} from './interfaces/search-task-view.model';
+import {CreateTaskModel} from './interfaces/create-task.model';
+import * as TaskActions from './search-task.action';
 
 
 const initialState: SearchTaskViewModel = {
@@ -9,12 +10,13 @@ const initialState: SearchTaskViewModel = {
   createdBy: 'chirag',
   assignedTo: 'chirag',
   status: 'ongoing',
-  description: 'blaa'
+  description: 'blaa',
+  deadline: null
 };
 
 
 
-export function taskReducer(state: SearchTaskViewModel[] = [], action: TaskActions.Actions) {
+export function SearchTaskReducer(state: SearchTaskViewModel[] = [], action: TaskActions.SearchActions) {
 
   // Section 3
   // First, we use a switch to determine the type of action.
@@ -25,14 +27,15 @@ export function taskReducer(state: SearchTaskViewModel[] = [], action: TaskActio
 
   console.log(state);
   switch ( action.type) {
-    case TaskActions.ADD_TASK:
+    case TaskActions.ADD_SEARCH_TASK:
       console.log(action.payload);
       console.log(state);
       return [...state, action.payload];
-    case TaskActions.REMOVE_TASK:
+    case TaskActions.REMOVE_SEARCH_TASK:
       const newState = [];
       return newState;
     default:
       return state;
   }
 }
+

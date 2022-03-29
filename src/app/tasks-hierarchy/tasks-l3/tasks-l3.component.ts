@@ -2,13 +2,17 @@ import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Params } from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Task} from '../models/task.model';
 
 import {ApiError} from '../../settings/api-error.model';
 import {TaskManagementService} from '../task-management-service';
 import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
+import * as TaskActions from '../../shared/store/create-task.action';
+import {CreateTaskModel} from '../../shared/store/interfaces/create-task.model';
+import {AppState} from '../../app.state';
+import {Store} from '@ngrx/store';
 
 
 @Component({
@@ -40,9 +44,8 @@ export class TasksL3Component {
 
 
   constructor(dialog: MatDialog,
-    messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
-    activatedRoute: ActivatedRoute,
-              taskManagementService: TaskManagementService) {
+    messageBoxService: MessageBoxService, snackBarService: MatSnackBar, private route: Router, private store: Store<AppState>,
+    activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService ) {
     this.dialog = dialog;
 
     this.messageBoxService = messageBoxService;
@@ -93,33 +96,10 @@ export class TasksL3Component {
   // and send request again.
   onAddNewTaskButtonClick(): void {
 
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-
-      isEdit: false,
-      parentTaskId: this.l3TaskId,
-      taskId: this.l3TaskId + '.' + (this.l3TaskList.length + 1)
-    };
-
-    this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)
-      .afterClosed().subscribe(
-      {
-        next: (task: Task) => {
-
-          if (task == null) { // Cancel button clicked
-            return;
-          }
-
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
-
-          // Load the list again
-          this.loadL3TaskList();
-
-          //  show it selected and auto-scroll to it
-          this.selectedTaskId = task.taskId;
-        }
-      }
-    );
+    this.store.dispatch(new TaskActions.RemoveCreateTask());
+    const task: CreateTaskModel = {parentTaskId : this.l3TaskList[0].parentTaskId};
+    this.store.dispatch(new TaskActions.AddCreateTask(task));
+    this.route.navigateByUrl('/editor');
   }
 
   onEditTaskButtonClick(taskId: string): void {

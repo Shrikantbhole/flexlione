@@ -23,10 +23,7 @@
   <div *ngIf="l2TaskList?.length == 0 && l2TaskId">
     <br />
     <h4 >No Task Exist.</h4>
-    <br />
-    <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
-      <mat-icon>add</mat-icon> Create Child Task
-    </button>
+
   </div>
 
 
@@ -35,7 +32,7 @@
   <div *ngIf="l2TaskList?.length > 0 && l2TaskId">
 
     <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
-      <mat-icon>add</mat-icon> Create Child Task
+     Create Child Task
     </button>
 
     <br />
@@ -51,27 +48,23 @@
 
         <div mat-line>{{task.taskId}}</div>
         <div mat-line> {{task.description}} </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
+          Menu </button>
 
         <mat-menu #menu="matMenu">
 
           <button mat-menu-item (click)="onEditTaskButtonClick(task.taskId)">
-            <mat-icon>view</mat-icon>
+
             <span>View</span>
           </button>
 
 
           <button mat-menu-item (click)="onDeleteTaskButtonClick(task.taskId)">
-            <mat-icon>delete</mat-icon>
+
             <span>Delete</span>
           </button>
 
-          <button mat-menu-item (click)="onCheckListButtonClick(task.taskId)">
-            <mat-icon>edit</mat-icon>
-            <span>CheckList</span>
-          </button>
+
 
         </mat-menu>
 

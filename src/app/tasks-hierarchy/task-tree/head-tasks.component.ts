@@ -11,6 +11,11 @@ import {AddOrEditTaskDialogComponent} from './add-or-edit-task-dialog.component'
 import {CheckListTemplate} from '../models/check-list-template.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../app.state';
+import * as TaskActions from '../../shared/store/create-task.action';
+import {CreateTaskModel} from '../../shared/store/interfaces/create-task.model';
+
 
 
 
@@ -40,7 +45,7 @@ export class HeadTasksComponent {
 
 
   constructor(dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
-              taskManagementService: TaskManagementService, router: Router) {
+              taskManagementService: TaskManagementService, router: Router, private store: Store<AppState> ) {
     this.dialog = dialog;
     this.messageBoxService = messageBoxService;
     this.snackBarService = snackBarService;
@@ -90,34 +95,10 @@ export class HeadTasksComponent {
   // error. In such a case, if dialog is open then user can make changes to data
   // and send request again.
   onAddNewTaskButtonClick(): void {
-
-
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-
-    dialogConfig.data = {
-      isEdit: false,
-      parentTaskId: null,
-    };
-
-    this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig, )
-      .afterClosed().subscribe(
-        {
-          next: (task: Task) => {
-
-            if (task == null) { // Cancel button clicked
-              return;
-            }
-
-            this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
-
-            // Load the list again
-            this.loadParentTasks();
-
-            //  show it selected and auto-scroll to it
-            this.selectedTaskId = task.taskId;
-          }
-        }
-    );
+    this.store.dispatch(new TaskActions.RemoveCreateTask());
+    const task: CreateTaskModel = {taskId : null};
+    this.store.dispatch(new TaskActions.AddCreateTask(task));
+    this.router.navigateByUrl('/editor');
   }
 
   onAddFromTemplate(): void {

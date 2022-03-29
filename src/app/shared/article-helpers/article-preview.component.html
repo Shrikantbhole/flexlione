@@ -7,7 +7,7 @@
     <h1>{{SearchTask.taskId }}</h1>
     <h3>{{ SearchTask.description }}</h3>
     <h5>Assigned to:  {{ SearchTask.assignedTo }}</h5>
-    <h5>Deadline:  {{ SearchTask.deadline}}</h5>
+    <h5>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h5>
     <P>Status:  {{ SearchTask.status }}</P>
     <P>Created by:  {{ SearchTask.createdBy }}</P>
     <span>Read more...</span>

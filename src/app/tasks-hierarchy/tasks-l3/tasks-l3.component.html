@@ -18,16 +18,14 @@
     <br />
     <h4 >No Task Exist.</h4>
     <br />
-    <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
-      <mat-icon>add</mat-icon> Create Child Task
-    </button>
+
   </div>
 
 
   <div *ngIf="l3TaskList?.length > 0&&l3TaskId">
 
     <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
-      <mat-icon>add</mat-icon> Create Child Task
+      Create Child Task
     </button>
 
     <br />
@@ -38,32 +36,28 @@
       <mat-list-item *ngFor="let task of l3TaskList"
                      [ngClass]="{highlight: task.taskId == selectedTaskId}"
                      (click)="onRowClick(task.taskId)"
-                     [routerLink]='["/task-tree"]' [queryParams]="{L1:  task.taskId}">
+                     [routerLink]='["/task-tree"]' [queryParams]="{L1: task.parentTaskId,L2: task.taskId}">
 
 
         <div mat-line>{{task.taskId}}</div>
         <div mat-line> {{task.description}} </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
+          Menu </button>
 
         <mat-menu #menu="matMenu">
 
           <button mat-menu-item (click)="onEditTaskButtonClick(task.taskId)">
-            <mat-icon>view</mat-icon>
+
             <span>View</span>
           </button>
 
 
           <button mat-menu-item (click)="onDeleteTaskButtonClick(task.taskId)">
-            <mat-icon>delete</mat-icon>
+
             <span>Delete</span>
           </button>
 
-          <button mat-menu-item (click)="onCheckListButtonClick(task.taskId)">
-            <mat-icon>edit</mat-icon>
-            <span>CheckList</span>
-          </button>
+
 
         </mat-menu>
 

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { User, UserService } from '../../core';
+import * as TaskActions from '../store/create-task.action';
+import {CreateTaskModel} from '../store/interfaces/create-task.model';
+import {AppState} from '../../app.state';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-layout-header',
@@ -8,7 +12,8 @@ import { User, UserService } from '../../core';
 })
 export class HeaderComponent implements OnInit {
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private store: Store<AppState>
   ) {}
 
   currentUser: User;
@@ -19,5 +24,11 @@ export class HeaderComponent implements OnInit {
         this.currentUser = userData;
       }
     );
+  }
+
+  onAddNewTask() {
+    this.store.dispatch(new TaskActions.RemoveCreateTask());
+    const task: CreateTaskModel = {parentTaskId : 'dump'};
+    this.store.dispatch(new TaskActions.AddCreateTask(task));
   }
 }

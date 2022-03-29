@@ -17,7 +17,7 @@
   .master {
     width: 320px;
     position: fixed;
-    height: 90%;
+    height: 80%;
     overflow: auto;
     border-right: 2px solid #dbdbdb;
   }
@@ -46,9 +46,7 @@
       <br />
       <br />
 
-      <button mat-raised-button color="primary" (click)="onAddFromTemplate()">
-         Add from template
-      </button>
+
 
       <p *ngIf="Tasks?.length == 0">No project exists.</p>
 
@@ -76,8 +74,7 @@
             <button mat-menu-item (click)="onDeleteTaskButtonClick(Task.taskId)">
             Delete </button>
 
-            <button mat-menu-item (click)="onCheckListButtonClick(Task.taskId)">
-            Checklist</button>
+
           </mat-menu>
 
           <mat-divider></mat-divider>

@@ -22,7 +22,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
-import {taskReducer} from './home/store/task.reducer';
+import { SearchTaskReducer} from './shared/store/search-task.reducer';
+import { CreateTaskReducer} from './shared/store/create-task.reducer';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {taskReducer} from './home/store/task.reducer';
     AppRoutingModule,
     MatDatepickerModule,
     StoreModule.forRoot({
-      searchTaskView: taskReducer
+      searchTaskView: SearchTaskReducer,
+      createTask: CreateTaskReducer
     })
   ],
   providers: [TaskManagementService, ChecklistManagementService, HandlerError, MessageBoxService, ServerConfigService],

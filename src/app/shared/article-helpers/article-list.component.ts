@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 import { Article, ArticleListConfig, ArticlesService } from '../../core';
 import {Task} from '../../tasks-hierarchy/models/task.model';
-import {SearchTaskViewModel} from '../../home/interfaces/search-task-view.model';
+import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 import {ApiError} from '../../settings/api-error.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 
@@ -11,7 +11,7 @@ import {SearchManagementService} from '../../home/search-management.service';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
-import * as TaskActions from '../../home/store/task.action';
+import * as TaskActions from '../store/search-task.action';
 @Component({
   selector: 'app-article-list',
   styleUrls: ['article-list.component.css'],

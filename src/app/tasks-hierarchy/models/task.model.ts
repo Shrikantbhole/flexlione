@@ -3,7 +3,7 @@ import DateTimeFormat = Intl.DateTimeFormat;
 export class  Task {
   taskId: string;
   parentTaskId: string;
-  createdAt: DateTimeFormat;
+  createdAt: string;
   deadline: string;
   createdBy: string;
   assignedTo: string;

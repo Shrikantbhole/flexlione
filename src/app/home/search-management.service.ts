@@ -7,7 +7,7 @@ import {ServerConfigService} from './../settings/server-config.service';
 import {HandlerError} from './../settings/handle-error.service';
 import { SearchQuery} from './models/searchQuery.model';
 import {SearchTag} from './models/searchTag';
-import {SearchTaskViewModel} from './interfaces/search-task-view.model';
+import {SearchTaskViewModel} from '../shared/store/interfaces/search-task-view.model';
 import {DatePipe} from '@angular/common';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
@@ -34,7 +34,7 @@ export class SearchManagementService {
       'Content-Type': 'application/json',
       // 'accept': 'application/json;v=1.0'
     };
-    return this.http_.post<Task[]>(this.baseUrl + '/GetSearchResult', search, {headers: httpHeaders})
+    return this.http_.post<SearchTaskViewModel[]>(this.baseUrl + '/GetSearchResult', search, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)

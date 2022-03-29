@@ -24,37 +24,41 @@ import {AddOrEditChecklistDialogComponent} from './add-or-edit-checklist-dialog.
 
 
 @NgModule({
-  imports: [
-    SharedModule,
-    ArticleRoutingModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatInputModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatListModule,
-    MatDialogModule
-  ],
-  declarations: [
-    ArticleComponent,
-    ArticleCommentComponent,
-    MarkdownPipe,
-    AddOrEditTaskDialogComponent,
-    ViewChecklistComponent,
-    TaskFormComponent,
-    AddOrEditChecklistDialogComponent
-  ],
+    imports: [
+        SharedModule,
+        ArticleRoutingModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatSelectModule,
+        MatInputModule,
+        MatNativeDateModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        MatListModule,
+        MatDialogModule,
+        MatInputModule
+    ],
+    declarations: [
+        ArticleComponent,
+        ArticleCommentComponent,
+        MarkdownPipe,
+        AddOrEditTaskDialogComponent,
+        ViewChecklistComponent,
+        TaskFormComponent,
+        AddOrEditChecklistDialogComponent
+    ],
+    exports: [
+        TaskFormComponent
+    ],
 
-  providers: [
-    {
-      provide: MatDialogRef,
-      useValue: {}
-    },
-    ArticleResolver,
-    MatSnackBar
-  ]
+    providers: [
+        {
+            provide: MatDialogRef,
+            useValue: {}
+        },
+        ArticleResolver,
+        MatSnackBar
+    ]
 })
 export class ArticleModule {}

@@ -10,7 +10,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {ApiError} from '../settings/api-error.model';
 import {SearchQuery} from './models/searchQuery.model';
-import * as TaskActions from './store/task.action';
+import * as TaskActions from '../shared/store/search-task.action';
 import {MessageBoxService} from '../settings/message-box.service';
 import {setAnalyticsConfig} from '@angular/cli/models/analytics';
 
@@ -68,10 +68,10 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (taskList) => {
           console.log(taskList);
-          this.store.dispatch(new TaskActions.RemoveTask());
+          this.store.dispatch(new TaskActions.RemoveSearchTask());
           for ( let i = 0; i < taskList.length; i++) {
             // Add Search result in Store
-            this.store.dispatch(new TaskActions.AddTask(taskList[i]));
+            this.store.dispatch(new TaskActions.AddSearchTask(taskList[i]));
           }
         },
         error: (apiError: ApiError) => {

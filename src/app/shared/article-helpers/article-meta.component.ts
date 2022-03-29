@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {Task} from '../../tasks-hierarchy/models/task.model';
 import { Article } from '../../core';
-import {SearchTaskViewModel} from '../../home/interfaces/search-task-view.model';
+import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 
 @Component({
   selector: 'app-article-meta',
