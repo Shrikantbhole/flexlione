@@ -4,8 +4,8 @@ import {ArticleListConfig, TagsService, User, UserService} from '../core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {Task} from '../tasks-hierarchy/models/task.model';
-import {SearchManagementService} from './search-management.service';
+import {Task} from '../article/models/task.model';
+import {SearchManagementService} from './Search/search-management.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {ApiError} from '../settings/api-error.model';
@@ -80,6 +80,6 @@ export class HomeComponent implements OnInit {
       });
 
     // Otherwise, set the list object
-    this.listConfig = {type: '', filters: null};
+     this.listConfig = {type: '', filters: null};
   }
 }

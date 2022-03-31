@@ -2,14 +2,14 @@ import {Component,  Output, EventEmitter } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from './models/searchQuery.model';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {CreateSearchForm, GetUserList, SearchQuery} from '../models/searchQuery.model';
+import {Task} from '../../article/models/task.model';
 import {SearchManagementService} from './search-management.service';
-import {ApiError} from '../settings/api-error.model';
-import {MessageBoxService} from '../settings/message-box.service';
+import {ApiError} from '../../settings/api-error.model';
+import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
-import {AppState} from '../app.state';
-import * as TaskActions from '../shared/store/search-task.action';
+import {AppState} from '../../app.state';
+import * as TaskActions from '../../shared/store/search-task.action';
 import {DatePipe} from '@angular/common';
 
 
@@ -73,9 +73,7 @@ export class SearchFormComponent {
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    return this.options.filter(option => option.toLowerCase().includes(value.toLowerCase()));
   }
 
   private createSearch(newSearch: FormGroup): SearchQuery {

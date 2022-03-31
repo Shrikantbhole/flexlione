@@ -6,7 +6,7 @@ import {Article, ArticlesService, UserService} from '../core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {CreateTaskModel} from '../shared/store/interfaces/create-task.model';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {Task} from '../article/models/task.model';
 import {getUserList} from '../shared/shared-lists/user-list';
 import {error} from 'protractor';
 import {DatePipe} from '@angular/common';

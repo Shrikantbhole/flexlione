@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from './models/task.model';
+import { Task } from '../models/task.model';
 import {catchError, retry} from 'rxjs/operators';
-import {ServerConfigService} from './../settings/server-config.service';
-import {HandlerError} from './../settings/handle-error.service';
+import {ServerConfigService} from '../../settings/server-config.service';
+import {HandlerError} from '../../settings/handle-error.service';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.

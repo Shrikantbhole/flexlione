@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import {Task} from '../models/task.model';
+import {Task} from '../../article/models/task.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {TaskManagementService} from '../task-management-service';
+import {TaskManagementService} from '../../article/service/task-management-service';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import {ApiError} from '../../settings/api-error.model';
 import {AddOrEditTaskDialogComponent} from './add-or-edit-task-dialog.component';
-import {CheckListTemplate} from '../models/check-list-template.model';
+import {CheckListTemplate} from '../../article/models/check-list-template.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Store} from '@ngrx/store';

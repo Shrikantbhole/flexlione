@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import { Article, ArticleListConfig, ArticlesService } from '../../core';
-import {Task} from '../../tasks-hierarchy/models/task.model';
+import {Task} from '../../article/models/task.model';
 import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 import {ApiError} from '../../settings/api-error.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 
-import {TaskManagementService} from '../../tasks-hierarchy/task-management-service';
-import {SearchManagementService} from '../../home/search-management.service';
+import {TaskManagementService} from '../../article/service/task-management-service';
+import {SearchManagementService} from '../../home/Search/search-management.service';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';

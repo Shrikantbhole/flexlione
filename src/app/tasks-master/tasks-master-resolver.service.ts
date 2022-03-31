@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Article, ArticlesService, UserService } from '../core';
 import { catchError } from 'rxjs/operators';
-import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
+import {TaskManagementService} from '../article/service/task-management-service';
 import {TaskMaster} from '../core/models/master.model';
 
 @Injectable()

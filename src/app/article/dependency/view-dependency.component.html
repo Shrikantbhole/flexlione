@@ -1,0 +1,60 @@
+
+<button style=" display: inline-block ;" mat-raised-button color="primary" (click) = "onCreateNewDependencyClick()" >
+  Create new Dependency
+</button>
+<br/>
+<br/>
+<br/>
+<table class='table' *ngIf="dependencyList">
+  <thead>
+  <tr>
+    <th>Dependency Id</th>
+    <th>Task Id</th>
+    <th>Dependent Task Id</th>
+    <th>Status</th>
+    <th>Description</th>
+
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let dependency of dependencyList"
+      [ngClass]="{highlight: dependency.dependentTaskId == selectedDependencyId}"
+      (click)="onRowClick(dependency.dependencyId)">
+
+    <td>{{ dependency.dependencyId }}</td>
+    <td>{{ dependency.taskId }}</td>
+    <td>{{ dependency.dependentTaskId }}</td>
+    <td>{{ dependency.taskEditModel.status }} </td>
+    <td>{{dependency.taskEditModel.description}}</td>
+
+
+
+      <button mat-flat-button color="primary"[matMenuTriggerFor]="menu">
+        Menu
+      </button>
+
+      <mat-menu #menu="matMenu">
+
+        <button mat-menu-item  (click)="onEditDependencyClick(dependency.dependencyId)">
+
+          <span>Edit</span>
+        </button>
+
+        <button mat-menu-item  (click)= "onDeleteCheckListItemClick(dependency.dependencyId)" >
+
+          <span>Delete</span>
+        </button>
+
+        <button mat-menu-item  (click)= "onDeleteCheckListItemClick(dependency.dependencyId)" >
+
+          <span>View Task  {{dependency.dependentTaskId}}</span>
+        </button>
+
+      </mat-menu>
+
+      <mat-divider></mat-divider>
+
+  </tr>
+  </tbody>
+</table>

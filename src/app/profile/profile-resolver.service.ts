@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 
 import { Profile, ProfilesService } from '../core';
 import { catchError } from 'rxjs/operators';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {Task} from '../article/models/task.model';
 import {ApiError} from '../settings/api-error.model';
 import { MessageBoxService } from '../settings/message-box.service';
 
-import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
+import {TaskManagementService} from '../article/service/task-management-service';
 
 @Injectable()
 export class ProfileResolver implements Resolve<Profile> {

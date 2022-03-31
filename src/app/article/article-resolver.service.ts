@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Article, ArticlesService, UserService } from '../core';
 import {catchError, map} from 'rxjs/operators';
-import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
+import {TaskManagementService} from './service/task-management-service';
 import { User } from '../core/models';
 import {MessageBoxService} from '../settings/message-box.service';
 

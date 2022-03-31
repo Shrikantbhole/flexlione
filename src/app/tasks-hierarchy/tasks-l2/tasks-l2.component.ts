@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { Task } from '../../tasks-hierarchy/models/task.model';
+import { Task } from '../../article/models/task.model';
 
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {ApiError} from '../../settings/api-error.model';
-import {TaskManagementService} from '../../tasks-hierarchy/task-management-service';
+import {TaskManagementService} from '../../article/service/task-management-service';
 import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import * as TaskActions from '../../shared/store/create-task.action';

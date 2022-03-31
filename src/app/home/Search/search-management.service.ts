@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../tasks-hierarchy/models/task.model';
+import { Task } from '../../article/models/task.model';
 import {catchError, retry} from 'rxjs/operators';
-import {ServerConfigService} from './../settings/server-config.service';
-import {HandlerError} from './../settings/handle-error.service';
-import { SearchQuery} from './models/searchQuery.model';
-import {SearchTag} from './models/searchTag';
-import {SearchTaskViewModel} from '../shared/store/interfaces/search-task-view.model';
+import {ServerConfigService} from '../../settings/server-config.service';
+import {HandlerError} from '../../settings/handle-error.service';
+import { SearchQuery} from '../models/searchQuery.model';
+import {SearchTag} from '../models/searchTag';
+import {SearchTaskViewModel} from '../../shared/store/interfaces/search-task-view.model';
 import {DatePipe} from '@angular/common';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class

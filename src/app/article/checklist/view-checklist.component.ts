@@ -1,19 +1,19 @@
 import {ActivatedRoute, Router} from '@angular/router';
-import {ArticlesService, CommentsService, UserService} from '../core';
-import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {ArticlesService, CommentsService, UserService} from '../../core';
+import {ChecklistManagementService} from '../service/checklist-management.service';
+import {Task} from '../models/task.model';
 import {Component, OnInit} from '@angular/core';
-import {CheckListItem} from '../tasks-hierarchy/models/check-list-item.model';
+import {CheckListItem} from '../models/check-list-item.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {AddOrEditChecklistDialogComponent} from './add-or-edit-checklist-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ViewChecklistDialogComponent} from '../tasks-hierarchy/tasks-l1/view-checklist-dialog.component';
-import {MessageBoxService} from '../settings/message-box.service';
+import {ViewChecklistDialogComponent} from '../../tasks-hierarchy/tasks-l1/view-checklist-dialog.component';
+import {MessageBoxService} from '../../settings/message-box.service';
 
 @Component({
   selector: 'app-view-checklist',
   templateUrl: './view-checklist.component.html',
-  styleUrls: ['article.component.css']
+  styleUrls: ['../article.component.css']
 })
 
 export class ViewChecklistComponent implements OnInit {
@@ -34,8 +34,8 @@ export class ViewChecklistComponent implements OnInit {
 
     // Retreive the prefetched article
     this.route.data.subscribe(
-      (data: { article: Task[] }) => {
-        this.task = data.article.find(x => x.taskId === this.route.snapshot.params['slug']);
+      (data: { article: Task }) => {
+        this.task = data.article;
 
       }
     );

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {Task} from '../article/models/task.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../core';
-import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
+import {ChecklistManagementService} from '../article/service/checklist-management.service';
 
 @Component({
   selector: 'app-task-master',

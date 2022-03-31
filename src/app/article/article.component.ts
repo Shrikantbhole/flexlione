@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import {Task} from '../tasks-hierarchy/models/task.model';
+import {Task} from './models/task.model';
 
 
 import {
@@ -11,9 +11,9 @@ import {
   User,
   UserService
 } from '../core';
-import {CheckListItem} from '../tasks-hierarchy/models/check-list-item.model';
-import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
-import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
+import {CheckListItem} from './models/check-list-item.model';
+import {ChecklistManagementService} from './service/checklist-management.service';
+import {TaskManagementService} from './service/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
 
 @Component({
@@ -75,16 +75,27 @@ export class ArticleComponent implements OnInit {
     // l2 = parent
     // l3 = task selected
     this.taskManagementService.getTaskById(this.task.parentTaskId, 'children').subscribe({
-      next: ( task) => {
-        this.router.navigateByUrl('/task-tree?L1=' + task.parentTaskId + '&L2=' + this.task.parentTaskId
-          + '&L3=' + this.task.taskId);
+      next: ( parentTask) => {
+       this.navigateToTaskHierarchy(parentTask);
       },
       error: () => {
         this.messageBoxService.info('Error: Task not created.');
       }
     }); }
+  navigateToTaskHierarchy(parentTask: Task) {
+    if ( parentTask.taskId === '0') {
+      this.router.navigateByUrl('/task-tree?L1=' + this.task.taskId);
+      return;
+    }
+    if (parentTask.parentTaskId === '0') {
+      this.router.navigateByUrl('/task-tree?L1=' + parentTask.taskId + '&L2=' + this.task.taskId);
+      return;
+    }
+    this.router.navigateByUrl('/task-tree?L1=' + parentTask.parentTaskId + '&L2=' + this.task.parentTaskId
+      + '&L3=' + this.task.taskId);
+  }
   goToParentTask() {
-    this.router.navigateByUrl('/article/' + this.task.parentTaskId);
+      this.router.navigateByUrl('/article/' + this.task.parentTaskId);
   }
   deleteArticle() {
     this.isDeleting = true;

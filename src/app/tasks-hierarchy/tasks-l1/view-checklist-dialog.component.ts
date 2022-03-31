@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { TaskManagementService } from '../task-management-service';
-import { ChecklistManagementService } from '../checklist-management.service';
+import { TaskManagementService } from '../../article/service/task-management-service';
+import { ChecklistManagementService } from '../../article/service/checklist-management.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import { Task } from '../models/task.model';
-import {CheckListItem} from '../models/check-list-item.model';
+import { Task } from '../../article/models/task.model';
+import {CheckListItem} from '../../article/models/check-list-item.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {AddOrEditChecklistDialogComponent} from '../../article/add-or-edit-checklist-dialog.component';
+import {AddOrEditChecklistDialogComponent} from '../../article/checklist/add-or-edit-checklist-dialog.component';
 
 
 

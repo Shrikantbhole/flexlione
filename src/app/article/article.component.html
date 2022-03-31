@@ -10,7 +10,7 @@
 
   <div class="container page">
 
- <app-task-form [config]="task"[task]="task"></app-task-form>
+ <app-task-form [config]="task"></app-task-form>
 
     <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
          See in Task Tree
@@ -33,6 +33,14 @@
 
 
     <app-view-checklist></app-view-checklist>
+
+    <br/>
+    <p><strong> DownStream Dependency</strong></p>
+    <app-view-dependency [Type] = "'downstream'"></app-view-dependency>
+
+    <br/>
+    <p><strong> Upstream Dependency</strong></p>
+    <app-view-dependency [Type] = "'upstream'"></app-view-dependency>
 
 
 

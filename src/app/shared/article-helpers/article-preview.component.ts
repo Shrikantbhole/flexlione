@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { Article } from '../../core';
-import {Task} from '../../tasks-hierarchy/models/task.model';
+import {Task} from '../../article/models/task.model';
 import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 
 @Component({
@@ -10,7 +10,4 @@ import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 })
 export class ArticlePreviewComponent {
   @Input() SearchTask: SearchTaskViewModel;
-  onToggleFavorite(favorited: boolean) {
-
-  }
 }

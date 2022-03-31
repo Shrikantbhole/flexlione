@@ -15,11 +15,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
-import {ViewChecklistComponent} from './view-checklist.component';
-import {TaskFormComponent} from './task-form.component';
+import {ViewChecklistComponent} from './checklist/view-checklist.component';
+import {TaskFormComponent} from '../shared/task-form/task-form.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialogConfig, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {AddOrEditChecklistDialogComponent} from './add-or-edit-checklist-dialog.component';
+import {AddOrEditChecklistDialogComponent} from './checklist/add-or-edit-checklist-dialog.component';
+import {ViewDependencyComponent} from './dependency/view-dependency.component';
+import {AddOrEditDependencyDialogComponent} from './dependency/add-or-edit-dependency-dialog.component';
 
 
 
@@ -46,7 +48,9 @@ import {AddOrEditChecklistDialogComponent} from './add-or-edit-checklist-dialog.
         AddOrEditTaskDialogComponent,
         ViewChecklistComponent,
         TaskFormComponent,
-        AddOrEditChecklistDialogComponent
+        AddOrEditChecklistDialogComponent,
+      ViewDependencyComponent,
+      AddOrEditDependencyDialogComponent
     ],
     exports: [
         TaskFormComponent
