@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
 import {AddOrEditTaskDialogComponent} from './task-tree/add-or-edit-task-dialog.component';
+import {TaskHierarchyResolverService} from './task-hierarchy-resolver.service';
 
 
 
@@ -44,7 +45,8 @@ import {AddOrEditTaskDialogComponent} from './task-tree/add-or-edit-task-dialog.
     TasksL3Component
   ],
   providers: [
-    MatSnackBar
+    MatSnackBar,
+    TaskHierarchyResolverService
   ]
 })
 export class TaskHierarchyModule {}

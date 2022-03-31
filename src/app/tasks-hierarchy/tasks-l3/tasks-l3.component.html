@@ -12,17 +12,15 @@
 <div class="col-sm-12">
   <br />
   <h4 *ngIf="!l3TaskId">Please select a Task.</h4>
-  <h4 *ngIf="l3TaskId && !l3TaskList">Loading...</h4>
-
-  <div *ngIf="l3TaskList?.length == 0&&l3TaskId">
-    <br />
-    <h4 >No Task Exist.</h4>
-    <br />
-
-  </div>
+  <h4 *ngIf="l3TaskId && !l3Task">Loading...</h4>
 
 
-  <div *ngIf="l3TaskList?.length > 0&&l3TaskId">
+
+
+  <div *ngIf="l3Task &&l3TaskId">
+
+    <p *ngIf="l3Task.children?.length == 0">No project exists.</p>
+    <br/>
 
     <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
       Create Child Task
@@ -33,7 +31,7 @@
 
     <mat-list>
       <mat-divider></mat-divider>
-      <mat-list-item *ngFor="let task of l3TaskList"
+      <mat-list-item *ngFor="let task of l3Task.children"
                      [ngClass]="{highlight: task.taskId == selectedTaskId}"
                      (click)="onRowClick(task.taskId)"
                      [routerLink]='["/task-tree"]' [queryParams]="{L1: task.parentTaskId,L2: task.taskId}">

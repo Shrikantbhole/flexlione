@@ -31,7 +31,7 @@ export class TasksL3Component {
   public l2TaskId: string;
   public l1TaskId: string;
   public l3TaskId: string;
-  public l3TaskList: Task[];
+  public l3Task: Task;
 
   // services
 
@@ -61,7 +61,7 @@ export class TasksL3Component {
         this.l3TaskId = params.L3;
         // Load Only if l2 task id has value
         // Other wise loading null will load all head task
-        if (this.l3TaskId != null) {
+        if (this.l3TaskId !== undefined) {
           this.loadL3TaskList();
         }
       }
@@ -78,12 +78,12 @@ export class TasksL3Component {
 
     // this.l3TaskList = this.taskReportingService.getJSON().filter(x => x.parentTaskId === this.l3TaskId);
 
-    this.taskManagementService.getTaskList(this.l3TaskId, 'children').subscribe(
+    this.taskManagementService.getTaskById(this.l3TaskId, 'children').subscribe(
       {
-        next: (taskList: Task[]) => {
-          console.log(taskList);
-          this.l3TaskList = taskList;
-          console.log(this.l3TaskList);
+        next: (task: Task) => {
+          console.log(task);
+          this.l3Task = task;
+          console.log(this.l3Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
       });
@@ -97,7 +97,7 @@ export class TasksL3Component {
   onAddNewTaskButtonClick(): void {
 
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {parentTaskId : this.l3TaskList[0].parentTaskId};
+    const task: CreateTaskModel = {parentTaskId : this.l3Task.taskId};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.route.navigateByUrl('/editor');
   }
@@ -110,8 +110,8 @@ export class TasksL3Component {
     dialogConfig.data = {
 
       isEdit: true,
-      parentTaskId: this.l3TaskList.filter(x => x.taskId === taskId)[0].parentTaskId,
-      task: this.l3TaskList.filter(x => x.taskId === taskId)[0]
+      parentTaskId: this.l3Task.parentTaskId,
+      task: this.l3Task
     };
 
     this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)

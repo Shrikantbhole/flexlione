@@ -25,7 +25,7 @@ export class ProfileResolver implements Resolve<Profile> {
     state: RouterStateSnapshot
   ): Observable<any> {
 
-    return this.taskManagementService.getTaskList(null, 'children').
+    return this.taskManagementService.getTaskById('0', 'children').
       pipe(catchError((err) => this.router.navigateByUrl('/')));
 
 

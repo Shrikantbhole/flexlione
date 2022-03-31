@@ -42,7 +42,7 @@ export class ChecklistManagementService {
     };
 
 
-    return this.http_.get<CheckListItem[]>(this.baseUrl + '/GetCheckList', { params: queryStringParams, headers: httpHeaders })
+    return this.http_.get<CheckListItem[]>(this.baseUrl + '/CheckList/GetCheckList', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -58,7 +58,7 @@ export class ChecklistManagementService {
     const queryStringParams = {
       checkListItemId: checkListId
     };
-    return this.http_.delete<void>(this.baseUrl + '/DeleteCheckListItem', { params: queryStringParams, headers: httpHeaders })
+    return this.http_.delete<void>(this.baseUrl + '/CheckList/DeleteCheckListItem', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -72,7 +72,7 @@ export class ChecklistManagementService {
       'accept': 'application/json;v=1.0'
     };
 
-    return this.http_.put<CheckListItem>(this.baseUrl + '/CreateOrUpdateCheckListItem', checkListItem, {headers: httpHeaders})
+    return this.http_.put<CheckListItem>(this.baseUrl + '/CheckList/CreateOrUpdateCheckListItem', checkListItem, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)

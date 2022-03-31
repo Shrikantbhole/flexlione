@@ -67,7 +67,7 @@ export class EditorComponent implements OnInit {
   createTask(receivedTask: CreateTaskModel): Task {
     const newTask = new Task();
     newTask.taskId = '';
-    newTask.parentTaskId = receivedTask.parentTaskId === undefined ? 'dump' : receivedTask.parentTaskId ;
+    newTask.parentTaskId = receivedTask.parentTaskId === undefined ? '0' : receivedTask.parentTaskId ;
     newTask.description = receivedTask.description === undefined ? '' : receivedTask.description ;
     newTask.createdBy = getUserList().filter(x => x.toLowerCase()
       === this.userService.getCurrentUser().username.toLowerCase())[0];

@@ -29,8 +29,7 @@ export class TasksL2Component {
   public ptlStationId: string;
   public l2TaskId: string;
   public l1TaskId: string;
-  public l3TaskId: string;
-  public l2TaskList: Task[];
+  public l2Task: Task;
   public selectedTaskId: string;
 
 
@@ -63,7 +62,7 @@ export class TasksL2Component {
 
          // Load Only if l2 task id has value
         // Other wise loading null will load all head task
-         if (this.l2TaskId != null) {
+         if (this.l2TaskId !== undefined) {
            this.loadL2TaskList() ;
          }
       }
@@ -76,12 +75,12 @@ export class TasksL2Component {
 
   loadL2TaskList() {
 
-    this.taskManagementService.getTaskList(this.l2TaskId, 'children').subscribe(
+    this.taskManagementService.getTaskById(this.l2TaskId, 'children').subscribe(
       {
-        next: (taskList: Task[]) => {
-          console.log(taskList);
-          this.l2TaskList = taskList;
-          console.log(this.l2TaskList);
+        next: (task: Task) => {
+          console.log(task);
+          this.l2Task = task;
+          console.log(this.l2Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
       });
@@ -96,7 +95,7 @@ export class TasksL2Component {
   onAddNewTaskButtonClick(): void {
 
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {parentTaskId : this.l2TaskList[0].parentTaskId};
+    const task: CreateTaskModel = {parentTaskId : this.l2Task.taskId};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.router.navigateByUrl('/editor');
   }
@@ -107,8 +106,8 @@ export class TasksL2Component {
     dialogConfig.data = {
 
       isEdit: true,
-      parentTaskId: this.l2TaskList.filter(x => x.taskId === taskId)[0].parentTaskId,
-      task: this.l2TaskList.filter(x => x.taskId === taskId)[0]
+      parentTaskId: this.l2Task.taskId,
+      task: this.l2Task
     };
 
     this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)

@@ -62,10 +62,10 @@ export class AddOrEditTaskDialogComponent {
     // this.datePipe.transform(this.date, 'yyyy-MM-dd')
 
     // Show list of all siblings of current task to align position
-    this.taskManagementService.getTaskList(data.parentTaskId, 'children').subscribe(
+    this.taskManagementService.getTaskById(data.parentTaskId, 'children').subscribe(
       {
-        next: (taskList: Task[]) => {
-          this.Tasks = taskList;
+        next: (task: Task) => {
+          this.Tasks = task.children;
 
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not get task list', apiError.title, apiError.detail)

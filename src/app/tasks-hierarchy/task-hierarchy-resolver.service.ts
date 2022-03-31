@@ -9,7 +9,7 @@ import { User } from '../core/models';
 import {MessageBoxService} from '../settings/message-box.service';
 
 @Injectable()
-export class ArticleResolver implements Resolve<Article> {
+export class TaskHierarchyResolverService implements Resolve<Article> {
   constructor(
     private articlesService: ArticlesService,
     private router: Router,
@@ -22,7 +22,7 @@ export class ArticleResolver implements Resolve<Article> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-    return this.taskManagementService.getTaskById(route.params['slug'], 'children')
+    return this.taskManagementService.getTaskById('23', 'children')
       .pipe(
         map(
           article => {
@@ -35,6 +35,6 @@ export class ArticleResolver implements Resolve<Article> {
         ),
         catchError((err) => this.router.navigateByUrl('/'))
       );
-        }
+  }
 
 }

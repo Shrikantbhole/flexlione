@@ -34,9 +34,9 @@
 
   <div class="col-sm-12">
 
-    <p *ngIf="!Tasks">Loading Projects...</p>
+    <p *ngIf="!childTaskList">Loading Projects...</p>
 
-    <div *ngIf="Tasks">
+    <div *ngIf="childTaskList">
 
       <br />
       <button mat-raised-button color="primary" (click)="onAddNewTaskButtonClick()">
@@ -48,11 +48,11 @@
 
 
 
-      <p *ngIf="Tasks?.length == 0">No project exists.</p>
+      <p *ngIf="childTaskList?.length == 0">No project exists.</p>
 
       <mat-list>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let Task of Tasks"
+        <mat-list-item *ngFor="let Task of childTaskList"
                        (click)="onRowClick(Task.taskId)"
                        [ngClass]="{highlight: Task.taskId == selectedTaskId}"
                        [routerLinkActive]="['is-active']"

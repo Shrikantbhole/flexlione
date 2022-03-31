@@ -13,6 +13,8 @@ import {
 } from '../core';
 import {CheckListItem} from '../tasks-hierarchy/models/check-list-item.model';
 import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
+import {TaskManagementService} from '../tasks-hierarchy/task-management-service';
+import {MessageBoxService} from '../settings/message-box.service';
 
 @Component({
   selector: 'app-article-page',
@@ -39,23 +41,21 @@ export class ArticleComponent implements OnInit {
     private commentsService: CommentsService,
     private router: Router,
     private userService: UserService,
-    private checkListManagementService: ChecklistManagementService
-  ) {     }
-
-  ngOnInit() {
-
-
-    // Retreive the prefetched article
+    private taskManagementService: TaskManagementService,
+    private messageBoxService: MessageBoxService
+  ) {   // Retreive the prefetched article
     this.route.data.subscribe(
-      (data: { article: Task[] }) => {
-        this.task = data.article.find(x => x.taskId === this.route.snapshot.params['slug']);
+      (data: { article: Task }) => {
+        this.task = data.article;
         console.log(this.task);
         this.comments = [];
         // Load the comments on this article
         this.populateComments();
       }
-    );
-    // Load the current user's data
+    );   }
+
+  ngOnInit() {
+      // Load the current user's data
     this.userService.currentUser.subscribe(
       (userData: User) => {
         this.currentUser = userData;
@@ -70,10 +70,21 @@ export class ArticleComponent implements OnInit {
   }
 
   seeInTaskTree() {
-    this.router.navigateByUrl('/task-tree?L1=' + this.task.taskId);
-  }
+    // In hierarch view show three gen
+    // l1 = parent of parent
+    // l2 = parent
+    // l3 = task selected
+    this.taskManagementService.getTaskById(this.task.parentTaskId, 'children').subscribe({
+      next: ( task) => {
+        this.router.navigateByUrl('/task-tree?L1=' + task.parentTaskId + '&L2=' + this.task.parentTaskId
+          + '&L3=' + this.task.taskId);
+      },
+      error: () => {
+        this.messageBoxService.info('Error: Task not created.');
+      }
+    }); }
   goToParentTask() {
-    this.router.navigateByUrl('/article' + this.task.parentTaskId);
+    this.router.navigateByUrl('/article/' + this.task.parentTaskId);
   }
   deleteArticle() {
     this.isDeleting = true;

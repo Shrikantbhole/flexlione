@@ -26,7 +26,7 @@ export class TaskManagementService {
     this.baseUrl = serverConfigService.getBaseUrl();
   }
   // Returns an observable for list of Line Items
-  getTaskList(taskId: string, include: string): Observable<Task[]> {
+  getTaskById(taskId: string, include: string): Observable<Task> {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
@@ -34,20 +34,11 @@ export class TaskManagementService {
     };
 
     let queryStringParams;
-    if (taskId == null) {
-      queryStringParams = {
-        include: include
-      };
-    } else {
-      queryStringParams = {
+    queryStringParams = {
         include: include,
         taskId: taskId
-      };
-    }
-
-
-
-    return this.http_.get<Task[]>(this.baseUrl + '/GetTaskList', { params: queryStringParams, headers: httpHeaders })
+    };
+    return this.http_.get<Task>(this.baseUrl + '/Task/GetTaskById', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -63,7 +54,7 @@ export class TaskManagementService {
     const queryStringParams = {
       taskId: taskId
     };
-    return this.http_.delete<void>(this.baseUrl + '/DeleteTask', { params: queryStringParams, headers: httpHeaders })
+    return this.http_.delete<void>(this.baseUrl + '/Task/DeleteTask', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -77,7 +68,7 @@ export class TaskManagementService {
       'accept': 'application/json;v=1.0'
     };
 
-    return this.http_.put<Task>(this.baseUrl + '/CreateOrUpdateTask', task, {headers: httpHeaders})
+    return this.http_.put<Task>(this.baseUrl + '/Task/CreateOrUpdateTask', task, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)

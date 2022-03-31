@@ -11,5 +11,10 @@ export class  Task {
   positionAfter: string;
   description: string;
   score: number;
+  children: Task[];
+  downStreamDependencies: Task[];
+  upStreamDependencies: Task[];
+  siblings: Task[];
+
 
 }

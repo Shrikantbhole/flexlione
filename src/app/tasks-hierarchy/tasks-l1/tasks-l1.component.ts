@@ -41,8 +41,8 @@ export class TasksL1Component {
   private snackBarService: MatSnackBar;
   private taskManagementService: TaskManagementService;
   private inUse: String;
-  public l1TaskList: Task[];
-  public l1TaskIdList: number[] = [];
+  public l1Task: Task;
+
 
 
   constructor(dialog: MatDialog,
@@ -59,9 +59,9 @@ export class TasksL1Component {
       next: (params: Params) => {
 
           this.l1TaskId = params.L1;
-          this.loadL1TaskList();
-
-
+          if (this.l1TaskId !== undefined) {
+            this.loadL1TaskList();
+          }
       }
     });
   }
@@ -78,17 +78,12 @@ export class TasksL1Component {
 
     // this.l1TaskList = this.taskReportingService.getJSON().filter(x => x.parentTaskId === this.l1TaskId);
 
-    this.taskManagementService.getTaskList(this.l1TaskId, 'children').subscribe(
+    this.taskManagementService.getTaskById(this.l1TaskId, 'children').subscribe(
       {
-        next: (taskList: Task[]) => {
-          console.log(taskList);
-          this.l1TaskList = taskList;
-          this.l1TaskIdList = [];
-          this.l1TaskList.forEach(x => {
-            const splitted = x.taskId.split('.');
-            this.l1TaskIdList.push(Number(splitted[splitted.length - 1]));
-          });
-          console.log(this.l1TaskList);
+        next: (task: Task) => {
+          console.log(task);
+          this.l1Task = task;
+          console.log(this.l1Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
       });
@@ -101,7 +96,7 @@ export class TasksL1Component {
   // and send request again.
   onAddNewTaskButtonClick(): void {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {parentTaskId : this.l1TaskList[0].parentTaskId};
+    const task: CreateTaskModel = {parentTaskId : this.l1Task.taskId};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.router.navigateByUrl('/editor');
 
@@ -114,8 +109,8 @@ export class TasksL1Component {
     dialogConfig.data = {
 
       isEdit: true,
-      parentTaskId: this.l1TaskList.filter(x => x.taskId === taskId)[0].parentTaskId,
-      task: this.l1TaskList.filter(x => x.taskId === taskId)[0]
+      parentTaskId: this.l1Task.parentTaskId,
+      task: this.l1Task
     };
 
     this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)

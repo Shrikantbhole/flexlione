@@ -29,7 +29,8 @@ export class HeadTasksComponent {
   // members needed for data-binding with html
   public selectedTaskId: string;
   public data: Task[];
-  public Tasks: Task[] = [];
+  public childTaskList: Task[];
+  public Task: Task ;
   public TaskIdList: number[] = [];
   public l1TaskId: string;
   public l2TaskId: string;
@@ -51,11 +52,6 @@ export class HeadTasksComponent {
     this.snackBarService = snackBarService;
     this.taskManagementService = taskManagementService;
     this.router = router;
-
-
-    this.l1TaskId = '1';
-    this.l2TaskId = '1.1';
-    this.l3TaskId = '1.1.1';
     this.loadParentTasks();
 
     // Dummy for testing. needs to be deleted
@@ -72,13 +68,14 @@ export class HeadTasksComponent {
     // empty the ptl station list, so that loading appears on the screen
     // this.data = this.taskReportingService.getJSON();
     // this.Tasks = this.data.filter(x => x.parentTaskId === null);
-    this.taskManagementService.getTaskList(null, 'children').subscribe(
+    this.taskManagementService.getTaskById('0', 'children').subscribe(
       {
-        next: (taskList: Task[]) => {
-          console.log(taskList);
-          this.Tasks = taskList;
+        next: (task: Task) => {
+          console.log(task);
+          this.Task = task;
+          this.childTaskList = task.children;
 
-          console.log(this.Tasks);
+          console.log(this.Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
       });
@@ -122,7 +119,7 @@ export class HeadTasksComponent {
 
       isEdit: true,
       parentTaskId: null,
-      task: this.Tasks.filter(x => x.taskId === taskId)[0]
+      task: this.Task
     };
 
     this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)
