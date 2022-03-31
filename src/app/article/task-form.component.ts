@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ArticlesService, CommentsService, UserService} from '../core';
+import {ArticleListConfig, ArticlesService, CommentsService, UserService} from '../core';
 import {ChecklistManagementService} from '../tasks-hierarchy/checklist-management.service';
 import {Task} from '../tasks-hierarchy/models/task.model';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -22,8 +22,29 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class TaskFormComponent implements OnInit {
    UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
-  Status: string = null;
   @Input() task: Task;
+  @Input()
+  set config(task: Task) {
+   console.log('check');
+    console.log(task);
+    console.log(this.task);
+    this.task = task;
+    console.log(this.task);
+
+    this.newTask.setValue({
+      taskId: this.task.taskId,
+      parentTaskId: this.task.parentTaskId,
+      createdBy: this.task.createdBy,
+      status: this.task.status == null ? this.StatusList[0] : this.task.status,
+      positionAfter: this.task.positionAfter,
+      description: this.task.description,
+      deadline: this.task.deadline,
+      score: this.task.score,
+      assignedTo: this.task.assignedTo,
+      estimatedHrs: this.task.taskId,
+      hrsSpentTillNow: this.task.taskId
+    });
+  }
   deadline: FormControl = new FormControl(new Date());
   newTask: FormGroup = CreateTaskForm();
   constructor(

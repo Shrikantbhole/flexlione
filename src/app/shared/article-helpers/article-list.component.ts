@@ -44,7 +44,9 @@ export class ArticleListComponent implements OnInit {
     this.runQuery();
   }
 
-  runQuery() {}
+  runQuery() {
+    console.log('hi');
+  }
 
   ngOnInit(): void {
     this.results = this.store.select('searchTaskView');
