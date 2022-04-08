@@ -7,6 +7,4 @@ import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
   selector: 'app-article-meta',
   templateUrl: './article-meta.component.html'
 })
-export class ArticleMetaComponent {
-  @Input() SearchTask: SearchTaskViewModel;
-}
+export class ArticleMetaComponent {}

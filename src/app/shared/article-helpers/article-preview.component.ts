@@ -10,4 +10,5 @@ import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
 })
 export class ArticlePreviewComponent {
   @Input() SearchTask: SearchTaskViewModel;
+  sprintList: string[] = ['23', '24'];
 }

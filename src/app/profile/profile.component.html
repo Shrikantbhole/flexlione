@@ -4,53 +4,83 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-xs-12 col-md-10 offset-md-1">
-          <img [src]="profile.image" class="user-img" />
-          <h4>{{ profile.username }}</h4>
-          <p>{{ profile.bio }}</p>
-          <app-follow-button
-            [hidden]="isUser"
-            [profile]="profile"
-            (toggle)="onToggleFollowing($event)">
-          </app-follow-button>
-           <a [routerLink]="['/task-tree']"
-              [hidden]="!isUser"
-              class="btn btn-sm btn-outline-secondary action-btn">
-              <i class="ion-gear-a"></i> Edit Profile Settings
-            </a>
+        <div class="col-xs-12 col-md-10">
+          <button class="btn btn-sm btn-outline-danger"
+                  (click)="onPlanSprint()">
+            <i class="ion-edit"></i> Plan your Sprint
+          </button>
+          <button class="btn btn-sm btn-outline-danger"
+                  (click)="onPlanDay()">
+            <i class="ion-edit"></i> Plan your Day
+          </button>
+          <button class="btn btn-sm btn-outline-danger"
+                  (click)="onDaySummary()">
+            <i class="ion-edit"></i> Day Summary
+          </button>
         </div>
 
       </div>
     </div>
   </div>
 
-  <div class="container">
+  <div class = "container">
     <div class="row">
 
-      <div class="col-xs-12 col-md-10 offset-md-1">
+      <div class=  "col-xs-6" [hidden]="planner !== 'sprint'">
         <div class="articles-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
               <a class="nav-link"
                  routerLinkActive="active"
                  [routerLinkActiveOptions]="{ exact: true }"
-                 [routerLink]="['/profile', profile.username]">
-                 My Posts
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
-                 [routerLink]="['/profile', profile.username, 'favorites']">
-                 Favorited Posts
+                 [routerLink]="['/profile', '11']">
+                 Task Dump
               </a>
             </li>
           </ul>
         </div>
-
         <router-outlet></router-outlet>
       </div>
+
+      <div class=  "col-xs-6" [hidden]="planner === 'summary'" >
+        <app-sprint-preview [config]="sprintId" [sprintList]="sprintList" ></app-sprint-preview>
+      </div>
+
+      <div class="col-xs-6" [hidden]="planner === 'sprint'">
+        <app-profile-daily-plan-calender></app-profile-daily-plan-calender>
+      </div>
+
+      <div class=  "col-xs-6" [hidden]="planner !== 'summary'">
+        <div class="example-action-buttons">
+          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+        </div>
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let sprint of sprintList">
+
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{sprint}}
+              </mat-panel-title>
+              <mat-panel-description>
+                Type {{sprint}} deliverables
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <br/>
+            <br/>
+            <p *ngFor="let task of sprintList" class="grid5">
+              {{task}}
+              <app-home-search-form></app-home-search-form>
+              <br/>
+            </p>
+
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+      </div>
+
 
     </div>
   </div>

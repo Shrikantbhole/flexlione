@@ -8,6 +8,13 @@ import { ArticleListComponent, ArticleMetaComponent, ArticlePreviewComponent } f
 import { FavoriteButtonComponent, FollowButtonComponent } from './buttons';
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatButtonModule} from '@angular/material/button';
+import {AutoSearchComponent} from './search/auto-search.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -15,7 +22,13 @@ import { ShowAuthedDirective } from './show-authed.directive';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [
     ArticleListComponent,
@@ -24,7 +37,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     FavoriteButtonComponent,
     FollowButtonComponent,
     ListErrorsComponent,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    AutoSearchComponent
   ],
   exports: [
     ArticleListComponent,
@@ -38,7 +52,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     HttpClientModule,
     ListErrorsComponent,
     RouterModule,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    AutoSearchComponent
   ]
 })
 export class SharedModule {}

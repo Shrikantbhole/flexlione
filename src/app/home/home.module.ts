@@ -16,6 +16,7 @@ import {SearchFormComponent} from './Search/search-form.component';
 import {SearchManagementService} from './Search/search-management.service';
 import {DatePipe} from '@angular/common';
 import {SearchQuery} from './models/searchQuery.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -33,11 +34,15 @@ import {SearchQuery} from './models/searchQuery.model';
     HomeComponent,
     SearchFormComponent
   ],
+  exports: [
+    SearchFormComponent
+  ],
   providers: [
     HomeAuthResolver,
     SearchManagementService,
     DatePipe,
-    SearchQuery
+    SearchQuery,
+    MatSnackBar
   ]
 })
 export class HomeModule {}

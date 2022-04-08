@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angu
 
 import { Comment, User, UserService } from '../core';
 import { Subscription } from 'rxjs';
+import {TaskComment} from './models/task-comment.model';
 
 @Component({
   selector: 'app-article-comment',
@@ -14,7 +15,7 @@ export class ArticleCommentComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  @Input() comment: Comment;
+  @Input() comment: TaskComment;
   @Output() deleteComment = new EventEmitter<boolean>();
 
   canModify: boolean;
@@ -23,7 +24,7 @@ export class ArticleCommentComponent implements OnInit, OnDestroy {
     // Load the current user's data
     this.subscription = this.userService.currentUser.subscribe(
       (userData: User) => {
-        this.canModify = (userData.username === this.comment.author);
+        this.canModify = (userData.username === this.comment.createdBy);
       }
     );
   }

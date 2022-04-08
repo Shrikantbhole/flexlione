@@ -48,7 +48,7 @@ export class ViewDependencyComponent implements OnInit {
 
   loadDependency() {
     if (this.Type === 'downstream') {
-      this.dependencyManagementService.getDownstreamDependency('23', 'task').subscribe(
+      this.dependencyManagementService.getDownstreamDependency(this.task.taskId, 'task').subscribe(
         {
           // the response is already deserialized and it is in the form of an array or object
           next: (dependencyList) => {
@@ -60,7 +60,7 @@ export class ViewDependencyComponent implements OnInit {
     }
 
     if (this.Type === 'upstream') {
-      this.dependencyManagementService.getUpstreamDependency('23', 'task').subscribe(
+      this.dependencyManagementService.getUpstreamDependency(this.task.taskId, 'task').subscribe(
         {
           // the response is already deserialized and it is in the form of an array or object
           next: (dependencyList) => {

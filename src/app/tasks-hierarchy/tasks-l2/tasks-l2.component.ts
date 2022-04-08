@@ -100,35 +100,11 @@ export class TasksL2Component {
     this.router.navigateByUrl('/editor');
   }
 
-  onEditTaskButtonClick(taskId: string): void {
+  onVisitTask(): void {
 
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
+    this.router.navigateByUrl('/article/' + this.selectedTaskId);
 
-      isEdit: true,
-      parentTaskId: this.l2Task.taskId,
-      task: this.l2Task
-    };
 
-    this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)
-      .afterClosed().subscribe(
-      {
-        next: (task: Task) => {
-
-          if (task == null) { // Cancel button clicked
-            return;
-          }
-
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
-
-          // Load the list again
-          this.loadL2TaskList();
-
-          //  show it selected and auto-scroll to it
-          this.selectedTaskId = task.taskId;
-        }
-      }
-    );
   }
 
   onDeleteTaskButtonClick(taskId: string): void {

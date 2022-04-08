@@ -6,7 +6,6 @@ import {Task} from './models/task.model';
 
 import {
   ArticlesService,
-  Comment,
   CommentsService,
   User,
   UserService
@@ -15,6 +14,9 @@ import {CheckListItem} from './models/check-list-item.model';
 import {ChecklistManagementService} from './service/checklist-management.service';
 import {TaskManagementService} from './service/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
+import {CommentManagementService} from './service/comment-management.service';
+import {TaskComment} from './models/task-comment.model';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-article-page',
@@ -27,7 +29,7 @@ export class ArticleComponent implements OnInit {
   task: Task;
   currentUser: User;
   canModify: boolean;
-  comments: Comment[] = [];
+  comments: TaskComment[] = [];
   commentControl = new FormControl();
   commentFormErrors = {};
   isSubmitting = false;
@@ -42,8 +44,10 @@ export class ArticleComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private taskManagementService: TaskManagementService,
-    private messageBoxService: MessageBoxService
-  ) {   // Retreive the prefetched article
+    private messageBoxService: MessageBoxService,
+    private  commentManagementService: CommentManagementService,
+    private datepipe: DatePipe
+  ) {// Retreive the prefetched article
     this.route.data.subscribe(
       (data: { article: Task }) => {
         this.task = data.article;
@@ -64,11 +68,6 @@ export class ArticleComponent implements OnInit {
       }
     );
   }
-
-  onToggleFavorite(favorited: boolean) {
-
-  }
-
   seeInTaskTree() {
     // In hierarch view show three gen
     // l1 = parent of parent
@@ -109,7 +108,15 @@ export class ArticleComponent implements OnInit {
   }
 
   populateComments() {
-   this.comments.push({
+    this.commentManagementService.getCommentsByTaskId(this.task.taskId).subscribe({
+      next: (commentList) => {
+       this.comments.push.apply(this.comments, commentList);
+      },
+      error: () => { }
+    });
+
+   /*
+    this.comments.push({
      id: 1,
      author: 'shrikant',
      body: 'What is the update?',
@@ -121,6 +128,8 @@ export class ArticleComponent implements OnInit {
       body: 'Has this task completed?',
       createdAt: ''
     });
+
+    */
   }
 
   addComment() {
@@ -128,14 +137,21 @@ export class ArticleComponent implements OnInit {
     this.commentFormErrors = {};
 
     const commentBody = this.commentControl.value;
-    const newComment: Comment = {id: 2,
-      author: 'shrikant',
-      body: commentBody,
-      createdAt: ''};
-    console.log(this.comments);
+    const newComment: TaskComment = {
+      commentId: 'next',
+      taskId: this.task.taskId,
+      createdBy: 'shrikant',
+      message: commentBody,
+      createdAt: this.datepipe.transform(Date.now(), 'yyyy-MM-dd')};
     this.comments.unshift(newComment);
     this.commentControl.reset('');
     this.isSubmitting = false;
+    this.commentManagementService.createOrUpdateComment(newComment).subscribe({
+      next: (comment) => {
+       console.log(comment);
+      },
+      error: () => { }
+    });
   }
 
   onDeleteComment(comment) {

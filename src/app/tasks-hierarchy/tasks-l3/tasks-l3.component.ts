@@ -44,7 +44,7 @@ export class TasksL3Component {
 
 
   constructor(dialog: MatDialog,
-    messageBoxService: MessageBoxService, snackBarService: MatSnackBar, private route: Router, private store: Store<AppState>,
+    messageBoxService: MessageBoxService, snackBarService: MatSnackBar, private router: Router, private store: Store<AppState>,
     activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService ) {
     this.dialog = dialog;
 
@@ -99,41 +99,16 @@ export class TasksL3Component {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
     const task: CreateTaskModel = {parentTaskId : this.l3Task.taskId};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
-    this.route.navigateByUrl('/editor');
+    this.router.navigateByUrl('/editor');
   }
 
-  onEditTaskButtonClick(taskId: string): void {
+  onVisitTask(): void {
+
+    this.router.navigateByUrl('/article/' + this.selectedTaskId);
 
 
-
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-
-      isEdit: true,
-      parentTaskId: this.l3Task.parentTaskId,
-      task: this.l3Task
-    };
-
-    this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)
-      .afterClosed().subscribe(
-      {
-        next: (task: Task) => {
-
-          if (task == null) { // Cancel button clicked
-            return;
-          }
-
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
-
-          // Load the list again
-          this.loadL3TaskList();
-
-          //  show it selected and auto-scroll to it
-          this.selectedTaskId = task.taskId;
-        }
-      }
-    );
   }
+
 
   onDeleteTaskButtonClick(taskId: string): void {
 

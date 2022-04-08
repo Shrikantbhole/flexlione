@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-
-
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
@@ -10,7 +8,8 @@ import {
   SharedModule
 } from './shared';
 
-
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core';
 import {MessageBoxComponent, MessageBoxService} from './settings/message-box.service';
@@ -25,6 +24,7 @@ import { StoreModule } from '@ngrx/store';
 import { SearchTaskReducer} from './shared/store/search-task.reducer';
 import { CreateTaskReducer} from './shared/store/create-task.reducer';
 import {DependencyManagementService} from './article/service/dependency-management.service';
+import {CommentManagementService} from './article/service/comment-management.service';
 
 
 @NgModule({
@@ -42,13 +42,20 @@ import {DependencyManagementService} from './article/service/dependency-manageme
       searchTaskView: SearchTaskReducer,
       createTask: CreateTaskReducer
     })
+    ,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
   ],
   providers: [TaskManagementService,
     ChecklistManagementService,
     HandlerError,
     MessageBoxService,
     ServerConfigService,
-  DependencyManagementService],
+  DependencyManagementService,
+    CommentManagementService
+  ],
   exports: [],
   bootstrap: [AppComponent]
 })

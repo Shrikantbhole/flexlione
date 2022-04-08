@@ -1,0 +1,44 @@
+<div class="sidebar">
+  <br/>
+  <div class="row text-center">
+
+    <div class="col-md-4">
+      <div class="btn-group">
+        <div class="btn btn-primary" mwlCalendarPreviousView (click)="getMonth(viewDate)" [view]="view" [(viewDate)]="viewDate">
+          Previous
+        </div>
+        <div class="btn btn-primary" mwlCalendarNextView (click)="getMonth(viewDate)" [view]="view" [(viewDate)]="viewDate">
+          Next
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="btn-group">
+        <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+          Month
+        </div>
+        <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+          Week
+        </div>
+      </div>
+    </div>
+    <div [ngSwitch]="view">
+
+      <mwl-calendar-month-view
+        (dayClicked)="dayClicked($event.day)"
+        *ngSwitchCase="CalendarView.Month"
+        [viewDate]="viewDate"
+        [events]="events">
+      </mwl-calendar-month-view>
+
+      <mwl-calendar-week-view
+        (dayHeaderClicked)="dayHeaderClicked($event)"
+        *ngSwitchCase="CalendarView.Week"
+        [viewDate]="viewDate"
+        [events]="events"
+        [dayStartHour]=8
+        [dayEndHour]=24>
+      </mwl-calendar-week-view>
+    </div>
+  </div>
+</div>

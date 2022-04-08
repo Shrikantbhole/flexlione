@@ -1,0 +1,83 @@
+
+
+<br />
+<h1 mat-dialog-title>{{ isEdit ? "Update Schedule" : "Add Schedule" }}</h1>
+
+
+<div mat-dialog-content>
+
+
+
+  <form [formGroup]="newScheduleTask">
+
+
+    <mat-form-field>
+      <label >Schedule Task Id</label>
+      <input matInput formControlName="taskId" required />
+      <mat-error *ngIf="newScheduleTask.get('scheduleTaskId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label >Task Id</label>
+      <input matInput formControlName="taskId" required />
+      <mat-error *ngIf="newScheduleTask.get('taskId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+    <br />
+    <br />
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+    <br />
+    <br />
+    <mat-form-field>
+      <label >Start Date </label>
+      <input matInput formControlName ="startDate" [matDatepicker]="picker" >
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label >hr </label>
+      <input matInput formControlName="startHour" required />
+      <mat-error *ngIf="newScheduleTask.get('taskId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <label >min </label>
+      <input matInput formControlName="startMinute" required />
+      <mat-error *ngIf="newScheduleTask.get('taskId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+  <br/>
+  <br/>
+  <mat-form-field>
+    <label >Stop Date </label>
+    <input matInput formControlName ="stopDate" [matDatepicker]="picker1" >
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label >hr </label>
+    <input matInput formControlName="stopHour" required />
+    <mat-error *ngIf="newScheduleTask.get('taskId').invalid">You must enter a value</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label >min </label>
+    <input matInput formControlName="stopMinute" required />
+    <mat-error *ngIf="newScheduleTask.get('taskId').invalid">You must enter a value</mat-error>
+  </mat-form-field>
+  </form>
+</div>
+
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" cdkFocusInitial [disabled]="newScheduleTask.invalid"
+          (click)="onUpdate()">
+    {{ isEdit ? "Update" : "Add" }}
+  </button>
+</div>

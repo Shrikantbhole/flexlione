@@ -3,6 +3,18 @@
   <div class="banner">
     <div class="container">
       <h1>{{ task.taskId }}</h1>
+      <span >
+          <a class="btn btn-sm btn-outline-secondary"
+             [routerLink]="['/editor', '2']">
+            <i class="ion-edit"></i> Schedule Task
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger"
+                  [ngClass]="{disabled: isDeleting}"
+                  (click)="deleteArticle()">
+            <i class="ion-edit"></i> Prioritize task
+          </button>
+        </span>
 
 
     </div>

@@ -1,0 +1,35 @@
+
+<div class="example-action-buttons">
+  <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+</div>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let sprint of sprintList"
+                       [ngClass]="{highlight: sprint == selectedSprint}"
+                       (click)="onRowClick(sprint)">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Sprint Id: {{sprint.sprintId}}
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <br/>
+    <br/>
+    <p *ngFor="let task of selectedSprint.taskList"
+       class="grid5">
+      {{task.taskId}}
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onUpdateOrScheduleNewTask(task.taskId)">
+        Schedule Task
+      </button>
+      <br/>
+    </p>
+
+
+
+  </mat-expansion-panel>
+
+</mat-accordion>
+

@@ -32,9 +32,9 @@ export class SearchManagementService {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
-      // 'accept': 'application/json;v=1.0'
+       'accept': 'application/json'
     };
-    return this.http_.post<SearchTaskViewModel[]>(this.baseUrl + '/GetSearchResult', search, {headers: httpHeaders})
+    return this.http_.post<SearchTaskViewModel[]>(this.baseUrl + '/Search/GetSearchResult', search, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -45,10 +45,9 @@ export class SearchManagementService {
   getTagList(): Observable<SearchTag[]> {
 
     const httpHeaders = {
-      'Content-Type': 'application/json',
-      // 'accept': 'application/json;v=1.0'
+      'Content-Type': 'application/json'
     };
-    return this.http_.get<SearchTag[]>(this.baseUrl + '/GetTagList',  {headers: httpHeaders })
+    return this.http_.get<SearchTag[]>(this.baseUrl + '/Search/GetTagList',  {headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -69,5 +68,21 @@ export class SearchManagementService {
     // query.Deadline = this.datepipe.transform(new Date().getDate() + 14, 'yyyy-MM-dd');
 
     return query;
+  }
+
+  addTag(newTag: string): Observable<any>  {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      // 'accept': 'application/json;v=1.0'
+    };
+    let queryStringParams;
+    queryStringParams = {
+      tag: newTag
+    };
+    return this.http_.post<any>(this.baseUrl + '/Search/AddOrUpdateTagWithResult', newTag , {params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
   }
 }

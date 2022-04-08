@@ -111,38 +111,6 @@ export class HeadTasksComponent {
 
 
   }
-
-  onEditTaskButtonClick(taskId: string): void {
-
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-
-      isEdit: true,
-      parentTaskId: null,
-      task: this.Task
-    };
-
-    this.dialog.open(AddOrEditTaskDialogComponent, dialogConfig)
-      .afterClosed().subscribe(
-      {
-        next: (task: Task) => {
-
-          if (task == null) { // Cancel button clicked
-            return;
-          }
-
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
-
-          // Load the list again
-          this.loadParentTasks();
-
-          //  show it selected and auto-scroll to it
-          this.selectedTaskId = task.taskId;
-        }
-      }
-    );
-  }
-
   onDeleteTaskButtonClick(taskId: string): void {
 
     // Open a dialog box to ask for confirmation

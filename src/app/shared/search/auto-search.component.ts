@@ -1,0 +1,51 @@
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {FormControl, FormGroup} from '@angular/forms';
+import {CreateSearchForm} from '../../home/models/searchQuery.model';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+
+@Component({
+  selector: 'app-auto-search',
+  templateUrl: './auto-search.component.html',
+})
+export class AutoSearchComponent implements OnInit, AfterViewInit  {
+
+@Input() options;
+@Input() description;
+@Input() baseUrl;
+  @ViewChild(MatAutocompleteTrigger )
+  private trigger: MatAutocompleteTrigger;
+filteredOptions: Observable<string[]>;
+myControl = new FormControl();
+ constructor() {
+
+
+ }
+
+  ngAfterViewInit() {
+    // Clear the input and emit when a selection is made
+    this.trigger.autocomplete.optionSelected
+      .subscribe(option => {
+        this.myControl.setValue('');
+      });
+  }
+ ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+    );
+ }
+
+  private _filter(value: string): string[] {
+    return this.options.filter(option => option.toLowerCase().includes(
+      value === undefined ? '' : value.toLowerCase()
+    ));
+  }
+  private onRowClick(selected: string) {
+   selected = '';
+  }
+
+
+}
+

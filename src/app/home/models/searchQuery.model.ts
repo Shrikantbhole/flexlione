@@ -18,6 +18,7 @@ export function CreateSearchForm(): FormGroup {
     'createdBy': new FormControl(''),
     'assignedTo': new FormControl(''),
     'description': new FormControl(''),
+    'status': new FormControl(''),
   });
 }
 

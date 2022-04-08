@@ -33,7 +33,7 @@ export class EditorComponent implements OnInit {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private userService: UserService,
-    private Datepipe: DatePipe
+    private datePipe: DatePipe
   ) {
     // use the FormBuilder to create a form group
     this.articleForm = this.fb.group({
@@ -73,7 +73,7 @@ export class EditorComponent implements OnInit {
       === this.userService.getCurrentUser().username.toLowerCase())[0];
     newTask.assignedTo =  receivedTask.assignedTo === undefined ? '' : receivedTask.assignedTo.toLowerCase() ;
     newTask.status = receivedTask.status === undefined ? 'yetToStart' : receivedTask.status;
-    newTask.deadline = receivedTask.deadline === undefined ? this.Datepipe.transform
+    newTask.deadline = receivedTask.deadline === undefined ? this.datePipe.transform
     (new Date().toLocaleDateString(), 'yyyy-MM-dd') : receivedTask.deadline ;
 
     newTask.positionAfter = '';

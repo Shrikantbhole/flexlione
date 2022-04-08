@@ -1,9 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {ArticleListConfig, TagsService, User, UserService} from '../core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
 import {Task} from '../article/models/task.model';
 import {SearchManagementService} from './Search/search-management.service';
 import {Store} from '@ngrx/store';
@@ -12,7 +9,7 @@ import {ApiError} from '../settings/api-error.model';
 import {SearchQuery} from './models/searchQuery.model';
 import * as TaskActions from '../shared/store/search-task.action';
 import {MessageBoxService} from '../settings/message-box.service';
-import {setAnalyticsConfig} from '@angular/cli/models/analytics';
+
 
 @Component({
   selector: 'app-home-page',
@@ -70,6 +67,7 @@ export class HomeComponent implements OnInit {
           console.log(taskList);
           this.store.dispatch(new TaskActions.RemoveSearchTask());
           for ( let i = 0; i < taskList.length; i++) {
+            console.log('Date ' + new Date(taskList[i].deadline).getFullYear());
             // Add Search result in Store
             this.store.dispatch(new TaskActions.AddSearchTask(taskList[i]));
           }
