@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ArticleListConfig, ArticlesService, CommentsService, UserService} from '../../core';
-import {ChecklistManagementService} from '../../article/service/checklist-management.service';
 import {Task} from '../../article/models/task.model';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CreateTaskForm} from '../../article/models/TaskForm';
@@ -11,7 +9,6 @@ import {TaskManagementService} from '../../article/service/task-management-servi
 import {ApiError} from '../../settings/api-error.model';
 import {getUserList} from '../shared-lists/user-list';
 import {getStatusList} from '../shared-lists/status-list';
-import {SnackBarHarnessFilters} from '@angular/material/snack-bar/testing';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({

@@ -21,6 +21,8 @@ import {AddOrEditScheduleDialogComponent} from './schedule/add-or-edit-schedule-
 import {MatInputModule} from '@angular/material/input';
 import {SprintPreviewComponent} from './sprint/sprint-preview.component';
 import {DailyPlanCalenderComponent} from './daily-plan-calender/daily-plan-calender.component';
+import {DailyPlanSummaryComponent} from './daily-plan-summary/daily-plan-summary.component';
+import {TaskSummaryFormComponent} from './daily-plan-summary/task-summary/task-summary-form.component';
 
 @NgModule({
   imports: [
@@ -44,7 +46,9 @@ import {DailyPlanCalenderComponent} from './daily-plan-calender/daily-plan-calen
     ProfileFavoritesComponent,
     AddOrEditScheduleDialogComponent,
     SprintPreviewComponent,
-    DailyPlanCalenderComponent
+    DailyPlanCalenderComponent,
+    DailyPlanSummaryComponent,
+    TaskSummaryFormComponent
   ],
   providers: [
     ProfileResolver,

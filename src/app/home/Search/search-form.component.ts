@@ -2,7 +2,7 @@ import {Component, Output, EventEmitter, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from '../models/searchQuery.model';
+import {CreateSearchForm, GetUserList, SearchQuery} from '../models/search-query-form.model';
 import {Task} from '../../article/models/task.model';
 import {SearchManagementService} from './search-management.service';
 import {ApiError} from '../../settings/api-error.model';

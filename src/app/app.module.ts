@@ -25,6 +25,7 @@ import { SearchTaskReducer} from './shared/store/search-task.reducer';
 import { CreateTaskReducer} from './shared/store/create-task.reducer';
 import {DependencyManagementService} from './article/service/dependency-management.service';
 import {CommentManagementService} from './article/service/comment-management.service';
+import {DailyPlanSummaryService} from './profile/daily-plan-summary/daily-plan-summary.service';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import {CommentManagementService} from './article/service/comment-management.ser
     MessageBoxService,
     ServerConfigService,
   DependencyManagementService,
-    CommentManagementService
+    CommentManagementService,
+    DailyPlanSummaryService
   ],
   exports: [],
   bootstrap: [AppComponent]

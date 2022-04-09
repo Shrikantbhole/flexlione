@@ -17,7 +17,7 @@ import {SprintModel} from '../models/sprint.model';
 export class SprintPreviewComponent {
  @Input() sprintList: SprintModel[];
   @Input()
-  set config(sprintId: string) {
+  set config(sprintId: number) {
     console.log('Going to fetch data again from db for Sprint: ' + this.selectedSprint);
   }
   @ViewChild(MatAccordion) accordion: MatAccordion;

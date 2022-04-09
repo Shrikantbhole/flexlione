@@ -1,0 +1,21 @@
+<div class="example-action-buttons">
+  <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+</div>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let task of scheduleTaskList">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{task.taskId}} - {{task.description}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-profile-task-summary-form [config]="task.taskId" ></app-profile-task-summary-form>
+
+
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+
+
+

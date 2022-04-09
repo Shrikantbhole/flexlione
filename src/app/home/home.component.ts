@@ -6,7 +6,7 @@ import {SearchManagementService} from './Search/search-management.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {ApiError} from '../settings/api-error.model';
-import {SearchQuery} from './models/searchQuery.model';
+import {SearchQuery} from './models/search-query-form.model';
 import * as TaskActions from '../shared/store/search-task.action';
 import {MessageBoxService} from '../settings/message-box.service';
 

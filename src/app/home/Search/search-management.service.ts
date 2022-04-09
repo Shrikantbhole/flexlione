@@ -5,7 +5,7 @@ import { Task } from '../../article/models/task.model';
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../../settings/server-config.service';
 import {HandlerError} from '../../settings/handle-error.service';
-import { SearchQuery} from '../models/searchQuery.model';
+import { SearchQuery} from '../models/search-query-form.model';
 import {SearchTag} from '../models/searchTag';
 import {SearchTaskViewModel} from '../../shared/store/interfaces/search-task-view.model';
 import {DatePipe} from '@angular/common';

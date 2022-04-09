@@ -15,7 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {SearchFormComponent} from './Search/search-form.component';
 import {SearchManagementService} from './Search/search-management.service';
 import {DatePipe} from '@angular/common';
-import {SearchQuery} from './models/searchQuery.model';
+import {SearchQuery} from './models/search-query-form.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @NgModule({
