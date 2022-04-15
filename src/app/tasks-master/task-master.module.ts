@@ -17,6 +17,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {TaskMasterComponent} from './task-master.component';
 import {ArticleModule} from '../article/article.module';
 import {TasksMasterResolverService} from './tasks-master-resolver.service';
+import {TemplateTaskComponent} from './template-task.component';
+import {SelectedTasksDisplayComponent} from './selected-tasks.component';
+import {GenerateTaskComponentComponent} from './generate-task.component';
 
 
 
@@ -40,7 +43,8 @@ import {TasksMasterResolverService} from './tasks-master-resolver.service';
     ArticleModule
   ],
   declarations: [
-    TaskMasterComponent
+    TaskMasterComponent, TemplateTaskComponent,
+    SelectedTasksDisplayComponent, GenerateTaskComponentComponent
   ],
   providers: [
     MatSnackBar,

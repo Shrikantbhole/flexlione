@@ -5,6 +5,8 @@ import { Task } from '../models/task.model';
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../../settings/server-config.service';
 import {HandlerError} from '../../settings/handle-error.service';
+import {Template} from '../models/template.model';
+
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.
@@ -17,13 +19,15 @@ export class TaskManagementService {
   private http_: HttpClient;
 
   private baseUrl: string ;
-
+  //  public url = '../task-master/templateData.json';
+   public url = 'http://localhost:3000/posts';
 
 
 
   constructor(http: HttpClient, serverConfigService: ServerConfigService) { // pass by reference
     this.http_ = http;
     this.baseUrl = serverConfigService.getBaseUrl();
+
   }
   // Returns an observable for list of Line Items
   getTaskById(taskId: string, include: string): Observable<Task> {
@@ -75,4 +79,26 @@ export class TaskManagementService {
       );
   }
 
-}
+  getTemplateTasks( templateId: string, include: string) {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+
+    let queryStringParams;
+    if (templateId == null) {
+      queryStringParams = {
+        include: include
+      };
+    } else {
+      queryStringParams = {
+        include: include,
+        templateId: templateId
+      };
+    }
+// return[{templateId: '1', description: 'hello', children: [] }];
+
+    return this.http_.get<Template[]>(this.url, {params: queryStringParams});
+
+
+}}

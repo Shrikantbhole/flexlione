@@ -3,6 +3,9 @@ import {Task} from '../article/models/task.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../core';
 import {ChecklistManagementService} from '../article/service/checklist-management.service';
+import {Template} from '../article/models/template.model';
+import {ApiError} from '../settings/api-error.model';
+import {TaskManagementService} from '../article/service/task-management-service';
 
 @Component({
   selector: 'app-task-master',
@@ -10,26 +13,29 @@ import {ChecklistManagementService} from '../article/service/checklist-managemen
 })
 export class TaskMasterComponent implements  OnInit {
 
-public  taskList: Task[] = [];
-public selectedTaskId: string;
-  constructor(
-    private route: ActivatedRoute,
-  ) {     }
-
-  ngOnInit() {
+  public selectedTemplateId: string;
+  public taskManagementService: TaskManagementService;
+  public templateData: Template[] ;
+  public template: Template;
 
 
-    /* Retreive the prefetched article*/
-    this.route.data.subscribe(
-      (data: { taskMaster: Task[] }) => {
-        this.taskList = data.taskMaster;
-        // this.task = data.article.find(x => x.taskId === this.route.snapshot.params['slug']);
-        console.log(this.taskList);
-      }
-    );
+
+  constructor(taskManagementService: TaskManagementService) {
+    this.taskManagementService = taskManagementService;
+    this.loadTemplates();
+
   }
 
-  onRowClick(taskId: string) {this.selectedTaskId = taskId; }
+  loadTemplates() {
+    this.taskManagementService.getTemplateTasks( null, 'children' )
+      .subscribe({next: (data: Template [] ) => {console.log(data); this.templateData = data; }});
+    console.log(this.templateData);
+  }
 
-  onClick() { }
+  ngOnInit() {}
+
+  onRowClick(templateId: string) {this.selectedTemplateId = templateId;
+    console.log(this.selectedTemplateId); }
+
+  onClick() {}
 }

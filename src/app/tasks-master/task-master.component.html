@@ -13,7 +13,7 @@
   .master {
     width: 345px;
     position: fixed;
-    height: 90%;
+    height: 100%;
     overflow: auto;
     border-right: 2px solid #dbdbdb;
   }
@@ -29,39 +29,36 @@
 <div class='master'>
 
   <div class="col-sm-12">
-    <h2>Task List</h2>
+    <h2>Templates</h2>
 
-    <p *ngIf="!taskList">Loading Tasks..</p>
+    <p *ngIf="!templateData">Loading templates..</p>
 
-    <div *ngIf="taskList">
+    <div *ngIf="templateData">
 
       <br />
       <button mat-raised-button color="primary" (click)="onClick()">
-         Create Task
+        Save all changes
       </button>
 
       <br />
       <br />
 
-      <p *ngIf="taskList.length == 0">No Tasks exist.</p>
+      <p *ngIf="templateData.length == 0">No Tasks exist.</p>
 
       <mat-list>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let task of taskList"
-                       [ngClass]="{highlight: task.taskId == selectedTaskId}"
-                       (click)="onRowClick(task.taskId)"
-                       [routerLink]='["/master"]' [queryParams]="{taskId: task.taskId}">
+        <mat-list-item *ngFor="let template of templateData"
+                       [ngClass]="{highlight: template.templateId == selectedTemplateId}"
+                       (click)="onRowClick(template.templateId)"
+                       [routerLinkActive]="['is-active']"
+                       [routerLink]='["/master"]' [queryParams]="{templateId: template.templateId}">
 
-          <div mat-line>{{task.taskId}}</div>
-          <div mat-line> ID: {{task.description}} </div>
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-          </button>
+          <div mat-line>{{template.templateId}}</div>
+          <div mat-line>{{template.description}} </div>
+
 
           <mat-menu #menu="matMenu">
 
-            <button mat-menu-item (click)="onClick()">
-              <span>Delete</span>
-            </button>
           </mat-menu>
 
           <mat-divider></mat-divider>
@@ -75,7 +72,12 @@
 </div>
 
 <!-- detail view component -->
+
+
 <div class='detail'>
-  <app-task-form></app-task-form>
+  <div class='master'>
+    <app-template-task></app-template-task>
+  </div>
+
 </div>
 
