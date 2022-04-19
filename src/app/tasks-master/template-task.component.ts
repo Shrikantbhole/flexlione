@@ -28,7 +28,7 @@ export class TemplateTaskComponent implements OnChanges, OnInit {
 
 
 
-  public templateTasks: Task[];
+  public templateTasks: Task[] = [];
   public selectedTaskId: string;
   public selectedTemplate: Template;
   public selectedTemplateId: string;

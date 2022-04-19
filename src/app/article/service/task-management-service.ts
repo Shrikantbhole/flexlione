@@ -7,6 +7,7 @@ import {ServerConfigService} from '../../settings/server-config.service';
 import {HandlerError} from '../../settings/handle-error.service';
 import {Template} from '../models/template.model';
 
+import templateData from '../../tasks-master/templateData.json';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.
@@ -19,7 +20,7 @@ export class TaskManagementService {
   private http_: HttpClient;
 
   private baseUrl: string ;
-  //  public url = '../task-master/templateData.json';
+   // public url = '../../tasks-master/templateData.json';
    public url = 'http://localhost:3000/posts';
 
 

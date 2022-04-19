@@ -24,11 +24,117 @@
   }
 </style>
 
-<div class="master">
+<div mat-dialog-content>
 
-  <div class="col-sm-12">
-    <h3>generate</h3>
-    <br/>
-    <mat-divider></mat-divider>
-  </div>
+
+  <form [formGroup]="newTask">
+
+
+    <mat-form-field>
+      <mat-label>Task Id</mat-label>
+      <input matInput formControlName="taskId" />
+      <mat-error *ngIf="newTask.get('taskId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <br />
+
+
+    <mat-form-field>
+      <mat-label>Parant Task Id</mat-label>
+      <input matInput formControlName="parentTaskId" />
+    </mat-form-field>
+
+
+
+    <br />
+
+    <mat-form-field>
+      <mat-label>Dead Line</mat-label>
+      <input matInput [formControl]="deadline" [matDatepicker]="picker" >
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <br />
+
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" required />
+
+
+    </mat-form-field>
+
+
+
+    <br />
+    <mat-form-field>
+      <mat-label>Created By</mat-label>
+      <mat-select [(value)]="CreatedBy">
+        <mat-option></mat-option>
+        <mat-option [value]="user" *ngFor="let  user of UserList" >
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+<br/>
+    <mat-form-field>
+      <mat-label>Assigned To</mat-label>
+      <mat-select [(value)]="AssignedTo">
+        <mat-option></mat-option>
+        <mat-option [value]="user" *ngFor="let  user of UserList" >
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <br />
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="SelectedStatus">
+        <mat-option></mat-option>
+        <mat-option [value]="status" *ngFor="let  status of StatusList" >
+          {{status}}
+        </mat-option>
+      </mat-select>
+
+
+    </mat-form-field>
+
+
+    <br />
+    <mat-form-field>
+      <mat-label>Score</mat-label>
+      <input matInput formControlName="score"  />
+      <mat-error *ngIf="newTask.get('score').errors?.numeric">Allowed : 0-10 </mat-error>
+    </mat-form-field>
+
+
+
+    <br />
+    <mat-form-field appearance="fill">
+      <mat-label>Position After</mat-label>
+      <mat-select [(value)]="selectedTask">
+        <mat-option></mat-option>
+        <mat-option [value]="task.taskId" *ngFor="let task of Tasks" >
+          {{task.taskId}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+  </form>
+
+
 </div>
+
+
+<div >
+  <button mat-button >Save</button>
+  <button mat-button color="primary" cdkFocusInitial [disabled]="newTask.invalid"
+          >
+    {{ isEdit ? "Update" : "Add Task" }}
+  </button>
+</div>
+

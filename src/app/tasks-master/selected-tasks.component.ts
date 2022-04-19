@@ -15,14 +15,13 @@ export class SelectedTasksDisplayComponent {
 
   @Input() y: Task [];
   selectedTaskId: string;
-  private snackBarService: any;
-  private selectedTask: Task;
-  private task: Task;
-  constructor(public dialog: MatDialog) {
+ public taskForGeneration: Task;
+  constructor() {
 
   }
 
   onClickGenerate(task: Task) {
-
-    this.dialog.open(EditorComponent );
+this.taskForGeneration = task;
+    console.log(this.taskForGeneration)
+    ;
 }}
