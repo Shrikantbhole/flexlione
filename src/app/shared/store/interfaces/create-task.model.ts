@@ -1,4 +1,6 @@
 export interface CreateTaskModel {
+  score?: number;
+  positionAfter?: string;
   taskId?: string;
   parentTaskId?: string;
   createdBy?: string;

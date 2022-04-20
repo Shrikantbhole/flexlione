@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Task} from '../article/models/task.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../core';
@@ -6,18 +6,19 @@ import {ChecklistManagementService} from '../article/service/checklist-managemen
 import {Template} from '../article/models/template.model';
 import {ApiError} from '../settings/api-error.model';
 import {TaskManagementService} from '../article/service/task-management-service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-task-master',
   templateUrl: './task-master.component.html',
 })
-export class TaskMasterComponent implements  OnInit {
+export class TaskMasterComponent implements  OnInit, OnDestroy {
 
   public selectedTemplateId: string;
   public taskManagementService: TaskManagementService;
   public templateData: Template[] ;
   public template: Template;
-
+public a: Subscription;
 
 
   constructor(taskManagementService: TaskManagementService) {
@@ -27,7 +28,7 @@ export class TaskMasterComponent implements  OnInit {
   }
 
   loadTemplates() {
-    this.taskManagementService.getTemplateTasks( null, 'children' )
+  this.a =  this.taskManagementService.getTemplateTasks( null, 'children' )
       .subscribe({next: (data: Template [] ) => {console.log(data); this.templateData = data; }});
     console.log(this.templateData);
   }
@@ -38,4 +39,8 @@ export class TaskMasterComponent implements  OnInit {
     console.log(this.selectedTemplateId); }
 
   onClick() {}
+
+  ngOnDestroy(): void {
+    this.a.unsubscribe();
+  }
 }

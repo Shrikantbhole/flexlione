@@ -23,64 +23,27 @@
     margin-left: 345px;
   }
 </style>
+<div *ngIf = "gTask">
+<form [formGroup]="newTask">
 
-<div mat-dialog-content>
-
-
-  <form [formGroup]="newTask">
-
-
+  {{gTask | json}}
+  <li class="mat-form-field--inline">
     <mat-form-field>
-      <mat-label>Task Id</mat-label>
-      <input matInput formControlName="taskId" />
-      <mat-error *ngIf="newTask.get('taskId').invalid">You must enter a value</mat-error>
+      <input matInput formControlName="taskId" placeholder="Task Id" [ngModel]="gTask.taskId">
     </mat-form-field>
 
-    <br />
-
-
     <mat-form-field>
-      <mat-label>Parant Task Id</mat-label>
-      <input matInput formControlName="parentTaskId" />
-    </mat-form-field>
-
-
-
-    <br />
-
-    <mat-form-field>
-      <mat-label>Dead Line</mat-label>
-      <input matInput [formControl]="deadline" [matDatepicker]="picker" >
+      <label >Deadline</label>
+      <input matInput formControlName="deadline" [matDatepicker]="picker" >
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+  </li>
 
-    <br />
-
-
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description" required />
-
-
-    </mat-form-field>
-
-
-
-    <br />
-    <mat-form-field>
-      <mat-label>Created By</mat-label>
-      <mat-select [(value)]="CreatedBy">
-        <mat-option></mat-option>
-        <mat-option [value]="user" *ngFor="let  user of UserList" >
-          {{user}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-<br/>
+  <li class="mat-form-field--inline">
     <mat-form-field>
       <mat-label>Assigned To</mat-label>
-      <mat-select [(value)]="AssignedTo">
+      <mat-select formControlName="assignedTo"  [ngModel]="gTask.assignedTo">
         <mat-option></mat-option>
         <mat-option [value]="user" *ngFor="let  user of UserList" >
           {{user}}
@@ -88,53 +51,65 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Created By</mat-label>
+      <mat-select formControlName="createdBy" [ngModel]="gTask.createdBy">
+        <mat-option></mat-option>
+        <mat-option [value]="user" *ngFor="let  user of UserList" >
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </li>
 
-    <br />
+  <li class="mat-form-field--inline">
+    <mat-form-field>
+      <input matInput formControlName="description" placeholder="Task Description (Short)" [ngModel]="gTask.description">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Position After</mat-label>
+      <mat-select formControlName="positionAfter">
+        <mat-option></mat-option>
+        <mat-option [value]="user" *ngFor="let  user of UserList" >
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </li>
+
+  <li class="mat-form-field--inline">
+    <mat-form-field>
+      <mat-label>Estimated Hrs</mat-label>
+      <input matInput formControlName="estimatedHrs" placeholder="Estimated Hours">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Hrs spent till now</mat-label>
+      <input matInput formControlName="hrsSpentTillNow" placeholder="Hours spend till now">
+    </mat-form-field>
+  </li>
+
+  <li class="mat-form-field--inline">
     <mat-form-field>
       <mat-label>Status</mat-label>
-      <mat-select [(value)]="SelectedStatus">
+      <mat-select formControlName="status">
         <mat-option></mat-option>
         <mat-option [value]="status" *ngFor="let  status of StatusList" >
           {{status}}
         </mat-option>
       </mat-select>
-
-
     </mat-form-field>
 
-
-    <br />
     <mat-form-field>
-      <mat-label>Score</mat-label>
-      <input matInput formControlName="score"  />
-      <mat-error *ngIf="newTask.get('score').errors?.numeric">Allowed : 0-10 </mat-error>
+      <mat-label>Parent Task Id</mat-label>
+      <input matInput formControlName="parentTaskId" placeholder="parentTaskId" [ngModel]="gTask.parentTaskId">
     </mat-form-field>
+  </li>
+</form>>
 
-
-
-    <br />
-    <mat-form-field appearance="fill">
-      <mat-label>Position After</mat-label>
-      <mat-select [(value)]="selectedTask">
-        <mat-option></mat-option>
-        <mat-option [value]="task.taskId" *ngFor="let task of Tasks" >
-          {{task.taskId}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-
-  </form>
-
-
+<button  mat-raised-button color="primary" (click)="onAddTaskClick()">
+  Save Changes
+</button>
+<br/>
 </div>
-
-
-<div >
-  <button mat-button >Save</button>
-  <button mat-button color="primary" cdkFocusInitial [disabled]="newTask.invalid"
-          >
-    {{ isEdit ? "Update" : "Add Task" }}
-  </button>
-</div>
-

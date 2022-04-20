@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {Template} from '../article/models/template.model';
 import {Task} from '../article/models/task.model';
 import templateData from '../tasks-master/templateData.json';
@@ -10,6 +10,7 @@ import {TaskManagementService} from '../article/service/task-management-service'
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {ApiError} from '../settings/api-error.model';
+import {Subscription} from 'rxjs';
 
 function onRowClick(task: any) {
 
@@ -22,7 +23,7 @@ function onRowClick(task: any) {
 
 })
 
-export class TemplateTaskComponent implements OnChanges, OnInit {
+export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
 
 
 
@@ -32,25 +33,22 @@ export class TemplateTaskComponent implements OnChanges, OnInit {
   public selectedTaskId: string;
   public selectedTemplate: Template;
   public selectedTemplateId: string;
-  public selectedTasks: Task [];
+  public selectedTasks: Task [] = [];
   private taskManagementService: TaskManagementService;
-  private selectedTemplateTasks: Task;
   private templateData: Template[];
   private activatedRoute: ActivatedRoute;
-
-
-
 
     constructor(
       activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService, private router: Router,
      ) {
       this.taskManagementService = taskManagementService;
 
-      activatedRoute.queryParams.subscribe({
+     activatedRoute.queryParams.subscribe({
         next: (params: Params) => {
           this.selectedTemplateId = params.templateId;
+          console.log(this.selectedTemplateId);
           if (this.selectedTemplateId !== undefined) {
-            this.loadSelectedTemplateTasks();
+           this.loadSelectedTemplateTasks();
           }
         }
       });
@@ -62,6 +60,7 @@ export class TemplateTaskComponent implements OnChanges, OnInit {
 
 
   loadSelectedTemplateTasks() {
+    this.templateTasks = [];
       this.taskManagementService.getTemplateTasks(this.selectedTemplateId, 'children' )
         .subscribe({next: (data: Template [] ) => {console.log(data); this.templateData = data;
 
@@ -86,8 +85,12 @@ export class TemplateTaskComponent implements OnChanges, OnInit {
 
     }
   ngOnInit(): void {
-    this.selectedTasks = [];
+
   }
+
+  ngOnDestroy(): void {
+
+    }
   }
 
 

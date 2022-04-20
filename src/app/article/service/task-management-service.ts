@@ -22,6 +22,7 @@ export class TaskManagementService {
   private baseUrl: string ;
    // public url = '../../tasks-master/templateData.json';
    public url = 'http://localhost:3000/posts';
+  public url1 = 'http://localhost:3000/written';
 
 
 
@@ -102,4 +103,17 @@ export class TaskManagementService {
     return this.http_.get<Template[]>(this.url, {params: queryStringParams});
 
 
+}
+
+
+addTaskToServer(task: Task) {
+  const httpHeaders = {
+    'Content-Type': 'application/json',
+    'accept': 'application/json;v=1.0'
+  };
+  return this.http_.post<Task>(this.url1, task, {headers: httpHeaders} )
+    .pipe(
+    retry(1),
+    catchError(HandlerError.handleError)
+  );
 }}

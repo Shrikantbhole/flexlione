@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Task} from '../article/models/task.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CreateTaskForm} from '../article/models/TaskForm';
@@ -7,6 +7,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TaskManagementService} from '../article/service/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
 import {ApiError} from '../settings/api-error.model';
+import {CreateTaskModel} from '../shared/store/interfaces/create-task.model';
+import {getUserList} from '../shared/shared-lists/user-list';
+import {getStatusList} from '../shared/shared-lists/status-list';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-generate-task',
@@ -18,56 +23,73 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
 
   @Input() gTask: Task;
 
-  public Tasks: Task[] = [];
-  public selectedTask = '';
-  public UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
-    'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
-  public CreatedBy = '';
-  public AssignedTo = '';
-  public StatusList: string[] = ['yetToStart', 'ongoing', 'onHold', 'completed', 'dropped'];
-  public SelectedStatus = '';
-  public isEdit: boolean ;
-  // members for data-binding
-  newTask: FormGroup = new FormGroup({
-    taskId: new FormControl('', [Validators.required]),
-    'parentTaskId': new FormControl(''),
-    'createdBy': new FormControl(''),
-    'status': new FormControl(''),
-    'positionAfter': new FormControl(''),
-    'description': new FormControl(''),
-    'deadline': new FormControl(''),
-    'assignedTo': new FormControl(''),
-    'score': new FormControl('')
-
-  });
-
-  // FormControl to track value of Deadline
+  UserList: string[] = getUserList();
+  StatusList: string[] = getStatusList();
   deadline: FormControl = new FormControl(new Date());
-  // Track event change in a dare field
-  public dateEvent = '';
-  // Transform from one format to another
-  public  Datepipe: DatePipe;
+  newTask: FormGroup;
+  // set config(gTask: Task) {
 
-  constructor  (public datepipe: DatePipe, taskManagementService: TaskManagementService
-               ) {}
-ngOnChanges() {
-  this.CreatedBy = this.gTask.createdBy;
-  this.AssignedTo = this.gTask.assignedTo;
-  this.SelectedStatus = this.gTask.status;
-  this.newTask.setValue({
-    taskId: this.gTask.taskId,
-    parentTaskId: this.gTask.parentTaskId,
-    createdBy: this.gTask.createdBy,
-    status: this.gTask.status,
-    positionAfter: this.gTask.positionAfter,
-    description: this.gTask.description,
-    deadline: this.gTask.deadline,
-    score: this.gTask.score,
-    assignedTo: this.gTask.assignedTo
-}); }
+ // }
+  constructor(
+    private route: ActivatedRoute,
+    private datePipe: DatePipe,
+    private messageBoxService: MessageBoxService,
+    private taskManagementService: TaskManagementService,
+    private snackBarService: MatSnackBar,
+    private  router: Router
+  ) {
+  }
+    createTaskForm(task: Task): FormGroup {
+      const newTask: FormGroup = CreateTaskForm();
+      newTask.controls['taskId'].disable();
+      newTask.controls['hrsSpentTillNow'].disable();
+      newTask.setValue({
+        taskId: '',
+        parentTaskId: '',
+        createdBy: '',
+        status: '',
+        positionAfter: '',
+        description: '',
+        deadline: '',
+        score: '',
+        assignedTo: '',
+        estimatedHrs: '',
+        hrsSpentTillNow: ''
+      });
+      return newTask;
+    }
 
-ngOnInit() {
-}
+  ngOnInit() {}
+  onAddTaskClick() {
+    this.taskManagementService.addTaskToServer(this.createTask(this.newTask))
+      .subscribe({
+        next: (task) => {
+          console.log(task);
+          this.snackBarService.open('Success. Task has been updated.', '', { duration: 3000 });
+          this.router.navigateByUrl('/article/' + task.taskId);
+        },
+        error: (apiError: ApiError) => {
+          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+        }
+      });
+  }
 
+  createTask(newTask: FormGroup): Task {
+    const task = new Task();
+    task.taskId = newTask.getRawValue().taskId;
+    task.description = newTask.getRawValue().description;
+    task.createdBy = newTask.getRawValue().createdBy;
+    task.assignedTo = newTask.getRawValue().assignedTo;
+    task.score = newTask.getRawValue().score;
+    task.status = newTask.getRawValue().status === '' ? 'notYetStarted' : newTask.getRawValue().status;
+    task.parentTaskId = newTask.getRawValue().parentTaskId;
+    task.positionAfter = newTask.getRawValue().positionAfter === '' ? null : newTask.getRawValue().positionAfter;
+    task.deadline = this.datePipe.transform(this.newTask.getRawValue().deadline, 'yyyy-MM-dd');
+    return task;
+  }
+
+  ngOnChanges() {
+    this.newTask = this.createTaskForm(this.gTask);
+  }
 
 }
