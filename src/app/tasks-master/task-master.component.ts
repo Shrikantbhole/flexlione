@@ -7,6 +7,7 @@ import {Template} from '../article/models/template.model';
 import {ApiError} from '../settings/api-error.model';
 import {TaskManagementService} from '../article/service/task-management-service';
 import {Subscription} from 'rxjs';
+import {MessageBoxService} from '../settings/message-box.service';
 
 @Component({
   selector: 'app-task-master',
@@ -19,12 +20,12 @@ export class TaskMasterComponent implements  OnInit, OnDestroy {
   public templateData: Template[] ;
   public template: Template;
 public a: Subscription;
+  private messageBoxService: MessageBoxService;
 
-
-  constructor(taskManagementService: TaskManagementService) {
+  constructor(private router: Router, taskManagementService: TaskManagementService, messageBoxService: MessageBoxService, ) {
     this.taskManagementService = taskManagementService;
     this.loadTemplates();
-
+    this.messageBoxService = messageBoxService;
   }
 
   loadTemplates() {
@@ -38,7 +39,23 @@ public a: Subscription;
   onRowClick(templateId: string) {this.selectedTemplateId = templateId;
     console.log(this.selectedTemplateId); }
 
-  onClick() {}
+  onClickBack() {
+    // Open a dialog box to ask for confirmation
+
+    this.messageBoxService.confirmWarn(
+      'All unsaved data will be lost')
+      .afterClosed().subscribe({
+
+      next: (proceed: boolean) => {
+
+        // if proceed is true, that means user has confirmed
+        if (proceed) {
+
+          this.router.navigateByUrl('/editor');
+        }
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.a.unsubscribe();

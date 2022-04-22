@@ -29,18 +29,17 @@
 <div class='master'>
 
   <div class="col-sm-12">
-    <h2>Templates</h2>
+    <h3>Templates</h3>
 
     <p *ngIf="!templateData">Loading templates..</p>
 
     <div *ngIf="templateData">
 
       <br />
-      <button mat-raised-button color="primary" (click)="onClick()">
-        Save all changes
+      <button mat-raised-button color="primary" (click)="onClickBack()">
+        Back
       </button>
 
-      <br />
       <br />
 
       <p *ngIf="templateData.length == 0">No Tasks exist.</p>
@@ -76,7 +75,7 @@
 
 <div class='detail'>
   <div class='master'>
-    <app-template-task></app-template-task>
+    <app-template-task *ngIf = "this.selectedTemplateId" ></app-template-task>
   </div>
 
 </div>

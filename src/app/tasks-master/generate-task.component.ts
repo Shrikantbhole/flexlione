@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Task} from '../article/models/task.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CreateTaskForm} from '../article/models/TaskForm';
@@ -12,6 +12,8 @@ import {getUserList} from '../shared/shared-lists/user-list';
 import {getStatusList} from '../shared/shared-lists/status-list';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import EventEmitter from 'events';
+import {OuterSubscriber} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-generate-task',
@@ -20,7 +22,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 
 export class GenerateTaskComponent implements OnChanges, OnInit {
-
   @Input() gTask: Task;
 
   UserList: string[] = getUserList();

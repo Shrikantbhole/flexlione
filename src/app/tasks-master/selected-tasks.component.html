@@ -36,6 +36,9 @@
   <div class="col-sm-12">
     <h3>Selected Template Tasks</h3>
     <br/>
+    <button mat-raised-button color="primary" (click) = "onClickRefresh()">
+      Refresh  </button>
+    <br/>
     <h4 *ngIf="!selectedTasks">Please select a Template.</h4>
     <div >
       <div *ngIf = "selectedTasks">
@@ -51,7 +54,7 @@
                 <div mat-line> {{task.description}} </div>
 
                 <button mat-raised-button color="primary" (click) = "onClickGenerate(task)">
-                 {{isEdit? 'Generate' : 'Update'}}  </button>
+                 {{isEdit ? 'Update': 'Generate'  }}  </button>
 
 
 
@@ -72,6 +75,6 @@
 
 <div class='detail'>
   <div class='slave'>
-<app-generate-task (click) = "changeButtonStatus()" [gTask] = "this.taskForGeneration"></app-generate-task>
+<app-generate-task (click) = "changeButtonStatus()"  [gTask] = "this.taskForGeneration"></app-generate-task>
   </div>
 </div>

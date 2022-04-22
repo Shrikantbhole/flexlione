@@ -53,12 +53,6 @@ export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
         }
       });
     }
-
-
-
-
-
-
   loadSelectedTemplateTasks() {
     this.templateTasks = [];
       this.taskManagementService.getTemplateTasks(this.selectedTemplateId, 'children' )
@@ -79,6 +73,7 @@ export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
       this.selectedTasks.splice(i, 1);
     }
     console.log(this.selectedTasks);
+   // this.selectedTasksId = this.selectedTasks.map( (this.selectedTasks) => return this.selectedTasks.taskId)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -91,7 +86,13 @@ export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     }
+
+  onClickSelectAll() {
+      for (let i = 0; i < this.templateTasks.length; i++) {
+   this.selectedTasks.push(this.templateTasks[i]);
+      }
   }
+}
 
 
 
