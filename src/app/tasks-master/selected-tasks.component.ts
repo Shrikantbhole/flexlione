@@ -66,16 +66,8 @@ this.taskForGeneration = task;
 }
 
   onClickRefresh() {
-    for (let i = 0; i < this.selectedTasks.length; i++) {
-      this.selectedTasks.pop();
-    }
-    for (let i = 0; i < this.selectedTasks.length; i++) {
-      this.selectedTasks.pop();
-    }
-    for (let i = 0; i < this.selectedTasks.length; i++) {
-      this.selectedTasks.pop();
-    }
-  }
+    this.selectedTasks.splice(0, this.selectedTasks.length);
+   }
 
   onSaveButtonClick(task: Task) {
 this.eTaskId = task.taskId;
