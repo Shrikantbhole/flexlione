@@ -13,7 +13,6 @@ export class  SearchQuery {
 
 export function CreateSearchForm(): FormGroup {
   return new FormGroup({
-    'tag': new FormControl(''),
     'deadline': new FormControl(''),
     'createdBy': new FormControl(''),
     'assignedTo': new FormControl(''),

@@ -1,0 +1,11 @@
+<br/>
+<app-article-preview
+  *ngFor="let task of results | async"
+  (click)="onRowClick(task.taskId)"
+  [SearchTask] ="task">
+
+  <app-auto-search class="pull-xs-right"
+                   [options]="this.options"
+                   [description]= "'Add to Sprint'"
+                   (newItemEvent) = "addTaskToSprint($event)"></app-auto-search>
+</app-article-preview>

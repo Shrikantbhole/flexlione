@@ -1,4 +1,4 @@
-export interface CreateTaskModel {
+export interface CreateTaskStoreModel {
   taskId?: string;
   parentTaskId?: string;
   createdBy?: string;

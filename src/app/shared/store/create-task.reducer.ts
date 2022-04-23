@@ -1,23 +1,10 @@
 
-import {SearchTaskViewModel} from './interfaces/search-task-view.model';
-import {CreateTaskModel} from './interfaces/create-task.model';
+import {SearchTaskViewStoreModel} from './interfaces/search-task-view-store.model';
+import {CreateTaskStoreModel} from './interfaces/create-task-store.model';
 import * as TaskActions from './create-task.action';
 
 
-const initialState: SearchTaskViewModel = {
-  taskId: ' 23 ',
-  parentTaskId: '1',
-  createdBy: 'chirag',
-  assignedTo: 'chirag',
-  status: 'ongoing',
-  description: 'blaa',
-  deadline: null
-};
-
-
-
-
-export function CreateTaskReducer(state: CreateTaskModel[], action: TaskActions.CreateActions) {
+export function CreateTaskReducer(state: CreateTaskStoreModel[], action: TaskActions.CreateActions) {
 
   // Section 3
   // First, we use a switch to determine the type of action.

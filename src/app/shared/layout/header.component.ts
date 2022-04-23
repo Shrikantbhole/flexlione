@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User, UserService } from '../../core';
 import * as TaskActions from '../store/create-task.action';
-import {CreateTaskModel} from '../store/interfaces/create-task.model';
+import {CreateTaskStoreModel} from '../store/interfaces/create-task-store.model';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
 
   onAddNewTask() {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {parentTaskId : '1'};
+    const task: CreateTaskStoreModel = {parentTaskId : '1'};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
   }
 }

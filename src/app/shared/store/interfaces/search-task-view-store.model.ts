@@ -1,7 +1,7 @@
 import DateTimeFormat = Intl.DateTimeFormat;
 import {FormControl, FormGroup} from '@angular/forms';
 
-export interface SearchTaskViewModel {
+export interface SearchTaskViewStoreModel {
   taskId: string;
   parentTaskId: string;
   createdBy: string;

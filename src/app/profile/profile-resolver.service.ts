@@ -2,22 +2,25 @@ import { Injectable, } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { Profile, ProfilesService } from '../core';
-import { catchError } from 'rxjs/operators';
-import {Task} from '../article/models/task.model';
+import {Profile, ProfilesService, UserService} from '../core';
+import {catchError, map} from 'rxjs/operators';
+import {TaskModel} from '../article/models/taskModel';
 import {ApiError} from '../settings/api-error.model';
 import { MessageBoxService } from '../settings/message-box.service';
 
 import {TaskManagementService} from '../article/service/task-management-service';
+import {SearchQuery} from '../home/models/search-query-form.model';
+import {SearchManagementService} from '../home/Search/search-management.service';
+import {ProfileManagementService} from './service/profile-management.service';
 
 @Injectable()
 export class ProfileResolver implements Resolve<Profile> {
-  results: Task[];
+  results: TaskModel[];
   constructor(
     private profilesService: ProfilesService,
     private router: Router,
-    private taskManagementService: TaskManagementService,
-    private messageBoxService: MessageBoxService
+    private userService: UserService,
+    private searchManagementService: SearchManagementService
   ) {}
 
   resolve(
@@ -25,9 +28,21 @@ export class ProfileResolver implements Resolve<Profile> {
     state: RouterStateSnapshot
   ): Observable<any> {
 
-    return this.taskManagementService.getTaskById('0', 'children').
-      pipe(catchError((err) => this.router.navigateByUrl('/')));
-
-
+    const search = new SearchQuery();
+    search.AssignedTo = [route.params['username']];
+    return this.searchManagementService.getTaskSearchList(search)
+      .pipe(
+        map(
+          article => {
+            if (this.userService.getCurrentUser().username !== undefined) {
+              return article;
+            } else {
+              // this.router.navigateByUrl('/login');
+              return article;
+            }
+          }
+        ),
+        catchError((err) => this.router.navigateByUrl('/'))
+      );
   }
 }

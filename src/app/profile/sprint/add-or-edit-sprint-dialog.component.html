@@ -1,0 +1,89 @@
+<br />
+<h1 mat-dialog-title>{{ isEdit ? "Update Sprint" : "Add Sprint" }}</h1>
+
+<div mat-dialog-content>
+
+
+
+  <form [formGroup]="newSprint">
+
+
+    <mat-form-field>
+      <label >Sprint Id</label>
+      <input matInput formControlName="sprintId" required />
+      <mat-error *ngIf="newSprint.get('sprintId').invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <br />
+    <br />
+
+    <mat-form-field>
+      <label >Owner</label>
+      <mat-select formControlName="owner">
+        <mat-option></mat-option>
+        <mat-option [value]="user" *ngFor="let  user of UserList" >
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <br />
+
+    <li class="mat-form-field--inline">
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" />
+      </mat-form-field>
+    </li>
+
+    <br />
+    <br />
+    <li class="mat-form-field--inline">
+      <mat-form-field>
+        <label >From Date </label>
+        <input matInput formControlName ="fromDate" [matDatepicker]="picker" >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <label >To Date </label>
+        <input matInput formControlName ="toDate" [matDatepicker]="picker1" >
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </li>
+
+    <li class="mat-form-field--inline">
+      <mat-form-field>
+        <mat-label>Deliverable</mat-label>
+        <input matInput formControlName="deliverable" />
+      </mat-form-field>
+    </li>
+
+    <br />
+    <br />
+
+    <li class="mat-form-field--inline">
+      <mat-form-field>
+        <mat-label>Delivered</mat-label>
+        <input matInput formControlName="delivered" />
+      </mat-form-field>
+    </li>
+
+    <br />
+    <br />
+
+
+  </form>
+</div>
+
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary"  [disabled]="newSprint.invalid"
+          (click)="onAddOrUpdate()">
+    {{ isEdit ? "Update" : "Add" }}
+  </button>
+</div>

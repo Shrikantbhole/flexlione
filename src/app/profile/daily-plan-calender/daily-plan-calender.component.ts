@@ -1,7 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input} from '@angular/core';
 import {CalendarEvent, CalendarView} from 'angular-calendar';
 import {ProfileComponent} from '../profile.component';
-import {ScheduleTaskModel} from '../models/schedule-task.model';
+import {TaskScheduleModel} from '../models/task-schedule.model';
+import {TaskScheduleManagementService} from '../service/task-schedule-management.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../app.state';
+import {Router} from '@angular/router';
+import {MatCalendarCellCssClasses} from '@angular/material/datepicker';
 
 
 @Component({
@@ -9,94 +14,60 @@ import {ScheduleTaskModel} from '../models/schedule-task.model';
   templateUrl: 'daily-plan-calender.component.html'
 })
 
-export class DailyPlanCalenderComponent implements OnInit {
+export class DailyPlanCalenderComponent  {
+  @Input()
+  set profile(profileId: string) {
+   this.ProfileId = profileId;
+  }
+  @Input()
+  set config(taskScheduleList: TaskScheduleModel[]) {
+    this.TaskScheduleList = taskScheduleList;
+    this.changeEvents();
+  }
+  ProfileId: string;
+  TaskScheduleList: TaskScheduleModel[] = [];
   today = new Date();
   viewDate: Date = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 13, 0);
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
-  scheduleTaskList: ScheduleTaskModel[] = [];
   events: CalendarEvent[] = [];
 
   constructor(
-    private  profileComponent: ProfileComponent
-  ) {  }
-  getMonth(viewDate: Date) {
-    console.log(viewDate);
-    console.log(viewDate.getDay());
+    private profileComponent: ProfileComponent,
+    private router: Router
+  ) {}
+  navigate(viewDate: Date) {
+    console.log('month: ' + viewDate);
+    this.router.navigateByUrl(this.router.url + '?month=' + viewDate.getMonth() + '&year=' + viewDate.getFullYear());
   }
   setView(view: CalendarView) {
     this.view = view;
+    console.log('month: ' +  this.viewDate.getMonth());
   }
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClickedInMonthView({ date }: { date: Date; events: CalendarEvent[] }): void {
     console.log(date);
-    this.profileComponent.onDaySummary();
-    this.profileComponent.onDailyPlanSummaryChange(this.scheduleTaskList.filter(function (x) {
-      return new Date(x.startDate).getDate() === date.getDate(); }));
+   this.router.navigateByUrl(this.router.url + '?date=' + date.getDate());
   }
 
-  dayHeaderClicked(evn): void {
+  dayClickedInWeekView(evn): void {
     console.log(evn.day.date);
-    this.profileComponent.onDaySummary();
-    this.profileComponent.onDailyPlanSummaryChange(this.scheduleTaskList.filter(function (x) {
-      return new Date(x.startDate).getDate() === evn.day.date.getDate(); }));
+    this.router.navigateByUrl(this.router.url + '?date=' + evn.day.date.getDate());
   }
 
-  ngOnInit(): void {
-    this.scheduleTaskList = [
-      { taskId : '09.1',
-        sprintId: '1',
-        scheduleTaskId: '1.1',
-        description : 'conveyor design',
-        startDate : '04-09-2022',
-        stopDate: '04-09-2022',
-        startHour: 11,
-        startMinute: 0,
-        stopHour: 12,
-        stopMinute: 30},
-      { taskId : '09.2',
-        sprintId: '1',
-        scheduleTaskId: '1.2',
-        description : 'conveyor mfg',
-        startDate : '04-09-2022',
-        stopDate: '04-09-2022',
-        startHour: 13,
-        startMinute: 0,
-        stopHour: 14,
-        stopMinute: 30},
-      { taskId : '10.1',
-        sprintId: '1',
-        scheduleTaskId: '1.3',
-        description : 'Castor design',
-        startDate : '04-10-2022',
-        stopDate: '04-10-2022',
-        startHour: 11,
-        startMinute: 0,
-        stopHour: 12,
-        stopMinute: 30},
-      { taskId : '10.2',
-        sprintId: '1',
-        scheduleTaskId: '10.2',
-        description : 'Castor Mfg',
-        startDate : '04-10-2022',
-        stopDate: '04-10-2022',
-        startHour: 13,
-        startMinute: 0,
-        stopHour: 14,
-        stopMinute: 30}
-    ];
-
-    for (let i = 0; i < this.scheduleTaskList.length; i++) {
-      this.events.push(this.getEventForScheduleTask(this.scheduleTaskList[i]));
+  changeEvents(): void {
+    this.events = [];
+    for (let j = 0; j < this.TaskScheduleList.length; j++) {
+      this.events.push(this.getEventForScheduleTask(this.TaskScheduleList[j]));
     }
   }
-  getEventForScheduleTask(scheduleTask: ScheduleTaskModel): CalendarEvent {
-    const date: Date = new Date(scheduleTask.startDate);
+  getEventForScheduleTask(taskSchedule: TaskScheduleModel): CalendarEvent {
+    const date: Date = new Date(taskSchedule.date);
     const event: CalendarEvent = {
       start:  new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-        scheduleTask.startHour, scheduleTask.startMinute),
-      title: scheduleTask.description,
+        taskSchedule.startHour, taskSchedule.startMinute),
+      title: taskSchedule.description,
       end:  new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-        scheduleTask.stopHour, scheduleTask.stopMinute),
+        taskSchedule.stopHour, taskSchedule.stopMinute),
     };
     return event;
   }

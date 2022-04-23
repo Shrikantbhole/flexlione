@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { Task } from '../../article/models/task.model';
+import { TaskModel } from '../../article/models/taskModel';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -11,7 +11,7 @@ import {TaskManagementService} from '../../article/service/task-management-servi
 import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
 import {ViewChecklistDialogComponent} from './view-checklist-dialog.component';
 import * as TaskActions from '../../shared/store/create-task.action';
-import {CreateTaskModel} from '../../shared/store/interfaces/create-task.model';
+import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 
@@ -41,7 +41,7 @@ export class TasksL1Component {
   private snackBarService: MatSnackBar;
   private taskManagementService: TaskManagementService;
   private inUse: String;
-  public l1Task: Task;
+  public l1Task: TaskModel;
 
 
 
@@ -80,7 +80,7 @@ export class TasksL1Component {
 
     this.taskManagementService.getTaskById(this.l1TaskId, 'children').subscribe(
       {
-        next: (task: Task) => {
+        next: (task: TaskModel) => {
           console.log(task);
           this.l1Task = task;
           console.log(this.l1Task);
@@ -96,7 +96,7 @@ export class TasksL1Component {
   // and send request again.
   onAddNewTaskButtonClick(): void {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {parentTaskId : this.l1Task.taskId};
+    const task: CreateTaskStoreModel = {parentTaskId : this.l1Task.taskId};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.router.navigateByUrl('/editor');
 
@@ -130,7 +130,7 @@ export class TasksL1Component {
             next: () => {
 
               // show acknowledgement to user
-              this.snackBarService.open('Task deleted.');
+              this.snackBarService.open('TaskModel deleted.');
 
               // load the list again
               this.loadL1TaskList();
@@ -158,13 +158,13 @@ export class TasksL1Component {
     this.dialog.open(ViewChecklistDialogComponent, dialogConfig, )
       .afterClosed().subscribe(
       {
-        next: (task: Task) => {
+        next: (task: TaskModel) => {
 
           if (task == null) { // Cancel button clicked
             return;
           }
 
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
 
           // Load the list again
           this.loadL1TaskList();

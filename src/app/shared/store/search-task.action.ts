@@ -1,8 +1,8 @@
 // Section 1
 
 import { Action } from '@ngrx/store';
-import {SearchTaskViewModel} from './interfaces/search-task-view.model';
-import {CreateTaskModel} from './interfaces/create-task.model';
+import {SearchTaskViewStoreModel} from './interfaces/search-task-view-store.model';
+import {CreateTaskStoreModel} from './interfaces/create-task-store.model';
 
 
 
@@ -19,7 +19,7 @@ export const REMOVE_SEARCH_TASK    = '[TASK] Remove';
 export class AddSearchTask implements Action {
   readonly type = ADD_SEARCH_TASK;
 
-  constructor(public payload: SearchTaskViewModel) {}
+  constructor(public payload: SearchTaskViewStoreModel) {}
 }
 
 export class RemoveSearchTask implements Action {

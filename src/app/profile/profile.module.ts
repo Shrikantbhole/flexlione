@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 
-import { ProfileArticlesComponent } from './profile-articles.component';
+import { ProfileTaskDumpComponent } from './profile-task-dump.component';
 import { ProfileComponent } from './profile.component';
 import { ProfileFavoritesComponent } from './profile-favorites.component';
 import { ProfileResolver } from './profile-resolver.service';
@@ -23,6 +23,9 @@ import {SprintPreviewComponent} from './sprint/sprint-preview.component';
 import {DailyPlanCalenderComponent} from './daily-plan-calender/daily-plan-calender.component';
 import {DailyPlanSummaryComponent} from './daily-plan-summary/daily-plan-summary.component';
 import {TaskSummaryFormComponent} from './daily-plan-summary/task-summary/task-summary-form.component';
+import {SearchFormComponent} from '../home/Search/search-form.component';
+import {ActivatedRouteSnapshot} from '@angular/router';
+import {AddOrEditSprintDialogComponent} from './sprint/add-or-edit-sprint-dialog.component';
 
 @NgModule({
   imports: [
@@ -41,10 +44,11 @@ import {TaskSummaryFormComponent} from './daily-plan-summary/task-summary/task-s
     MatInputModule
   ],
   declarations: [
-    ProfileArticlesComponent,
+    ProfileTaskDumpComponent,
     ProfileComponent,
     ProfileFavoritesComponent,
     AddOrEditScheduleDialogComponent,
+    AddOrEditSprintDialogComponent,
     SprintPreviewComponent,
     DailyPlanCalenderComponent,
     DailyPlanSummaryComponent,
@@ -52,6 +56,8 @@ import {TaskSummaryFormComponent} from './daily-plan-summary/task-summary/task-s
   ],
   providers: [
     ProfileResolver,
+    SearchFormComponent,
+    ProfileComponent
   ]
 })
 export class ProfileModule {}

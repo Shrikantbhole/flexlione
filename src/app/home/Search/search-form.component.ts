@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {CreateSearchForm, GetUserList, SearchQuery} from '../models/search-query-form.model';
-import {Task} from '../../article/models/task.model';
+import {TaskModel} from '../../article/models/taskModel';
 import {SearchManagementService} from './search-management.service';
 import {ApiError} from '../../settings/api-error.model';
 import {MessageBoxService} from '../../settings/message-box.service';
@@ -15,6 +15,7 @@ import {getStatusList} from '../../shared/shared-lists/status-list';
 import {getUserList} from '../../shared/shared-lists/user-list';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
+import {ProfileStoreModel} from '../../shared/store/interfaces/profile-store.model';
 
 /** @title Form field appearance variants */
 @Component({
@@ -24,9 +25,10 @@ import {ActivatedRoute} from '@angular/router';
 export class SearchFormComponent implements  OnInit {
 
  //  FilteredOptions is Observable array created for Auto filling
-  options: string[] = [];
+  public  options: string[] = [];
   filteredOptions: Observable<string[]>;
   public AddTag = '';
+  private Profiles: ProfileStoreModel[] = [];
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
   newSearch: FormGroup = CreateSearchForm();
@@ -40,7 +42,7 @@ export class SearchFormComponent implements  OnInit {
   ) {
     this.getTagList();
   }
-  getTaskSearchList(search: SearchQuery) {
+  public getTaskSearchList(search: SearchQuery) {
     this.searchManagementService.getTaskSearchList(search)
       .subscribe({
         next: (taskList) => {
@@ -52,12 +54,12 @@ export class SearchFormComponent implements  OnInit {
           }
         },
         error: (apiError: ApiError) => {
-          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+          this.messageBoxService.info('Error: TaskModel not updated .', apiError.title, apiError.detail);
         }
       });
   }
   onSearch() {
-    console.log(this.createSearch(this.newSearch));
+    // console.log(this.createSearch(this.newSearch));
     // Get Search result for search query
     this.getTaskSearchList(this.createSearch(this.newSearch));
   }
@@ -74,11 +76,16 @@ export class SearchFormComponent implements  OnInit {
           }
           },
         error: (apiError: ApiError) => {
-          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+          this.messageBoxService.info('Error: TaskModel not updated .', apiError.title, apiError.detail);
         }
       });
   }
 
+  public _searchByTag(tag: string) {
+    const searchQuery: SearchQuery = new SearchQuery();
+    searchQuery.Tag = tag;
+    this.getTaskSearchList(searchQuery);
+  }
   private _filter(value: string): string[] {
     return this.options.filter(option => option.toLowerCase().includes(
       value === undefined ? '' : value.toLowerCase()
@@ -87,13 +94,15 @@ export class SearchFormComponent implements  OnInit {
 
   private createSearch(newSearch: FormGroup): SearchQuery {
     const search = new SearchQuery();
-    search.Tag = newSearch.getRawValue().tag;
+    if (newSearch.getRawValue().description !== '' && newSearch.getRawValue().description !== undefined)  {
+      search.Description = newSearch.getRawValue().description;
+    }
     if (newSearch.getRawValue().createdBy !== '' && newSearch.getRawValue().createdBy !== undefined)  {
-      search.CreatedBy = [newSearch.getRawValue().createdBy];
+      search.CreatedBy = [this.GetProfileId(newSearch.getRawValue().createdBy)];
     }
 
     if (newSearch.getRawValue().assignedTo !== '' && newSearch.getRawValue().assignedTo !== undefined) {
-      search.AssignedTo = [newSearch.getRawValue().assignedTo];
+      search.AssignedTo = [this.GetProfileId(newSearch.getRawValue().assignedTo)];
     }
     if (newSearch.getRawValue().deadline !== '' && newSearch.getRawValue().deadline !== undefined) {
       search.Deadline = this.datePipe.transform(newSearch.getRawValue().deadline, 'yyyy-MM-dd');
@@ -122,6 +131,13 @@ export class SearchFormComponent implements  OnInit {
       startWith(''),
       map(value => this._filter(value.tag)),
     );
+    this.store.select('profile')
+      .subscribe({
+        next: (profiles) => {
+          this.Profiles = profiles;
+        },
+        error: () => {}
+      });
 
     this.route.queryParams.subscribe({
       next: (param) => {
@@ -134,6 +150,13 @@ export class SearchFormComponent implements  OnInit {
       },
       error: () => {}
     });
+  }
+
+  public GetProfileId(profileName: string): string {
+    const profile = this.Profiles.filter(function (value) {
+      return (value.name === profileName);
+    });
+    return profile[0] === undefined ? profileName : profile[0].profileId;
   }
 
 }

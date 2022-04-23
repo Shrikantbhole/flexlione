@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {map, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CreateSearchForm} from '../../home/models/search-query-form.model';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {Router} from '@angular/router';
+import {SprintModel} from '../../profile/models/sprint.model';
 
 @Component({
   selector: 'app-auto-search',
@@ -14,10 +16,12 @@ export class AutoSearchComponent implements OnInit, AfterViewInit  {
 @Input() options;
 @Input() description;
 @Input() baseUrl;
+@Input() search;
+@Output() newItemEvent  = new EventEmitter<string>();
   @ViewChild(MatAutocompleteTrigger ) trigger: MatAutocompleteTrigger;
 filteredOptions: Observable<string[]>;
 myControl = new FormControl();
- constructor() {
+ constructor(private router: Router) {
 
 
  }
@@ -42,7 +46,7 @@ myControl = new FormControl();
     ));
   }
   private onRowClick(selected: string) {
-   selected = '';
+    this.newItemEvent.emit(selected);
   }
 
 

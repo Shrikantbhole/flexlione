@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { TaskManagementService } from '../../article/service/task-management-service';
 import { ChecklistManagementService } from '../../article/service/checklist-management.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import { Task } from '../../article/models/task.model';
+import { TaskModel } from '../../article/models/taskModel';
 import {CheckListItem} from '../../article/models/check-list-item.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -20,7 +20,7 @@ export class ViewChecklistDialogComponent {
   private messageBoxService: MessageBoxService;
   private checklistManagementService: ChecklistManagementService;
 
-  public Task: Task = new  Task();
+  public Task: TaskModel = new  TaskModel();
   public isEdit: boolean ;
   public Tasks: string[] = ['1', '2', '3'];
   private readonly TaskId: string;
@@ -96,7 +96,7 @@ export class ViewChecklistDialogComponent {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
 
 
         }
@@ -126,7 +126,7 @@ export class ViewChecklistDialogComponent {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
 
 
         }

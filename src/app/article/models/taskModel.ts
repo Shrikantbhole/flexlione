@@ -1,6 +1,6 @@
 import DateTimeFormat = Intl.DateTimeFormat;
 
-export class  Task {
+export class TaskModel {
   taskId: string;
   parentTaskId: string;
   createdAt: string;
@@ -8,13 +8,14 @@ export class  Task {
   createdBy: string;
   assignedTo: string;
   status: string;
+  sprintId: string;
   positionAfter: string;
   description: string;
   score: number;
-  children: Task[];
-  downStreamDependencies: Task[];
-  upStreamDependencies: Task[];
-  siblings: Task[];
+  children: TaskModel[];
+  downStreamDependencies: TaskModel[];
+  upStreamDependencies: TaskModel[];
+  siblings: TaskModel[];
 
 
 }

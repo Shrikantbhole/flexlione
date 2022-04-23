@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component: HeadTasksComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     resolve: {
       article: TaskHierarchyResolverService
     }

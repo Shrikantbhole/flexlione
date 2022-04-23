@@ -3,7 +3,7 @@
     <a class="navbar-brand" routerLink="/">FlexStore</a>
 
     <!-- Show this for logged out users -->
-    <ul *appShowAuthed="false"
+    <ul *appShowAuthed="true"
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
@@ -32,7 +32,7 @@
     </ul>
 
     <!-- Show this for logged in users -->
-    <ul *appShowAuthed="true"
+    <ul *appShowAuthed="false"
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
@@ -47,7 +47,9 @@
       <li class="nav-item">
         <a class="nav-link"
           routerLink="/editor"
-          routerLinkActive="active" (click)="onAddNewTask()">
+          routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }"
+           (click)="onAddNewTask()">
           <i class="ion-compose"></i>&nbsp;New Task
         </a>
       </li>

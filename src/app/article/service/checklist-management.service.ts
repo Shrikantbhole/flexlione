@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../models/task.model';
+import { TaskModel } from '../models/taskModel';
 
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../../settings/server-config.service';

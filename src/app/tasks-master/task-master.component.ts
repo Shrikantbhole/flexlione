@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Task} from '../article/models/task.model';
+import {TaskModel} from '../article/models/taskModel';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../core';
 import {ChecklistManagementService} from '../article/service/checklist-management.service';
@@ -10,7 +10,7 @@ import {ChecklistManagementService} from '../article/service/checklist-managemen
 })
 export class TaskMasterComponent implements  OnInit {
 
-public  taskList: Task[] = [];
+public  taskList: TaskModel[] = [];
 public selectedTaskId: string;
   constructor(
     private route: ActivatedRoute,
@@ -21,7 +21,7 @@ public selectedTaskId: string;
 
     /* Retreive the prefetched article*/
     this.route.data.subscribe(
-      (data: { taskMaster: Task[] }) => {
+      (data: { taskMaster: TaskModel[] }) => {
         this.taskList = data.taskMaster;
         // this.task = data.article.find(x => x.taskId === this.route.snapshot.params['slug']);
         console.log(this.taskList);

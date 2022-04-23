@@ -89,7 +89,7 @@ export class AddOrEditChecklistDialogComponent {
         this.dialogRef.close(checkListItem);
       },
       error: () => {
-        this.messageBoxService.info('Error: Task not created.');
+        this.messageBoxService.info('Error: TaskModel not created.');
       }
     });
   }
@@ -100,12 +100,12 @@ export class AddOrEditChecklistDialogComponent {
       .subscribe({
 
         next: (checkListItem: CheckListItem) => {
-          console.log('Task successfully updated');
+          console.log('TaskModel successfully updated');
           console.log(checkListItem);
           this.dialogRef.close(checkListItem);
         },
         error: () => {
-          this.messageBoxService.info('Error: Task not created.');
+          this.messageBoxService.info('Error: TaskModel not created.');
         }
       });
   }

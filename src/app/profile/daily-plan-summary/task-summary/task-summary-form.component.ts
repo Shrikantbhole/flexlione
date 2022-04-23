@@ -1,23 +1,16 @@
-import {Component, Output, EventEmitter, OnInit, Input, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from '../../../home/models/search-query-form.model';
-import {Task} from '../../../article/models/task.model';
-import {DailyPlanSummaryService} from './../daily-plan-summary.service';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {DailyPlanSummaryService} from '../../service/daily-plan-summary.service';
 import {ApiError} from '../../../settings/api-error.model';
 import {MessageBoxService} from '../../../settings/message-box.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../app.state';
-import * as TaskActions from '../../../shared/store/search-task.action';
 import {DatePipe} from '@angular/common';
-import {getUserList} from '../../../shared/shared-lists/user-list';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {ScheduleTaskModel} from '../../models/schedule-task.model';
-import {MatAccordion} from '@angular/material/expansion';
-import {CreateTaskForm} from '../../../article/models/TaskForm';
-import {CreateTaskSummaryForm, TaskSummaryForm} from '../../models/task-summary-form.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CreateTaskSummaryForm, TaskSummaryModel} from '../../models/task-summary.model';
+import {TaskScheduleModel} from '../../models/task-schedule.model';
+import * as TaskScheduleActions from '../../../shared/store/task-schedule.action';
 /** @title Form field appearance variants */
 @Component({
   selector: 'app-profile-task-summary-form',
@@ -29,9 +22,10 @@ export class TaskSummaryFormComponent implements  OnInit {
   //  FilteredOptions is Observable array created for Auto filling
   newTaskSummary: FormGroup = CreateTaskSummaryForm();
   @Input()
-  set config(taskId: string) {
-    console.log('Get Summary for Task Id: ' + taskId);
+  set config(taskSummary: TaskSummaryModel) {
+    this.updateTaskSummaryForm(taskSummary);
   }
+  // @Output() newScheduleEvent  = new EventEmitter<TaskSummaryModel>();
   constructor(
     private searchManagementService: DailyPlanSummaryService,
     private  messageBoxService: MessageBoxService,
@@ -39,15 +33,36 @@ export class TaskSummaryFormComponent implements  OnInit {
     private datePipe: DatePipe,
     private  snackBarService: MatSnackBar,
     private route: ActivatedRoute,
+    private  dailyPlanSummaryService: DailyPlanSummaryService,
+    private router: Router
   ) {}
-  private createTaskSummary(newTaskSummary: FormGroup): TaskSummaryForm {
-    const taskSummary = new TaskSummaryForm();
+
+  ngOnInit() {}
+  updateTaskSummaryForm(taskSummary: TaskSummaryModel) {
+    this.newTaskSummary.controls['taskId'].disable();
+    this.newTaskSummary.controls['taskSummaryId'].disable();
+    this.newTaskSummary.controls['description'].disable();
+    this.newTaskSummary.controls['expectedHours'].disable();
+    this.newTaskSummary.setValue({
+      taskScheduleId: taskSummary.taskScheduleId == null ? 'server-generated' : taskSummary.taskScheduleId,
+      taskSummaryId: taskSummary.taskSummaryId == null ? 'server-generated' : taskSummary.taskSummaryId,
+      taskId: taskSummary.taskId == null ? 'server-generated' : taskSummary.taskId,
+      description: taskSummary.description == null ? 'server-generated' : taskSummary.description,
+      expectedOutput: taskSummary.expectedOutput == null ? '' : taskSummary.expectedOutput,
+      expectedHours: taskSummary.expectedHour == null ? 'server-generated' : taskSummary.expectedHour,
+      actualOutput: taskSummary.actualOutput == null ? '' : taskSummary.actualOutput,
+      actualHours: taskSummary.actualHour == null ? '' : taskSummary.actualHour,
+    });
+  }
+  private createTaskSummary(newTaskSummary: FormGroup): TaskSummaryModel {
+    const taskSummary = new TaskSummaryModel();
     taskSummary.taskSummaryId = newTaskSummary.getRawValue().taskSummaryId;
+    taskSummary.taskScheduleId = newTaskSummary.getRawValue().taskScheduleId;
     taskSummary.taskId = newTaskSummary.getRawValue().taskId;
     taskSummary.description = newTaskSummary.getRawValue().description;
-    taskSummary.expectedHours = newTaskSummary.getRawValue().expectedHours;
+    taskSummary.expectedHour = newTaskSummary.getRawValue().expectedHours;
     if (newTaskSummary.getRawValue().actualHours !== '' && newTaskSummary.getRawValue().actualHours !== undefined)  {
-     taskSummary.actualHours = newTaskSummary.getRawValue().actualHours;
+     taskSummary.actualHour = +newTaskSummary.getRawValue().actualHours;
     }
     if (newTaskSummary.getRawValue().expectedOutput !== '' && newTaskSummary.getRawValue().expectedOutput !== undefined)  {
       taskSummary.expectedOutput = newTaskSummary.getRawValue().expectedOutput;
@@ -59,8 +74,18 @@ export class TaskSummaryFormComponent implements  OnInit {
   }
 
   public onAdd() {
-    console.log('on Add');
+    this.dailyPlanSummaryService.updateTaskSummary(this.createTaskSummary(this.newTaskSummary))
+      .subscribe({
+        next: (taskSummary) => {
+          this.snackBarService.open('Task Summary Successfully updated', '' , {duration: 300});
+          console.log(taskSummary);
+          this.router.navigateByUrl(this.router.url + '?taskScheduleId=' + taskSummary.taskScheduleId);
+        },
+        error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
+      });
   }
-  ngOnInit() {}
+
+
+
 
 }

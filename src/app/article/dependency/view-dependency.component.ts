@@ -1,7 +1,7 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../../core';
 import {ChecklistManagementService} from '../service/checklist-management.service';
-import {Task} from '../models/task.model';
+import {TaskModel} from '../models/taskModel';
 import {Component, Input, OnInit} from '@angular/core';
 import {CheckListItem} from '../models/check-list-item.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
@@ -20,7 +20,7 @@ import {DependencyManagementService} from '../service/dependency-management.serv
 
 export class ViewDependencyComponent implements OnInit {
   @Input() Type;
-  task: Task;
+  task: TaskModel;
   dependencyList: Dependency[] = [];
   selectedDependencyId = '';
   constructor(
@@ -38,7 +38,7 @@ export class ViewDependencyComponent implements OnInit {
 
     // Retreive the prefetched article
     this.route.data.subscribe(
-      (data: { article: Task }) => {
+      (data: { article: TaskModel }) => {
         this.task = data.article;
 
       }
@@ -133,7 +133,7 @@ export class ViewDependencyComponent implements OnInit {
           }
 
           this.loadDependency();
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
 
 
         }

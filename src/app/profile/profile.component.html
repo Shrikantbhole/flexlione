@@ -4,16 +4,27 @@
     <div class="container">
       <div class="row">
 
+
+
         <div class="col-xs-12 col-md-10">
-          <button class="btn btn-sm btn-outline-danger"
+
+          <h3>{{GetProfileName(this.profileId)}}'s Profile</h3>
+          <app-auto-search class="pull-xs-right" [options]="this.options"
+                           [description]= "'Select Other Profile'"
+                           (newItemEvent) = "updateProfile($event)">
+
+
+          ></app-auto-search>
+
+          <button class="btn btn-sm btn-outline-danger pull-xs-left"
                   (click)="onPlanSprint()">
             <i class="ion-edit"></i> Plan your Sprint
           </button>
-          <button class="btn btn-sm btn-outline-danger"
+          <button class="btn btn-sm btn-outline-danger pull-xs-left"
                   (click)="onPlanDay()">
             <i class="ion-edit"></i> Plan your Day
           </button>
-          <button class="btn btn-sm btn-outline-danger"
+          <button class="btn btn-sm btn-outline-danger pull-xs-left "
                   (click)="onDaySummary()">
             <i class="ion-edit"></i> Day Summary
           </button>
@@ -27,31 +38,22 @@
     <div class="row">
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint'">
-        <div class="articles-toggle">
-          <ul class="nav nav-pills outline-active">
-            <li class="nav-item">
-              <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
-                 [routerLink]="['/profile', '11']">
-                 Task Dump
-              </a>
-            </li>
-          </ul>
-        </div>
-        <router-outlet></router-outlet>
+        <app-profile-task-dump [options]= "getSprintIds()" ></app-profile-task-dump>
       </div>
 
       <div class=  "col-xs-6" [hidden]="togglePlanner === 'summary'" >
-        <app-sprint-preview [config]="sprintUpdateCounter" [sprintList]="sprintList" ></app-sprint-preview>
+        <app-sprint-preview [sprintList]="sprintList"
+                            (newItemEvent)="updateSprintList($event)"
+                            (newScheduleEvent)="AddNewTaskSchedule($event)"></app-sprint-preview>
       </div>
 
       <div class="col-xs-6" [hidden]="togglePlanner === 'sprint'">
-        <app-profile-daily-plan-calender></app-profile-daily-plan-calender>
+        <app-profile-daily-plan-calender [profile]="profileId" [config] = "TaskScheduleList"></app-profile-daily-plan-calender>
       </div>
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'summary'">
-        <app-profile-daily-plan-summary [config]="scheduleTaskList"></app-profile-daily-plan-summary>
+        <app-profile-daily-plan-summary [config]="SelectedTaskScheduleList"
+                                      ></app-profile-daily-plan-summary>
       </div>
     </div>
   </div>

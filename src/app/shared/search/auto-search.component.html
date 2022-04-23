@@ -10,8 +10,7 @@
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let option of filteredOptions | async"
                   [value]="option"
-                  (click)="onRowClick(option)"
-                  [routerLink]='[baseUrl]' [queryParams]="{search: option}">
+                  (click)="onRowClick(option)">
         {{option}}
       </mat-option>
     </mat-autocomplete>
