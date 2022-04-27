@@ -104,6 +104,7 @@ export class HeadTasksComponent {
 
 
   }
+
   onDeleteTaskButtonClick(taskId: string): void {
 
     // Open a dialog box to ask for confirmation

@@ -1,0 +1,78 @@
+<style>
+  mat-header-cell {
+    color: black;
+    font-size: 14px;
+    font-weight: bold
+  }
+
+  .highlight {
+    background-color: #e8f0fe;
+  }
+  .is-active {
+    background-color: mediumaquamarine;
+  }
+  .master {
+    width: 345px;
+    position: fixed;
+    height: 80%;
+    overflow: auto;
+    border-right: 2px solid #dbdbdb;
+  }
+  .slave {
+    width: 100%;
+    position: fixed;
+    height: 80%;
+    overflow: auto;
+    border-right: 2px solid #dbdbdb;
+
+  }
+  div.detail {
+    margin-left: 345px;
+  }
+</style>
+
+<div class="master">
+
+  <div class="col-sm-12">
+    <h3>Selected Template Tasks</h3>
+    <br/>
+    <button mat-raised-button color="primary" (click) = "onClickRefresh()">
+      Refresh  </button>
+    <br/>
+    <h4 *ngIf="!selectedTasks">Please select a Template.</h4>
+    <div >
+      <div *ngIf = "selectedTasks">
+
+        <div>
+          <mat-list>
+            <mat-divider></mat-divider>
+            <mat-selection-list #t>
+              <mat-list-item *ngFor="let task of selectedTasks"
+
+                               [ngClass]="{highlight: task.taskId == selectedTaskId}">
+                <div mat-line>{{task.taskId}}</div>
+                <div mat-line> {{task.description}} </div>
+
+                <button mat-raised-button color="primary" (click) = "onClickGenerate(task)">
+                 {{isEdit ? 'Update': 'Generate'  }}  </button>
+
+              </mat-list-item>
+
+            </mat-selection-list>
+          </mat-list>
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class='detail'>
+  <div class='slave'>
+<app-generate-task (click) = "changeButtonStatus()"  [generatedTask] = "this.taskForGeneration"></app-generate-task>
+  </div>
+</div>
