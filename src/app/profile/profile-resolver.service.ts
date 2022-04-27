@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 
 import {Profile, ProfilesService, UserService} from '../core';
 import {catchError, map} from 'rxjs/operators';
-import {TaskModel} from '../article/models/taskModel';
+import {TaskModel} from '../article/models/task-detail.model';
 import {ApiError} from '../settings/api-error.model';
 import { MessageBoxService } from '../settings/message-box.service';
 
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {SearchQuery} from '../home/models/search-query-form.model';
-import {SearchManagementService} from '../home/Search/search-management.service';
-import {ProfileManagementService} from './service/profile-management.service';
+import {SearchManagementService} from '../Services/search-management.service';
+import {ProfileManagementService} from '../Services/profile-management.service';
 
 @Injectable()
 export class ProfileResolver implements Resolve<Profile> {

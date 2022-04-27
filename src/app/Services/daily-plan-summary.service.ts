@@ -1,16 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {Injectable, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaskModel } from '../../article/models/taskModel';
+import { TaskModel } from '../article/models/task-detail.model';
 import {catchError, retry} from 'rxjs/operators';
-import {ServerConfigService} from '../../settings/server-config.service';
-import {HandlerError} from '../../settings/handle-error.service';
-import { SearchQuery} from '../../home/models/search-query-form.model';
-import {SearchTag} from '../../home/models/searchTag';
-import {SearchTaskViewStoreModel} from '../../shared/store/interfaces/search-task-view-store.model';
+import {ServerConfigService} from '../settings/server-config.service';
+import {HandlerError} from '../settings/handle-error.service';
+import { SearchQuery} from '../home/models/search-query-form.model';
+import {SearchTag} from '../home/models/searchTag';
+import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-view-store.model';
 import {DatePipe} from '@angular/common';
 import {MatAccordion} from '@angular/material/expansion';
-import {TaskSummaryModel} from '../models/task-summary.model';
+import {TaskSummaryModel} from '../profile/models/task-summary.model';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.

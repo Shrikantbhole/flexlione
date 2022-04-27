@@ -6,16 +6,17 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProfileComponent} from './profile.component';
-import {TaskManagementService} from '../article/service/task-management-service';
-import {TaskModel} from '../article/models/taskModel';
+import {TaskManagementService} from '../Services/task-management-service';
+import {TaskModel} from '../article/models/task-detail.model';
 
 @Component({
   selector: 'app-profile-task-dump',
   templateUrl: './profile-task-dump.component.html'
 })
 export class ProfileTaskDumpComponent implements OnInit {
-  results: Observable<SearchTaskViewStoreModel[]>;
+  results: SearchTaskViewStoreModel[];
   @Input() options: string[] ;
+  @Input() profileId: string ;
   taskId = '';
   constructor(
     private route: ActivatedRoute,
@@ -26,7 +27,15 @@ export class ProfileTaskDumpComponent implements OnInit {
     private taskManagementService: TaskManagementService
   ) {}
   ngOnInit() {
-    this.results = this.store.select('searchTaskView');
+    const profileId = this.profileId;
+    this.store.select('searchTaskView')
+      .subscribe({
+        next: (SearchTaskView) => {
+          this.results = SearchTaskView.filter(function (value){
+            return  value.assignedTo === profileId;
+          });
+        }
+      });
   }
 
   public onRowClick(taskId: string) {

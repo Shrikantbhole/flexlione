@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-import {TaskModel} from '../../article/models/taskModel';
+import {TaskModel} from '../../article/models/task-detail.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {ApiError} from '../../settings/api-error.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import { Router } from '@angular/router';
@@ -64,7 +64,9 @@ export class HeadTasksComponent {
         next: (task: TaskModel) => {
           console.log(task);
           this.Task = task;
-          this.childTaskList = task.children;
+          this.childTaskList = task.children.filter(function ( taskModel) {
+            return taskModel.isRemoved === false;
+          }); // Hide Removed Tasks in Hierarchy view
 
           console.log(this.Task);
         },

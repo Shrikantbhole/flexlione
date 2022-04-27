@@ -1,10 +1,10 @@
-import {Component, Output, EventEmitter, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, Output, EventEmitter, OnInit, Input} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from '../models/search-query-form.model';
-import {TaskModel} from '../../article/models/taskModel';
-import {SearchManagementService} from './search-management.service';
+import {SearchQueryForm, GetUserList, SearchQuery} from '../models/search-query-form.model';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {SearchManagementService} from '../../Services/search-management.service';
 import {ApiError} from '../../settings/api-error.model';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
@@ -25,13 +25,16 @@ import {ProfileStoreModel} from '../../shared/store/interfaces/profile-store.mod
 export class SearchFormComponent implements  OnInit {
 
  //  FilteredOptions is Observable array created for Auto filling
+  @Input() form; // this is parent form
   public  options: string[] = [];
   filteredOptions: Observable<string[]>;
   public AddTag = '';
   private Profiles: ProfileStoreModel[] = [];
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
-  newSearch: FormGroup = CreateSearchForm();
+  newSearch: FormGroup = SearchQueryForm();
+   initialValue = true;
+
   constructor(
     private searchManagementService: SearchManagementService,
     private  messageBoxService: MessageBoxService,
@@ -39,8 +42,10 @@ export class SearchFormComponent implements  OnInit {
     private datePipe: DatePipe,
     private  snackBarService: MatSnackBar,
     private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {
     this.getTagList();
+    this.newSearch.controls['includeRemoved'].setValue(true);
   }
   public getTaskSearchList(search: SearchQuery) {
     this.searchManagementService.getTaskSearchList(search)
@@ -110,6 +115,14 @@ export class SearchFormComponent implements  OnInit {
 
     if (newSearch.getRawValue().status !== '' && newSearch.getRawValue().status !== undefined) {
       search.Status = [newSearch.getRawValue().status];
+    }
+
+    if (newSearch.getRawValue().includeRemoved !== '' && newSearch.getRawValue().includeRemoved !== undefined) {
+      search.IncludeRemoved = newSearch.getRawValue().includeRemoved;
+    }
+
+    if (newSearch.getRawValue().taskId !== '' && newSearch.getRawValue().taskId !== undefined) {
+      search.TaskId = newSearch.getRawValue().taskId;
     }
     return search;
   }

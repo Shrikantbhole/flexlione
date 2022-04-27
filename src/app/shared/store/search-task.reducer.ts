@@ -4,15 +4,7 @@ import {CreateTaskStoreModel} from './interfaces/create-task-store.model';
 import * as TaskActions from './search-task.action';
 
 
-const initialState: SearchTaskViewStoreModel = {
-  taskId: ' 23 ',
-  parentTaskId: '1',
-  createdBy: 'chirag',
-  assignedTo: 'chirag',
-  status: 'ongoing',
-  description: 'blaa',
-  deadline: null
-};
+
 
 
 

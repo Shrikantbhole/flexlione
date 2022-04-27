@@ -10,13 +10,15 @@ import * as TaskActions from '../shared/store/search-task.action';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-view-store.model';
-import {ProfileManagementService} from './service/profile-management.service';
+import {ProfileManagementService} from '../Services/profile-management.service';
 import {SearchFormComponent} from '../home/Search/search-form.component';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
-import {TaskScheduleManagementService} from './service/task-schedule-management.service';
+import {TaskScheduleManagementService} from '../Services/task-schedule-management.service';
 import * as TaskScheduleActions from '../shared/store/task-schedule.action';
 import {ApiError} from '../settings/api-error.model';
 import {MessageBoxService} from '../settings/message-box.service';
+import {FormGroup} from '@angular/forms';
+import {SearchQueryForm} from '../home/models/search-query-form.model';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile.component.html',
@@ -31,6 +33,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   sprintUpdateCounter = 0;
   sprintList: SprintModel[] = [];
   profileId = '';
+  parentForm: FormGroup = SearchQueryForm();
   public Profiles: ProfileStoreModel[] = [];
   @ViewChild(MatAccordion) accordion: MatAccordion;
   constructor(
@@ -62,6 +65,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           this.store.dispatch(new TaskActions.AddSearchTask(data.profile[i]));
         }
         this.profileId = data.profile[0].assignedTo;  // Get Profile Id
+        this.parentForm.controls['assignedTo'].setValue(
+          this.GetProfileName(this.profileId)
+        );
+        this.parentForm.controls['assignedTo'].disable();
         this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
         // This component will handle storing of task schedules and
         // send relevant schedules to calendar component
@@ -120,6 +127,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   });
   return sprintIds;
   }
+  onSearchTasks() {
+    this.togglePlanner = 'search';
+  }
   onPlanSprint() {
     this.togglePlanner = 'sprint';
   }
@@ -154,10 +164,13 @@ export class ProfileComponent implements OnInit, AfterViewInit {
            this.filterTaskByMonth(param.month, param.year);
           }
           if ( param.date !== undefined) {
-            this.getTaskScheduleListForTaskSummary(param.date);
+            this.getTaskScheduleListForaDate(param.date);
           }
-          if ( param.taskScheduleId !== undefined) {
-           this.updateTaskSchedule(param.taskScheduleId);
+          if ( param.updateTaskScheduleId !== undefined) {
+           this.updateTaskSchedule(param.updateTaskScheduleId);
+          }
+          if ( param.removeTaskScheduleId !== undefined) {
+            this.removeTaskSchedule(param.removeTaskScheduleId);
           }
           this.cleanQueryParams();
         }
@@ -166,15 +179,26 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Update Task Summary Id in case of new task summary Id
   private updateTaskSchedule(taskScheduleId: string) {
     this.taskScheduleManagementService.getTaskScheduleById(taskScheduleId).subscribe({
       next: (taskSchedule) => {
         this.store.dispatch(new TaskScheduleActions.RemoveTaskSchedule(taskScheduleId));
         this.store.dispatch(new TaskScheduleActions.AddTaskSchedule(taskSchedule));
-        this.getTaskScheduleListForTaskSummary(new Date(taskSchedule.date).getDate().toString());
+        this.getTaskScheduleListForaDate(new Date(taskSchedule.date).getDate().toString());
       },
-      error: (apiError: ApiError) => {this.messageBoxService.info('Error in getting task Id' , apiError.title, apiError.detail); }
+      error: (apiError: ApiError) => {
+        this.messageBoxService.info('Error in getting task Id', apiError.title, apiError.detail);
+      }
     });
+  }
+  private removeTaskSchedule(taskScheduleId: string) {
+    this.store.dispatch(new TaskScheduleActions.RemoveTaskSchedule(taskScheduleId));
+    let revisedTaskSchedule: TaskScheduleModel[] = [];
+    this.getTaskSchedulesFromStore(function (taskScheduleList) {
+      revisedTaskSchedule = taskScheduleList;
+    });
+    this.TaskScheduleList = revisedTaskSchedule;
   }
   private filterTaskByMonth(month: string, year: string) {
     let filteredTaskSchedule: TaskScheduleModel[] = [];
@@ -191,7 +215,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private getTaskScheduleListForTaskSummary(date: string) {
+  private getTaskScheduleListForaDate(date: string) {
     this.onDaySummary();
     let filteredTaskSchedule: TaskScheduleModel[] = [];
     this.getTaskSchedulesFromStore(function (taskScheduleList: TaskScheduleModel[]) {
@@ -224,7 +248,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         'month': null,
         'year': null,
         'date': null,
-        'taskScheduleId': null
+        'updateTaskScheduleId': null,
+        'removeTaskScheduleId': null
       },
       queryParamsHandling: 'merge'
     });

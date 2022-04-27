@@ -8,9 +8,9 @@ import { TaskScheduleModel} from '../models/task-schedule.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SprintModel} from '../models/sprint.model';
 import {AddOrEditSprintDialogComponent} from './add-or-edit-sprint-dialog.component';
-import {SprintManagementService} from '../service/sprint-management.service';
-import {TaskModel} from '../../article/models/taskModel';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {SprintManagementService} from '../../Services/sprint-management.service';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 

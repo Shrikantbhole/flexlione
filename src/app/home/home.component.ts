@@ -1,16 +1,17 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {ArticleListConfig, TagsService, User, UserService} from '../core';
-import {TaskModel} from '../article/models/taskModel';
-import {SearchManagementService} from './Search/search-management.service';
+import {TaskModel} from '../article/models/task-detail.model';
+import {SearchManagementService} from '../Services/search-management.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {ApiError} from '../settings/api-error.model';
-import {SearchQuery} from './models/search-query-form.model';
+import {SearchQuery, SearchQueryForm} from './models/search-query-form.model';
 import * as TaskActions from '../shared/store/search-task.action';
 import * as ProfileActions from '../shared/store/profile.action';
 import {MessageBoxService} from '../settings/message-box.service';
-import {ProfileManagementService} from '../profile/service/profile-management.service';
+import {ProfileManagementService} from '../Services/profile-management.service';
+import {FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -21,6 +22,7 @@ import {ProfileManagementService} from '../profile/service/profile-management.se
 export class HomeComponent implements OnInit, AfterViewInit {
   @Input() taskList: TaskModel[];
   currentUser: User;
+  parentForm: FormGroup = SearchQueryForm();
   constructor(
     private router: Router,
     private tagsService: TagsService,
@@ -31,7 +33,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     public globalSearch: SearchQuery,
     public personalSearch: SearchQuery,
     private profileManagementService: ProfileManagementService
-  ) {}
+  ) {
+  }
 
 
   isAuthenticated: boolean;

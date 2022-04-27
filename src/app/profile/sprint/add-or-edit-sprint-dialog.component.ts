@@ -5,7 +5,7 @@ import { MessageBoxService } from '../../settings/message-box.service';
 import {DatePipe} from '@angular/common';
 import {SprintModel} from '../models/sprint.model';
 import {ApiError} from '../../settings/api-error.model';
-import {SprintManagementService} from '../service/sprint-management.service';
+import {SprintManagementService} from '../../Services/sprint-management.service';
 import {getUserList} from '../../shared/shared-lists/user-list';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';

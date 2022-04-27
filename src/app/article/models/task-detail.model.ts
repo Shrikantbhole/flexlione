@@ -10,8 +10,11 @@ export class TaskModel {
   status: string;
   sprintId: string;
   positionAfter: string;
+  isRemoved: boolean;
   description: string;
   score: number;
+  estimatedHours: number;
+  actualHours: number;
   children: TaskModel[];
   downStreamDependencies: TaskModel[];
   upStreamDependencies: TaskModel[];

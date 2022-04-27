@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {DailyPlanSummaryService} from '../../service/daily-plan-summary.service';
+import {DailyPlanSummaryService} from '../../../Services/daily-plan-summary.service';
 import {ApiError} from '../../../settings/api-error.model';
 import {MessageBoxService} from '../../../settings/message-box.service';
 import {Store} from '@ngrx/store';
@@ -79,8 +79,9 @@ export class TaskSummaryFormComponent implements  OnInit {
         next: (taskSummary) => {
           this.snackBarService.open('Task Summary Successfully updated', '' , {duration: 300});
           console.log(taskSummary);
-          this.router.navigateByUrl(this.router.url + '?taskScheduleId=' + taskSummary.taskScheduleId);
-        },
+          // Update Task Summary Id of Task Schedule Id (In case of new task summary created)
+          this.router.navigateByUrl(this.router.url + '?updateTaskScheduleId=' + taskSummary.taskScheduleId);
+          },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });
   }

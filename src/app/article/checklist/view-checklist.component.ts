@@ -1,7 +1,7 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../../core';
-import {ChecklistManagementService} from '../service/checklist-management.service';
-import {TaskModel} from '../models/taskModel';
+import {ChecklistManagementService} from '../../Services/checklist-management.service';
+import {TaskModel} from '../models/task-detail.model';
 import {Component, OnInit} from '@angular/core';
 import {CheckListItem} from '../models/check-list-item.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';

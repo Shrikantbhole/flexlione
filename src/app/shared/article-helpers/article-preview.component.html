@@ -13,6 +13,11 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{SearchTask.taskId}} - {{SearchTask.description}}
+        <div class="tag-list" [hidden]="!SearchTask.isRemoved" >
+          <a class="tag-default tag-pill">
+            {{ 'Removed' }}
+          </a>
+        </div>
       </mat-panel-title>
       <mat-panel-description>
         <p class="master"> </p>
@@ -20,6 +25,7 @@
            [routerLink]="['/article/',sprint ]">
           {{sprint}} >
         </a>
+
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-content></ng-content>

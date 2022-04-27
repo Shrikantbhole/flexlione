@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TaskModel} from '../../article/models/taskModel';
+import {TaskModel} from '../../article/models/task-detail.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {CreateTaskForm} from '../../article/models/TaskForm';
+import {CreateTaskForm} from '../../article/models/task-detail.form';
 import {DatePipe} from '@angular/common';
 import {MessageBoxService} from '../../settings/message-box.service';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {ApiError} from '../../settings/api-error.model';
 import {getUserList} from '../shared-lists/user-list';
 import {getStatusList} from '../shared-lists/status-list';
@@ -25,10 +25,7 @@ export class TaskFormComponent implements OnInit {
    deadline: FormControl = new FormControl(new Date());
    newTask: FormGroup;
    private Profiles: ProfileStoreModel[] = [];
-   @Input()
-  set config(task: TaskModel) {
-    this.newTask = this.createTaskForm(task);
-  }
+   @Input() parentForm; // Fetch preloaded details in the form
   constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
@@ -46,29 +43,15 @@ export class TaskFormComponent implements OnInit {
       });
   }
 
-  ngOnInit() {}
-  createTaskForm(task: TaskModel): FormGroup {
-    const  newTask: FormGroup = CreateTaskForm();
-    newTask.controls['taskId'].disable();
-    newTask.controls['hrsSpentTillNow'].disable();
-    newTask.setValue({
-      taskId: task.taskId,
-      parentTaskId: task.parentTaskId,
-      createdBy: this.GetProfileName(task.createdBy),
-      status: task.status == null ? this.StatusList[0] : task.status,
-      positionAfter: task.positionAfter,
-      description: task.description,
-      deadline: task.deadline,
-      score: task.score,
-      assignedTo: this.GetProfileName(task.assignedTo),
-      estimatedHrs: task.taskId,
-      hrsSpentTillNow: task.taskId
-    });
-    return newTask;
+  ngOnInit() {
+    this.parentForm.controls['assignedTo'].setValue(this.GetProfileName(
+      this.parentForm.getRawValue().assignedTo));
+    this.parentForm.controls['createdBy'].setValue(this.GetProfileName(
+      this.parentForm.getRawValue().createdBy));
   }
 
   onClick() {
-  this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
+  this.taskManagementService.createOrUpdateTask(this.createTask(this.parentForm))
     .subscribe({
       next: (task) => {
         console.log(task);
@@ -88,10 +71,10 @@ export class TaskFormComponent implements OnInit {
     task.createdBy = this.GetProfileId(newTask.getRawValue().createdBy);
     task.assignedTo = this.GetProfileId(newTask.getRawValue().assignedTo);
     task.score = newTask.getRawValue().score;
-    task.status = newTask.getRawValue().status === '' ? 'notYetStarted' : newTask.getRawValue().status;
+    task.status = newTask.getRawValue().status === '' ? 'yetToStart' : newTask.getRawValue().status;
     task.parentTaskId = newTask.getRawValue().parentTaskId;
     task.positionAfter = newTask.getRawValue().positionAfter === '' ? null : newTask.getRawValue().positionAfter;
-    task.deadline = this.datePipe.transform(this.newTask.getRawValue().deadline, 'yyyy-MM-dd');
+    task.deadline = this.datePipe.transform(newTask.getRawValue().deadline, 'yyyy-MM-dd');
     return task;
   }
 

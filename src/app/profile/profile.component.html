@@ -17,6 +17,10 @@
           ></app-auto-search>
 
           <button class="btn btn-sm btn-outline-danger pull-xs-left"
+                  (click)="onSearchTasks()">
+            <i class="ion-edit"></i> Search Tasks
+          </button>
+          <button class="btn btn-sm btn-outline-danger pull-xs-left"
                   (click)="onPlanSprint()">
             <i class="ion-edit"></i> Plan your Sprint
           </button>
@@ -37,17 +41,22 @@
   <div class = "container">
     <div class="row">
 
-      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint'">
-        <app-profile-task-dump [options]= "getSprintIds()" ></app-profile-task-dump>
+      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'search'">
+        <app-home-search-form [form] ="parentForm" ></app-home-search-form>
       </div>
 
-      <div class=  "col-xs-6" [hidden]="togglePlanner === 'summary'" >
+      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'search'">
+        <app-profile-task-dump [options]= "getSprintIds()"
+                               [profileId] = "profileId"></app-profile-task-dump>
+      </div>
+
+      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'day'" >
         <app-sprint-preview [sprintList]="sprintList"
                             (newItemEvent)="updateSprintList($event)"
                             (newScheduleEvent)="AddNewTaskSchedule($event)"></app-sprint-preview>
       </div>
 
-      <div class="col-xs-6" [hidden]="togglePlanner === 'sprint'">
+      <div class="col-xs-6" [hidden]="togglePlanner !== 'day' && togglePlanner !== 'summary'">
         <app-profile-daily-plan-calender [profile]="profileId" [config] = "TaskScheduleList"></app-profile-daily-plan-calender>
       </div>
 

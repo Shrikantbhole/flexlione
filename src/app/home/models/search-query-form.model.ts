@@ -1,6 +1,5 @@
-import DateTimeFormat = Intl.DateTimeFormat;
 import {FormControl, FormGroup} from '@angular/forms';
-import {Tag} from '@angular/compiler/src/i18n/serializers/xml_helper';
+
 
 export class  SearchQuery {
   Tag: string;
@@ -9,17 +8,23 @@ export class  SearchQuery {
   AssignedTo?: string[];
   Description?: string;
   Status?: string[];
+  IncludeRemoved?: boolean;
+  TaskId: string;
 }
 
-export function CreateSearchForm(): FormGroup {
+export function SearchQueryForm(): FormGroup {
   return new FormGroup({
     'deadline': new FormControl(''),
     'createdBy': new FormControl(''),
     'assignedTo': new FormControl(''),
     'description': new FormControl(''),
     'status': new FormControl(''),
+    'includeRemoved': new FormControl(''),
+    'taskId': new FormControl(''),
   });
 }
+
+
 
 
 

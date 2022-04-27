@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {TaskModel} from '../../article/models/taskModel';
+import {TaskModel} from '../../article/models/task-detail.model';
 import { Article } from '../../core';
 import {SearchTaskViewStoreModel} from '../store/interfaces/search-task-view-store.model';
 

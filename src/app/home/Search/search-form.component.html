@@ -9,7 +9,7 @@
                  (newItemEvent) = "_searchByTag($event)"
 ></app-auto-search>
 
-<form [formGroup]="newSearch" class="example-form">
+<form [formGroup]="form" class="example-form">
 
   <mat-form-field>
     <mat-label>Description</mat-label>
@@ -47,11 +47,35 @@
 
   <mat-form-field>
     <mat-label>Status</mat-label>
-    <mat-select  formControlName ="status">
+    <mat-select  formControlName ="status" >
       <mat-option></mat-option>
       <mat-option [value]="user" *ngFor="let  user of StatusList" >
         {{user}}
       </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br/>
+  <br/>
+
+  <mat-form-field>
+    <mat-label>Task Id</mat-label>
+    <mat-select  formControlName ="taskId"  >
+      <mat-option></mat-option>
+      <mat-option [value]="user" *ngFor="let  user of StatusList" >
+        {{user}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br/>
+  <br/>
+
+  <mat-form-field>
+    <mat-label>Include Removed Tasks</mat-label>
+    <mat-select [(value)] = initialValue formControlName ="includeRemoved">
+      <mat-option [value]="true"> True</mat-option>
+      <mat-option [value]="false">False</mat-option>
     </mat-select>
   </mat-form-field>
 

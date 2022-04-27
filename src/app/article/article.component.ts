@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import {TaskModel} from './models/taskModel';
+import {TaskModel} from './models/task-detail.model';
 
 
 import {
@@ -10,13 +10,13 @@ import {
   User,
   UserService
 } from '../core';
-import {CheckListItem} from './models/check-list-item.model';
-import {ChecklistManagementService} from './service/checklist-management.service';
-import {TaskManagementService} from './service/task-management-service';
+
+import {TaskManagementService} from '../Services/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
-import {CommentManagementService} from './service/comment-management.service';
+import {CommentManagementService} from '../Services/comment-management.service';
 import {TaskComment} from './models/task-comment.model';
 import {DatePipe} from '@angular/common';
+import {CreateTaskForm, GetTaskFormFromTaskModel} from './models/task-detail.form';
 
 @Component({
   selector: 'app-article-page',
@@ -24,8 +24,6 @@ import {DatePipe} from '@angular/common';
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
-  UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
-    'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
   task: TaskModel;
   currentUser: User;
   canModify: boolean;
@@ -35,6 +33,7 @@ export class ArticleComponent implements OnInit {
   isSubmitting = false;
   isDeleting = false;
   selectedCheckListItem = '';
+  TaskForm: FormGroup = CreateTaskForm();
   // FormControl to track value of Deadline
   deadline: FormControl = new FormControl(new Date());
   constructor(
@@ -51,6 +50,8 @@ export class ArticleComponent implements OnInit {
     this.route.data.subscribe(
       (data: { article: TaskModel }) => {
         this.task = data.article;
+        this.TaskForm = GetTaskFormFromTaskModel(this.task);
+        // this.TaskForm.controls['parentTaskId'].setValue(this.task.parentTaskId);
         console.log(this.task);
         this.comments = [];
         // Load the comments on this article

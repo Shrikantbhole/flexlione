@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
 
   onAddNewTask() {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskStoreModel = {parentTaskId : '1'};
+    const task: CreateTaskStoreModel = {parentTaskId : '2'};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
   }
 }

@@ -2,7 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild
 import {map, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
-import {CreateSearchForm} from '../../home/models/search-query-form.model';
+import {SearchQueryForm} from '../../home/models/search-query-form.model';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {Router} from '@angular/router';
 import {SprintModel} from '../../profile/models/sprint.model';

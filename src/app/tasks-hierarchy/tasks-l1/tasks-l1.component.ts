@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { TaskModel } from '../../article/models/taskModel';
+import { TaskModel } from '../../article/models/task-detail.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ApiError} from '../../settings/api-error.model';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
 import {ViewChecklistDialogComponent} from './view-checklist-dialog.component';
 import * as TaskActions from '../../shared/store/create-task.action';
@@ -83,6 +83,9 @@ export class TasksL1Component {
         next: (task: TaskModel) => {
           console.log(task);
           this.l1Task = task;
+          this.l1Task.children = this.l1Task.children.filter(function ( taskModel) {
+            return taskModel.isRemoved === false;
+          }); // Hide removed tasks
           console.log(this.l1Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
