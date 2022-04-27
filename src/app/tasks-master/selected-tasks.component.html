@@ -56,8 +56,6 @@
                 <button mat-raised-button color="primary" (click) = "onClickGenerate(task)">
                  {{isEdit ? 'Update': 'Generate'  }}  </button>
 
-
-
               </mat-list-item>
 
             </mat-selection-list>
@@ -75,6 +73,6 @@
 
 <div class='detail'>
   <div class='slave'>
-<app-generate-task (click) = "changeButtonStatus()"  [gTask] = "this.taskForGeneration"></app-generate-task>
+<app-generate-task (click) = "changeButtonStatus()"  [generatedTask] = "this.taskForGeneration"></app-generate-task>
   </div>
 </div>

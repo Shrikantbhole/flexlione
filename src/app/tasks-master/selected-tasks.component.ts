@@ -36,11 +36,10 @@ export class SelectedTasksDisplayComponent implements OnInit {
     });
   }
 
-  @Input() y: TaskModel [];
+  @Input() bundleSelectedTask: TaskModel [];
     public taskForGeneration: TaskModel;
     public isEdit = false;
     public action = 'generate';
-   // eTaskId: string;
 
   onClickGenerate(task: TaskModel) {
 this.taskForGeneration = task;
@@ -48,12 +47,11 @@ this.taskForGeneration = task;
     }
 
   ngOnInit(): void {
-    this.selectedTasks = this.y;
+    this.selectedTasks = this.bundleSelectedTask;
   }
 
 
   changeButtonStatus() {
-    console.log('yes it happened');
     this.isEdit = true;
 }
 

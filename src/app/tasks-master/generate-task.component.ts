@@ -18,16 +18,13 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 
 export class GenerateTaskComponent implements OnChanges, OnInit {
-  @Input() gTask: TaskModel;
+  @Input() generatedTask: TaskModel;
 
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
   deadline: FormControl = new FormControl(new Date());
   newTask: FormGroup;
-  // set config(gTask: Task) {
-
- // }
-  constructor(
+    constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private messageBoxService: MessageBoxService,
@@ -62,11 +59,11 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
       .subscribe({
         next: (task) => {
           console.log(task);
-          this.snackBarService.open('Success. Task has been updated.', '', { duration: 3000 });
+          this.snackBarService.open('Success. Task has been added.', '', { duration: 3000 });
          // this.router.navigateByUrl('/article/' + task.taskId);
         },
         error: (apiError: ApiError) => {
-          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+          this.messageBoxService.info('Error: Task not added .', apiError.title, apiError.detail);
         }
       });
   }
@@ -86,7 +83,7 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
-    this.newTask = this.createTaskForm(this.gTask);
+    this.newTask = this.createTaskForm(this.generatedTask);
   }
 
 }
