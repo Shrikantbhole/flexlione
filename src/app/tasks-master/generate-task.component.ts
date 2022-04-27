@@ -1,19 +1,15 @@
-import {Component, Inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Task} from '../article/models/task.model';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {TaskModel} from '../article/models/taskModel';
+import {FormControl, FormGroup} from '@angular/forms';
 import {CreateTaskForm} from '../article/models/TaskForm';
 import {DatePipe} from '@angular/common';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TaskManagementService} from '../article/service/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
 import {ApiError} from '../settings/api-error.model';
-import {CreateTaskModel} from '../shared/store/interfaces/create-task.model';
 import {getUserList} from '../shared/shared-lists/user-list';
 import {getStatusList} from '../shared/shared-lists/status-list';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import EventEmitter from 'events';
-import {OuterSubscriber} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-generate-task',
@@ -22,7 +18,7 @@ import {OuterSubscriber} from 'rxjs/internal-compatibility';
 })
 
 export class GenerateTaskComponent implements OnChanges, OnInit {
-  @Input() gTask: Task;
+  @Input() gTask: TaskModel;
 
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
@@ -40,7 +36,7 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
     private  router: Router
   ) {
   }
-    createTaskForm(task: Task): FormGroup {
+    createTaskForm(task: TaskModel): FormGroup {
       const newTask: FormGroup = CreateTaskForm();
      // newTask.controls['taskId'].disable();
      // newTask.controls['hrsSpentTillNow'].disable();
@@ -75,8 +71,8 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
       });
   }
 
-  createTask(newTask: FormGroup): Task {
-    const task = new Task();
+  createTask(newTask: FormGroup): TaskModel {
+    const task = new TaskModel();
     task.taskId = newTask.getRawValue().taskId;
     task.description = newTask.getRawValue().description;
     task.createdBy = newTask.getRawValue().createdBy;

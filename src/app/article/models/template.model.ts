@@ -1,7 +1,7 @@
-import {Task} from './task.model';
+import {TaskModel} from './taskModel';
 
 export class  Template {
   templateId: string;
   description: string;
-  children: Task[];
+  children: TaskModel[];
 }

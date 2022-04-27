@@ -23,9 +23,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { SearchTaskReducer} from './shared/store/search-task.reducer';
 import { CreateTaskReducer} from './shared/store/create-task.reducer';
+import { ProfileReducer} from './shared/store/profile.reducer';
 import {DependencyManagementService} from './article/service/dependency-management.service';
 import {CommentManagementService} from './article/service/comment-management.service';
-import {DailyPlanSummaryService} from './profile/daily-plan-summary/daily-plan-summary.service';
+import {DailyPlanSummaryService} from './profile/service/daily-plan-summary.service';
+import {ProfileManagementService} from './profile/service/profile-management.service';
+import {SprintManagementService} from './profile/service/sprint-management.service';
+import {TaskScheduleManagementService} from './profile/service/task-schedule-management.service';
+import {TaskScheduleReducer} from './shared/store/task-schedule.reducer';
 
 
 @NgModule({
@@ -41,7 +46,9 @@ import {DailyPlanSummaryService} from './profile/daily-plan-summary/daily-plan-s
     MatDatepickerModule,
     StoreModule.forRoot({
       searchTaskView: SearchTaskReducer,
-      createTask: CreateTaskReducer
+      createTask: CreateTaskReducer,
+      profile: ProfileReducer,
+      taskSchedule: TaskScheduleReducer
     })
     ,
     CalendarModule.forRoot({
@@ -56,7 +63,10 @@ import {DailyPlanSummaryService} from './profile/daily-plan-summary/daily-plan-s
     ServerConfigService,
   DependencyManagementService,
     CommentManagementService,
-    DailyPlanSummaryService
+    DailyPlanSummaryService,
+    ProfileManagementService,
+    SprintManagementService,
+    TaskScheduleManagementService
   ],
   exports: [],
   bootstrap: [AppComponent]

@@ -1,13 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../models/task.model';
+import { TaskModel } from '../models/taskModel';
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../../settings/server-config.service';
 import {HandlerError} from '../../settings/handle-error.service';
 import {Template} from '../models/template.model';
+import {MessageBoxService} from '../../settings/message-box.service';
+import {ApiError} from '../../settings/api-error.model';
 
-import templateData from '../../tasks-master/templateData.json';
+
+// import {ApiError} from '../../settings/api-error.model';
+// import {MessageBoxService} from '../../settings/message-box.service';
+
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.
@@ -26,13 +31,13 @@ export class TaskManagementService {
 
 
 
-  constructor(http: HttpClient, serverConfigService: ServerConfigService) { // pass by reference
+  constructor(http: HttpClient, serverConfigService: ServerConfigService, private messageBoxService: MessageBoxService) { // pass by reference
     this.http_ = http;
     this.baseUrl = serverConfigService.getBaseUrl();
 
   }
   // Returns an observable for list of Line Items
-  getTaskById(taskId: string, include: string): Observable<Task> {
+  getTaskById(taskId: string, include: string): Observable<TaskModel> {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
@@ -44,7 +49,7 @@ export class TaskManagementService {
         include: include,
         taskId: taskId
     };
-    return this.http_.get<Task>(this.baseUrl + '/Task/GetTaskById', { params: queryStringParams, headers: httpHeaders })
+    return this.http_.get<TaskModel>(this.baseUrl + '/Task/GetTaskById', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
@@ -67,25 +72,31 @@ export class TaskManagementService {
       );
   }
 
-  createOrUpdateTask(task: Task): Observable<Task> {
+  createOrUpdateTask(task: TaskModel): Observable<TaskModel> {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
       'accept': 'application/json;v=1.0'
     };
 
-    return this.http_.put<Task>(this.baseUrl + '/Task/CreateOrUpdateTask', task, {headers: httpHeaders})
+    return this.http_.put<TaskModel>(this.baseUrl + '/Task/CreateOrUpdateTask', task, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
       );
   }
 
+
   getTemplateTasks( templateId: string, include: string) {
+
+//  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
+
+
     const httpHeaders = {
       'Content-Type': 'application/json',
       'accept': 'application/json;v=1.0'
     };
+
 
     let queryStringParams;
     if (templateId == null) {
@@ -101,19 +112,79 @@ export class TaskManagementService {
 // return[{templateId: '1', description: 'hello', children: [] }];
 
     return this.http_.get<Template[]>(this.url, {params: queryStringParams});
+   // catchError(HandlerError.handleError)
+ // const queryStringParams = {
+  //    sprintId: sprintId,
+   //   taskId: taskId
+  //  };
+  }
+
+
+  removeTaskFromSprint(taskId: string, callback: (task: TaskModel) => any) {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+    const queryStringParams = {
+      taskId: taskId
+    };
+
+    return this.http_.put<TaskModel>(this.baseUrl + '/Task/RemoveTaskFromSprint', '', {params: queryStringParams, headers: httpHeaders})
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      ).subscribe({
+        next : (task) => {
+          callback(task);
+        },
+        error : (apiError: ApiError) => {
+          this.messageBoxService.info('Error in removing Task', apiError.title, apiError.detail);
+        }
+      });
+  }
+
+  onLinkTaskToSprint(sprintId: string, taskId: string, callback: (task: TaskModel) => any) {
+    this.linkTaskToSprint(sprintId, taskId)
+      .subscribe({
+        next: (task) => {
+          callback(task);
+
+        },
+        error: (apiError: ApiError) => {
+          this.messageBoxService.info('Error in linking taks', apiError.title, apiError.detail);
+        }
+      });
+  }
+
+
+  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+    const queryStringParams = {
+      sprintId: sprintId,
+      taskId: taskId
+    };
+
+    return this.http_.put<TaskModel>(this.baseUrl + '/Task/LinkTaskToSprint', '', {params: queryStringParams, headers: httpHeaders})
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
+
+   addTaskToServer(task: TaskModel) {
+     const httpHeaders = {
+    'Content-Type': 'application/json',
+    'accept': 'application/json;v=1.0'
+      };
+      return this.http_.post<TaskModel>(this.url1, task, {headers: httpHeaders} );
+      }
 
 
 }
 
 
-addTaskToServer(task: Task) {
-  const httpHeaders = {
-    'Content-Type': 'application/json',
-    'accept': 'application/json;v=1.0'
-  };
-  return this.http_.post<Task>(this.url1, task, {headers: httpHeaders} )
-    .pipe(
-    retry(1),
-    catchError(HandlerError.handleError)
-  );
-}}

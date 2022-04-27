@@ -22,14 +22,15 @@ export class TaskHierarchyResolverService implements Resolve<Article> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-    return this.taskManagementService.getTaskById('23', 'children')
+    return this.taskManagementService.getTaskById('0', 'children')
       .pipe(
         map(
           article => {
             if (this.userService.getCurrentUser().username !== undefined) {
               return article;
             } else {
-              this.router.navigateByUrl('/login');
+              // this.router.navigateByUrl('/login');
+              return article;
             }
           }
         ),

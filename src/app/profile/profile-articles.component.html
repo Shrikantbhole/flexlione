@@ -1,8 +1,0 @@
-<br/>
-<app-article-preview
-  *ngFor="let task of results | async"
-  [SearchTask] ="task">
-  <app-auto-search class="pull-xs-right" [options]="this.options"
-                   [description]= "'Add to Sprint'"
-                   [baseUrl]="'/profile/Nimmit/'"></app-auto-search>
-</app-article-preview>

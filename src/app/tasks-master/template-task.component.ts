@@ -1,21 +1,8 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component} from '@angular/core';
 import {Template} from '../article/models/template.model';
-import {Task} from '../article/models/task.model';
-import templateData from '../tasks-master/templateData.json';
-import {MatDialog} from '@angular/material/dialog';
-import {MessageBoxService} from '../settings/message-box.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {TaskModel} from '../article/models/taskModel';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TaskManagementService} from '../article/service/task-management-service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../app.state';
-import {ApiError} from '../settings/api-error.model';
-import {Subscription} from 'rxjs';
-
-function onRowClick(task: any) {
-
-}
-
 
 @Component({
   selector: 'app-template-task',
@@ -23,22 +10,16 @@ function onRowClick(task: any) {
 
 })
 
-export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
+export class TemplateTaskComponent {
 
-
-
-
-
-  public templateTasks: Task[] = [];
+  public templateTasks: TaskModel[] = [];
   public selectedTaskId: string;
   public selectedTemplate: Template;
   public selectedTemplateId: string;
-  public selectedTasks: Task [] = [];
+  public selectedTasks: TaskModel [] = [];
   private taskManagementService: TaskManagementService;
   private templateData: Template[];
-  private activatedRoute: ActivatedRoute;
-
-    constructor(
+     constructor(
       activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService, private router: Router,
      ) {
       this.taskManagementService = taskManagementService;
@@ -63,7 +44,7 @@ export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
       console.log(this.templateData);
     }
 
-  onRowClick(task: Task ) {
+  onRowClick(task: TaskModel ) {
     this.selectedTaskId = task.taskId;
     const i = this.selectedTasks.findIndex((t) => t === task);
     console.log(i);
@@ -73,25 +54,12 @@ export class TemplateTaskComponent implements OnChanges, OnInit, OnDestroy {
       this.selectedTasks.splice(i, 1);
     }
     console.log(this.selectedTasks);
-   // this.selectedTasksId = this.selectedTasks.map( (this.selectedTasks) => return this.selectedTasks.taskId)
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-    }
-  ngOnInit(): void {
-
-  }
-
-  ngOnDestroy(): void {
-
-    }
-
   onClickSelectAll() {
-      for (let i = 0; i < this.templateTasks.length; i++) {
-   this.selectedTasks.push(this.templateTasks[i]);
-      }
-  }
+       for (let i = 0; i < this.templateTasks.length; i++) {
+         this.selectedTasks.push(this.templateTasks[i]);
+       }
+     }
 }
 
 

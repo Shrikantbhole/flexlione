@@ -79,7 +79,7 @@ export class AddOrEditDependencyDialogComponent {
         this.dialogRef.close(dependency);
       },
       error: () => {
-        this.messageBoxService.info('Error: Task not created.');
+        this.messageBoxService.info('Error: TaskModel not created.');
       }
     });
   }

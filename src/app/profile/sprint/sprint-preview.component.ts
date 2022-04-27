@@ -1,13 +1,18 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, Output, ViewChild, EventEmitter} from '@angular/core';
 import {UserService} from '../../core';
 
 import {MatAccordion} from '@angular/material/expansion';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddOrEditScheduleDialogComponent} from '../schedule/add-or-edit-schedule-dialog.component';
-import {CheckListItem} from '../../article/models/check-list-item.model';
-import {ScheduleTaskModel} from '../models/schedule-task.model';
-import {ActivatedRoute} from '@angular/router';
+import { TaskScheduleModel} from '../models/task-schedule.model';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SprintModel} from '../models/sprint.model';
+import {AddOrEditSprintDialogComponent} from './add-or-edit-sprint-dialog.component';
+import {SprintManagementService} from '../service/sprint-management.service';
+import {TaskModel} from '../../article/models/taskModel';
+import {TaskManagementService} from '../../article/service/task-management-service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -16,56 +21,77 @@ import {SprintModel} from '../models/sprint.model';
 })
 export class SprintPreviewComponent {
  @Input() sprintList: SprintModel[];
-  @Input()
-  set config(sprintId: number) {
-    console.log('Going to fetch data again from db for Sprint: ' + this.selectedSprint);
-  }
+
+  @Output() newItemEvent  = new EventEmitter<string>();
+  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @ViewChild(MatAccordion) accordion: MatAccordion;
-  selectedSprint: SprintModel = new SprintModel();
+  public selectedSprint: SprintModel = new SprintModel();
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
     private dialog: MatDialog,
+    private sprintManagementService: SprintManagementService,
+    private router: Router,
+    private taskManagementService: TaskManagementService,
+    private snackBarService: MatSnackBar
   ) {  }
 
-  onUpdateOrScheduleNewTask(taskId: string): void {
-    console.log('scheduling task ' + taskId );
+  onUpdateOrScheduleNewTask(task: TaskModel): void {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-
-      isEdit: false,
-      scheduleTask: this.getScheduleTask(taskId)
+      task : task
     };
 
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
-      .afterClosed().subscribe(
-      {
-        next: (checkListItem: CheckListItem) => {
+      .afterClosed().subscribe({
+      next: (taskSchedule: TaskScheduleModel) => {
+       this.newScheduleEvent.emit(taskSchedule);
+      },
+      error: () => {}
+    });
+  }
+  onRowClick(sprint: SprintModel) {
+    this.selectedSprint = sprint;
+    this.GetTaskList(sprint.sprintId);
+  }
+  GetTaskList(sprintId: string) {
+    this.sprintManagementService.getSprintById(sprintId, 'task')
+      .subscribe({
+        next: (sprint) => {
+          this.selectedSprint.tasks = sprint.tasks;
+        },
+        error: () => {}
+      });
+  }
+  onAddOrEditSprint( isEdit: boolean, sprint?: SprintModel) {
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
 
-          if (checkListItem == null) { // Cancel button clicked
-            return;
-          }
-        }
+      isEdit: isEdit,
+      sprint: sprint === undefined ? new SprintModel() : sprint
+    };
+    this.dialog.open(AddOrEditSprintDialogComponent, dialogConfig).afterClosed().subscribe(
+      {
+        next: (newSprint: SprintModel) => {
+          console.log('Added Sprint: ' + newSprint);
+          this.newItemEvent.emit(newSprint.owner);
+        },
+        error: () => {}
       }
     );
-  }
-  getScheduleTask(taskId: string): ScheduleTaskModel {
-    const  scheduleTask: ScheduleTaskModel = new ScheduleTaskModel();
-    scheduleTask.taskId = '23';
-    scheduleTask.scheduleTaskId = '2';
-    scheduleTask.description = 'blaa';
-    scheduleTask.description = '';
-    scheduleTask.startDate = new Date().toString();
-    scheduleTask.startMinute = 5;
-    scheduleTask.startHour = 3;
-    scheduleTask.stopDate = '';
-    scheduleTask.stopMinute = 2;
-    scheduleTask.stopHour = 3;
-    return scheduleTask;
+
   }
 
-  onRowClick(sprint: SprintModel) {
-    console.log('blaa');
-  this.selectedSprint = sprint;
+  onShowSchedulesForTask(taskId: string): void {
+    this.router.navigateByUrl(this.router.url + '?taskId=' + taskId);
+    // Remove query params
+  }
+
+  onRemoveTaskFromSprint(task: TaskModel): void {
+    this.taskManagementService.removeTaskFromSprint(task.taskId, this.onSuccess);
+  }
+
+  onSuccess = (task: TaskModel)  => {
+    this.snackBarService.open('Task Successfully removed from sprint', '', {duration: 300});
   }
 }

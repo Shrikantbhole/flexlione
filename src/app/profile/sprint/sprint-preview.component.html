@@ -1,35 +1,58 @@
 
 <div class="example-action-buttons">
+
+  <br/>
   <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+
+  <button mat-raised-button color="primary"
+          class = "btn btn-sm btn-outline-danger"
+          (click) = "onAddOrEditSprint(false)">
+    <i class="ion-add"></i>Add Sprint
+</button>
+
+  <button class="btn btn-sm btn-outline-danger pull-xs-right"
+          (click) = "onShowSchedulesForTask('all')">
+    <i class="icon ion-refresh"></i> Refresh Calender
+  </button>
+
 </div>
+
+<p *ngIf="sprintList.length == 0">No Sprint exists for the user.</p>
 <mat-accordion>
   <mat-expansion-panel *ngFor="let sprint of sprintList"
-                       [ngClass]="{highlight: sprint == selectedSprint}"
                        (click)="onRowClick(sprint)">
+
 
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Sprint Id: {{sprint.sprintId}}
+        Sprint: {{sprint.sprintId}} - {{sprint.description}}
+
       </mat-panel-title>
       <mat-panel-description>
-
+        <button class="btn btn-sm btn-outline-danger pull-xs-right"
+        (click) = "onAddOrEditSprint(true,sprint)">
+          <i class="ion-edit"></i> View Sprint
+        </button>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <br/>
     <br/>
-    <p *ngFor="let task of selectedSprint.taskList"
+    <p *ngFor="let task of selectedSprint.tasks"
        class="grid5">
-      {{task.taskId}}
-      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onUpdateOrScheduleNewTask(task.taskId)">
-        Schedule Task
+      <a [routerLink]="['/article',task.taskId]" >
+        {{task.taskId}} - {{task.description}} </a>
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onRemoveTaskFromSprint(task)">
+        <i class="icon ion-arrow-swap"></i>
       </button>
-      <br/>
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onUpdateOrScheduleNewTask(task)">
+        <i class="icon ion-star"></i>
+      </button>
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onShowSchedulesForTask(task.taskId)">
+        <i class="icon ion-calendar"></i>
+      </button>
+
     </p>
-
-
-
   </mat-expansion-panel>
-
 </mat-accordion>
 

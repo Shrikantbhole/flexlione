@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import {Task} from './models/task.model';
+import {TaskModel} from './models/taskModel';
 
 
 import {
@@ -26,7 +26,7 @@ import {DatePipe} from '@angular/common';
 export class ArticleComponent implements OnInit {
   UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
     'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
-  task: Task;
+  task: TaskModel;
   currentUser: User;
   canModify: boolean;
   comments: TaskComment[] = [];
@@ -49,7 +49,7 @@ export class ArticleComponent implements OnInit {
     private datepipe: DatePipe
   ) {// Retreive the prefetched article
     this.route.data.subscribe(
-      (data: { article: Task }) => {
+      (data: { article: TaskModel }) => {
         this.task = data.article;
         console.log(this.task);
         this.comments = [];
@@ -78,10 +78,10 @@ export class ArticleComponent implements OnInit {
        this.navigateToTaskHierarchy(parentTask);
       },
       error: () => {
-        this.messageBoxService.info('Error: Task not created.');
+        this.messageBoxService.info('Error: TaskModel not created.');
       }
     }); }
-  navigateToTaskHierarchy(parentTask: Task) {
+  navigateToTaskHierarchy(parentTask: TaskModel) {
     if ( parentTask.taskId === '0') {
       this.router.navigateByUrl('/task-tree?L1=' + this.task.taskId);
       return;

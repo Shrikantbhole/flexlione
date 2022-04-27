@@ -1,7 +1,7 @@
 
 
 <br />
-<h1 mat-dialog-title>{{ isEdit ? "Update Task" : "Add Task" }}</h1>
+<h1 mat-dialog-title>{{ isEdit ? "Update TaskModel" : "Add TaskModel" }}</h1>
 
 
 <div mat-dialog-content>
@@ -11,7 +11,7 @@
 
 
     <mat-form-field>
-      <label >Task Id</label>
+      <label >TaskModel Id</label>
       <input matInput formControlName="taskId"  />
       <mat-error *ngIf="newTask.get('taskId').invalid">You must enter a value</mat-error>
     </mat-form-field>
@@ -20,7 +20,7 @@
 
 
     <mat-form-field>
-      <mat-label>Parent Task Id</mat-label>
+      <mat-label>Parent TaskModel Id</mat-label>
       <input matInput formControlName="parentTaskId" />
     </mat-form-field>
 
@@ -115,6 +115,6 @@
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button color="primary" cdkFocusInitial [disabled]="newTask.invalid"
           (click)="isEdit? onUpdate(): onCreate()">
-    {{ isEdit ? "Update" : "Add Task" }}
+    {{ isEdit ? "Update" : "Add TaskModel" }}
   </button>
 </div>

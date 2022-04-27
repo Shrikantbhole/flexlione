@@ -29,12 +29,13 @@ export class ArticleResolver implements Resolve<Article> {
             if (this.userService.getCurrentUser().username !== undefined) {
               return article;
             } else {
-              this.router.navigateByUrl('/login');
+              // this.router.navigateByUrl('/login');
+              return article;
             }
           }
         ),
         catchError((err) => this.router.navigateByUrl('/'))
       );
-        }
+  }
 
 }

@@ -26,7 +26,7 @@
     <div class="info">
       <a class="author"
          [routerLink]="['/profile/',SearchTask.assignedTo ]">
-        {{SearchTask.assignedTo}}
+       {{GetProfileName(SearchTask.assignedTo)}}
       </a>
     </div>
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">

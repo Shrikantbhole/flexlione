@@ -5,9 +5,19 @@
 <app-auto-search [options]="this.options"
                  [description]= "'Search by Tag'"
                  [baseUrl]="''"
+                 [search]="'search'"
+                 (newItemEvent) = "_searchByTag($event)"
 ></app-auto-search>
 
 <form [formGroup]="newSearch" class="example-form">
+
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" placeholder="Description">
+  </mat-form-field>
+
+  <br/>
+  <br/>
 
   <mat-form-field>
     <mat-label>Created By</mat-label>

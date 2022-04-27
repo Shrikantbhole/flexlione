@@ -1,12 +1,12 @@
-export class ScheduleTaskModel {
-  scheduleTaskId: string;
+export class TaskScheduleModel {
+  taskScheduleId: string;
   taskId: string;
-  sprintId: string;
   description: string;
-  startDate: string;
+  date: string;
   startHour: number;
   startMinute: number;
-  stopDate: string;
   stopHour: number;
   stopMinute: number;
+  owner: string;
+  taskSummaryId: string;
 }

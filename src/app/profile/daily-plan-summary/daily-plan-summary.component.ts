@@ -1,22 +1,15 @@
 import {Component, Output, EventEmitter, OnInit, Input, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from '../../home/models/search-query-form.model';
-import {Task} from '../../article/models/task.model';
-import {DailyPlanSummaryService} from './daily-plan-summary.service';
-import {ApiError} from '../../settings/api-error.model';
+import {DailyPlanSummaryService} from '../service/daily-plan-summary.service';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
-import * as TaskActions from '../../shared/store/search-task.action';
 import {DatePipe} from '@angular/common';
-import {getStatusList} from '../../shared/shared-lists/status-list';
-import {getUserList} from '../../shared/shared-lists/user-list';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
-import {ScheduleTaskModel} from '../models/schedule-task.model';
+import {TaskScheduleModel} from '../models/task-schedule.model';
 import {MatAccordion} from '@angular/material/expansion';
+import {TaskSummaryModel} from '../models/task-summary.model';
+import * as TaskScheduleActions from '../../shared/store/task-schedule.action';
 
 /** @title Form field appearance variants */
 @Component({
@@ -26,12 +19,11 @@ import {MatAccordion} from '@angular/material/expansion';
 })
 export class DailyPlanSummaryComponent implements  OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
-  scheduleTaskList: ScheduleTaskModel[] = [];
-
+  TaskScheduleList: TaskScheduleModel[] = [];
+  public TaskSummaryModel: TaskSummaryModel = new TaskSummaryModel();
   @Input()
-  set config(scheduleTaskList: ScheduleTaskModel[]) {
-    console.log('Get Summary for Task Id: ' + scheduleTaskList[0].taskId);
-    this.scheduleTaskList = scheduleTaskList;
+  set config(taskScheduleList: TaskScheduleModel[]) {
+    this.TaskScheduleList = taskScheduleList;
   }
 
   constructor(
@@ -41,9 +33,33 @@ export class DailyPlanSummaryComponent implements  OnInit {
     private datePipe: DatePipe,
     private snackBarService: MatSnackBar,
     private route: ActivatedRoute,
+    private  dailyPlanSummaryService: DailyPlanSummaryService
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+  getTaskSummary(taskSchedule: TaskScheduleModel) {
+    if (this.TaskSummaryModel.taskScheduleId === taskSchedule.taskScheduleId) {
+      return;
+    }
+    let newTaskSummaryModel: TaskSummaryModel = new TaskSummaryModel(); // Assigned new model for config function in form to work
+    this.dailyPlanSummaryService.getTaskSummaryById(taskSchedule.taskSummaryId)
+      .subscribe({
+        next: (taskSummaryModel) => {
+          console.log(taskSummaryModel);
+          if (taskSummaryModel === null) {
+            newTaskSummaryModel.taskId = taskSchedule.taskId;
+            newTaskSummaryModel.description = taskSchedule.description;
+            newTaskSummaryModel.taskScheduleId = taskSchedule.taskScheduleId;
+          } else {
+            newTaskSummaryModel = taskSummaryModel; }
+          newTaskSummaryModel.expectedHour = (taskSchedule.stopHour - taskSchedule.startHour)
+                                            + (taskSchedule.stopMinute - taskSchedule.startMinute) / 60;
+          this.TaskSummaryModel = newTaskSummaryModel;
+          },
+        error: () => {}
+      });
   }
+
+
 }

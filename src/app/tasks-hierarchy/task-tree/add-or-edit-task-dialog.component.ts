@@ -3,7 +3,7 @@ import { TaskManagementService } from '../../article/service/task-management-ser
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
-import { Task } from '../../article/models/task.model';
+import { TaskModel } from '../../article/models/taskModel';
 import { ApiError} from '../../settings/api-error.model';
 import { DatePipe } from '@angular/common';
 
@@ -20,7 +20,7 @@ export class AddOrEditTaskDialogComponent {
 
   // Creating Scroll fields
 
-  public Tasks: Task[] = [];
+  public Tasks: TaskModel[] = [];
   public selectedTask = '';
   public UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
   'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
@@ -64,7 +64,7 @@ export class AddOrEditTaskDialogComponent {
     // Show list of all siblings of current task to align position
     this.taskManagementService.getTaskById(data.parentTaskId, 'children').subscribe(
       {
-        next: (task: Task) => {
+        next: (task: TaskModel) => {
           this.Tasks = task.children;
 
         },
@@ -123,13 +123,13 @@ export class AddOrEditTaskDialogComponent {
     this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
       .subscribe({
 
-      next: (task: Task) => {
-        console.log('New Task successfully created');
+      next: (task: TaskModel) => {
+        console.log('New TaskModel successfully created');
         console.log(task);
         this.dialogRef.close(task);
       },
       error: (apiError: ApiError) => {
-        this.messageBoxService.info('Error: Task not created .', apiError.title, apiError.detail);
+        this.messageBoxService.info('Error: TaskModel not created .', apiError.title, apiError.detail);
       }
     });
   }
@@ -139,13 +139,13 @@ export class AddOrEditTaskDialogComponent {
     this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
       .subscribe({
 
-        next: (task: Task) => {
-          console.log('Task successfully updated');
+        next: (task: TaskModel) => {
+          console.log('TaskModel successfully updated');
           console.log(task);
           this.dialogRef.close(task);
         },
         error: (apiError: ApiError) => {
-          this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
+          this.messageBoxService.info('Error: TaskModel not updated .', apiError.title, apiError.detail);
         }
       });
   }
@@ -158,8 +158,8 @@ export class AddOrEditTaskDialogComponent {
 
   }
 
-  createTask(newTask: FormGroup): Task {
-    const task = new Task();
+  createTask(newTask: FormGroup): TaskModel {
+    const task = new TaskModel();
     task.taskId = newTask.getRawValue().taskId;
     task.description = newTask.getRawValue().description;
     task.createdBy = this.CreatedBy;

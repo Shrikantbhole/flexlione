@@ -1,22 +1,19 @@
-import { Component, Inject } from '@angular/core';
-import { TaskManagementService } from '../../article/service/task-management-service';
+import {Component, Inject, OnInit} from '@angular/core';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
-import { ScheduleTaskModel } from '../models/schedule-task.model';
-import {ChecklistManagementService} from '../../article/service/checklist-management.service';
 import {DatePipe} from '@angular/common';
 import {getHourList} from '../../shared/shared-lists/hour-list';
+import {TaskScheduleManagementService} from '../service/task-schedule-management.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {TaskScheduleModel} from '../models/task-schedule.model';
 
 
 @Component({
-  selector: 'app-create-store-order-dialog',
+  selector: 'app-add-or-edit-schedule-dialog',
   templateUrl: './add-or-edit-schedule-dialog.component.html',
 })
-export class AddOrEditScheduleDialogComponent {
-
-  private taskManagementService: TaskManagementService;
-  private checklistManagementService: ChecklistManagementService;
+export class AddOrEditScheduleDialogComponent implements OnInit {
   private messageBoxService: MessageBoxService;
   public isEdit: boolean ;
   public taskId: string;
@@ -24,65 +21,67 @@ export class AddOrEditScheduleDialogComponent {
 
 
   // members for data-binding
-  newScheduleTask: FormGroup = new FormGroup({
-    'scheduleTaskId': new FormControl('', [Validators.required]),
+  newTaskSchedule: FormGroup = new FormGroup({
+    'taskScheduleId': new FormControl('', [Validators.required]),
     'taskId': new FormControl(''),
     'description': new FormControl(''),
-    'startDate': new FormControl(''),
+    'date': new FormControl(''),
     'startHour': new FormControl(''),
     'startMinute': new FormControl(''),
-    'stopDate': new FormControl(''),
     'stopHour': new FormControl(''),
-    'stopMinute': new FormControl('')
+    'stopMinute': new FormControl(''),
+    'owner' : new FormControl(''),
   });
-  constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditScheduleDialogComponent>, taskManagementService: TaskManagementService,
+  constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditScheduleDialogComponent>,
               messageBoxService: MessageBoxService, @Inject(MAT_DIALOG_DATA) data,
-              checklistManagementService: ChecklistManagementService) {
+              private taskScheduleManagementService: TaskScheduleManagementService,
+              private snackBarService: MatSnackBar) {
     this.messageBoxService = messageBoxService;
-    this.taskManagementService = taskManagementService;
-    this.isEdit = data.isEdit;
-    this.checklistManagementService = checklistManagementService;
-    this.taskId = data.taskId;
-    this.newScheduleTask.setValue({
-      scheduleTaskId: data.scheduleTask.scheduleTaskId,
-      taskId: data.scheduleTask.taskId,
-      description: data.scheduleTask.description,
-      startDate: new Date(data.scheduleTask.startDate),
-      startHour: data.scheduleTask.startHour,
-      startMinute: data.scheduleTask.startMinute,
-      stopDate: data.scheduleTask.stopDate,
-      stopHour: data.scheduleTask.stopHour,
-      stopMinute: data.scheduleTask.stopMinute,
+    this.newTaskSchedule.setValue({
+      taskScheduleId: 'Server Generated',
+      taskId:  data.task.taskId ,
+      description: data.task.description ,
+      date: new Date(),
+      startHour:  '',
+      startMinute:  '',
+      stopHour:  '',
+      stopMinute: '' ,
+      owner: data.task.assignedTo
     });
-    this.newScheduleTask.controls['description'].disable();
-    this.newScheduleTask.controls['taskId'].disable();
+    this.newTaskSchedule.controls['description'].disable();
+    this.newTaskSchedule.controls['taskId'].disable();
   }
 
-  OnInit() {
-    this.dialogRef.updateSize('50%', '60%');
+  ngOnInit(): void {
+    this.dialogRef.updateSize('50%', '70%');
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onUpdate(): void {
-
-    console.log('Update Task Schedule' + this.createTaskSchedule(this.newScheduleTask).startDate);
-    this.dialogRef.close();
+    this.taskScheduleManagementService.AddOrUpdateTaskSchedule(this.createTaskSchedule(this.newTaskSchedule))
+      .subscribe({
+        next: (taskSchedule) => {
+          this.snackBarService.open('Success! Task Schedule updated', '', {duration: 300});
+          this.dialogRef.close(taskSchedule);
+          },
+        error: () => {}
+      });
   }
 
-  createTaskSchedule(newScheduleTask: FormGroup): ScheduleTaskModel {
-    const scheduleTask = new ScheduleTaskModel();
-    scheduleTask.scheduleTaskId = newScheduleTask.getRawValue().scheduleTaskId;
-    scheduleTask.taskId = newScheduleTask.getRawValue().taskId;
-    scheduleTask.description = newScheduleTask.getRawValue().description;
-    scheduleTask.startDate =  this.datepipe.transform(newScheduleTask.getRawValue().startDate, 'yyyy-MM-dd');
-    scheduleTask.startHour = newScheduleTask.getRawValue().startHour;
-    scheduleTask.startMinute = newScheduleTask.getRawValue().startMinute;
-    scheduleTask.stopDate = newScheduleTask.getRawValue().stopDate;
-    scheduleTask.stopHour = newScheduleTask.getRawValue().stopHour;
-    scheduleTask.stopMinute = newScheduleTask.getRawValue().stopMinute;
-    return scheduleTask;
+  createTaskSchedule(newTaskSchedule: FormGroup): TaskScheduleModel {
+    const taskSchedule = new TaskScheduleModel();
+    taskSchedule.taskScheduleId = newTaskSchedule.getRawValue().taskScheduleId;
+    taskSchedule.taskId = newTaskSchedule.getRawValue().taskId;
+    taskSchedule.description = newTaskSchedule.getRawValue().description;
+    taskSchedule.date =  this.datepipe.transform(newTaskSchedule.getRawValue().date, 'yyyy-MM-dd');
+    taskSchedule.startHour = newTaskSchedule.getRawValue().startHour;
+    taskSchedule.startMinute = newTaskSchedule.getRawValue().startMinute;
+    taskSchedule.stopHour = newTaskSchedule.getRawValue().stopHour;
+    taskSchedule.stopMinute = newTaskSchedule.getRawValue().stopMinute;
+    taskSchedule.owner = newTaskSchedule.getRawValue().owner;
+    return taskSchedule;
   }
 
 

@@ -1,20 +1,16 @@
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import {Task} from '../../article/models/task.model';
+import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
+import {TaskModel} from '../../article/models/taskModel';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {TaskManagementService} from '../../article/service/task-management-service';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import {ApiError} from '../../settings/api-error.model';
-import {AddOrEditTaskDialogComponent} from './add-or-edit-task-dialog.component';
-import {CheckListTemplate} from '../../article/models/check-list-template.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import * as TaskActions from '../../shared/store/create-task.action';
-import {CreateTaskModel} from '../../shared/store/interfaces/create-task.model';
+import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
 
 
 
@@ -28,14 +24,9 @@ export class HeadTasksComponent {
 
   // members needed for data-binding with html
   public selectedTaskId: string;
-  public data: Task[];
-  public childTaskList: Task[];
-  public Task: Task ;
-  public TaskIdList: number[] = [];
-  public l1TaskId: string;
-  public l2TaskId: string;
-  public l3TaskId: string;
-  private num: number;
+  public data: TaskModel[];
+  public childTaskList: TaskModel[];
+  public Task: TaskModel ;
 
   // services
   private dialog: MatDialog;
@@ -70,7 +61,7 @@ export class HeadTasksComponent {
     // this.Tasks = this.data.filter(x => x.parentTaskId === null);
     this.taskManagementService.getTaskById('0', 'children').subscribe(
       {
-        next: (task: Task) => {
+        next: (task: TaskModel) => {
           console.log(task);
           this.Task = task;
           this.childTaskList = task.children;
@@ -93,7 +84,7 @@ export class HeadTasksComponent {
   // and send request again.
   onAddNewTaskButtonClick(): void {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskModel = {taskId : null};
+    const task: CreateTaskStoreModel = {taskId : null};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.router.navigateByUrl('/editor');
   }
@@ -132,14 +123,14 @@ export class HeadTasksComponent {
             next: () => {
 
               // show acknowledgement to user
-              this.snackBarService.open('Task deleted.');
+              this.snackBarService.open('TaskModel deleted.');
 
               // load the list again
               this.loadParentTasks();
             },
 
             // show error dialog box if server failed to delete
-            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to delete Task', apiError.title, apiError.detail)
+            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to delete TaskModel', apiError.title, apiError.detail)
           });
         }
       }
@@ -160,13 +151,13 @@ export class HeadTasksComponent {
     this.dialog.open(ViewChecklistDialogComponent, dialogConfig, )
       .afterClosed().subscribe(
       {
-        next: (task: Task) => {
+        next: (task: TaskModel) => {
 
           if (task == null) { // Cancel button clicked
             return;
           }
 
-          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
 
           // Load the list again
           this.loadParentTasks();

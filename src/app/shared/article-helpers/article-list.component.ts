@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import { Article, ArticleListConfig, ArticlesService } from '../../core';
-import {Task} from '../../article/models/task.model';
-import {SearchTaskViewModel} from '../store/interfaces/search-task-view.model';
+import {TaskModel} from '../../article/models/taskModel';
+import {SearchTaskViewStoreModel} from '../store/interfaces/search-task-view-store.model';
 import {ApiError} from '../../settings/api-error.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 
@@ -18,8 +18,8 @@ import * as TaskActions from '../store/search-task.action';
   templateUrl: './article-list.component.html'
 })
 export class ArticleListComponent implements OnInit {
-  searchTaskViewModel: Observable<SearchTaskViewModel[]>;
-  results: Observable<SearchTaskViewModel[]>;
+  searchTaskViewModel: Observable<SearchTaskViewStoreModel[]>;
+  results: Observable<SearchTaskViewStoreModel[]>;
   constructor (
     private articlesService: ArticlesService,
     private taskManagementService: TaskManagementService,

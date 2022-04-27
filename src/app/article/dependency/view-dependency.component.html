@@ -9,8 +9,8 @@
   <thead>
   <tr>
     <th>Dependency Id</th>
-    <th>Task Id</th>
-    <th>Dependent Task Id</th>
+    <th>TaskModel Id</th>
+    <th>Dependent TaskModel Id</th>
     <th>Status</th>
     <th>Description</th>
 
@@ -48,7 +48,7 @@
 
         <button mat-menu-item  (click)= "onDeleteCheckListItemClick(dependency.dependencyId)" >
 
-          <span>View Task  {{dependency.dependentTaskId}}</span>
+          <span>View TaskModel  {{dependency.dependentTaskId}}</span>
         </button>
 
       </mat-menu>

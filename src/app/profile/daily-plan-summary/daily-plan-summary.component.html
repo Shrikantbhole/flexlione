@@ -1,19 +1,40 @@
 <div class="example-action-buttons">
   <button mat-button (click)="accordion.closeAll()">Collapse All</button>
 </div>
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let task of scheduleTaskList">
-
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{task.taskId}} - {{task.description}}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-profile-task-summary-form [config]="task.taskId" ></app-profile-task-summary-form>
 
 
-  </mat-expansion-panel>
-</mat-accordion>
+<div *ngIf="TaskScheduleList">
+
+  <p *ngIf="TaskScheduleList.length == 0">No Task Scheduled for selected date</p>
+  <div *ngIf="TaskScheduleList.length != 0">
+    <h5>Task Summary for date: {{TaskScheduleList[0].date}}</h5>
+    <br/>
+    <mat-accordion>
+      <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
+                            (click) = "getTaskSummary(taskSchedule)">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{taskSchedule.taskId}} - {{taskSchedule.description}}
+
+          </mat-panel-title>
+          <mat-panel-description>
+            <button class="btn btn-sm btn-outline-danger pull-xs-right"
+                    (click)="getTaskSummary(taskSchedule)">
+              <i class="ion-edit"></i> Delete Schedule
+            </button>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-profile-task-summary-form [config]="TaskSummaryModel"
+        ></app-profile-task-summary-form>
+
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+</div>
+
 
 
 

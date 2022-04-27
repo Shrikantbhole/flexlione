@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../../article/models/task.model';
+import { TaskModel } from '../../article/models/taskModel';
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../../settings/server-config.service';
 import {HandlerError} from '../../settings/handle-error.service';
 import { SearchQuery} from '../models/search-query-form.model';
 import {SearchTag} from '../models/searchTag';
-import {SearchTaskViewModel} from '../../shared/store/interfaces/search-task-view.model';
+import {SearchTaskViewStoreModel} from '../../shared/store/interfaces/search-task-view-store.model';
 import {DatePipe} from '@angular/common';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
@@ -19,7 +19,7 @@ export class SearchManagementService {
   // trailing underscore is a naming convention for private variables of the class.
   private http_: HttpClient;
   private baseUrl: string ;
-  private taskList: Task[];
+  private taskList: TaskModel[];
   private datepipe: DatePipe;
 
   constructor(http: HttpClient, serverConfigService: ServerConfigService, datepipe: DatePipe) { // pass by reference
@@ -27,21 +27,21 @@ export class SearchManagementService {
     this.baseUrl = serverConfigService.getBaseUrl();
     this.datepipe = datepipe;
   }
-  // Returns an observable for list of Task Search Line Items
-  getTaskSearchList(search: SearchQuery): Observable<SearchTaskViewModel[]> {
+  // Returns an observable for list of TaskModel Search Line Items
+  getTaskSearchList(search: SearchQuery): Observable<SearchTaskViewStoreModel[]> {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
        'accept': 'application/json'
     };
-    return this.http_.post<SearchTaskViewModel[]>(this.baseUrl + '/Search/GetSearchResult', search, {headers: httpHeaders})
+    return this.http_.post<SearchTaskViewStoreModel[]>(this.baseUrl + '/Search/GetSearchResult', search, {headers: httpHeaders})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
       );
   }
 
-  // Returns an observable for list of Task Search Line Items
+  // Returns an observable for list of TaskModel Search Line Items
   getTagList(): Observable<SearchTag[]> {
 
     const httpHeaders = {

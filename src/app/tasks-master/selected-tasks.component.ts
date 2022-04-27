@@ -1,9 +1,5 @@
-import {Component, DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {Task} from '../article/models/task.model';
-import { AddOrEditTaskDialogComponent} from '../tasks-hierarchy/task-tree/add-or-edit-task-dialog.component';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {EditorComponent} from '../editor/editor.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {TaskModel} from '../article/models/taskModel';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TaskManagementService} from '../article/service/task-management-service';
 import {Template} from '../article/models/template.model';
@@ -16,17 +12,15 @@ import {Template} from '../article/models/template.model';
 
 })
 
-export class SelectedTasksDisplayComponent implements OnInit{
+export class SelectedTasksDisplayComponent implements OnInit {
 
-  public templateTasks: Task[] = [];
+  public templateTasks: TaskModel[] = [];
   public selectedTaskId: string;
   public selectedTemplate: Template;
   public selectedTemplateId: string;
-  public selectedTasks: Task [] = [];
+  public selectedTasks: TaskModel [] = [];
   private taskManagementService: TaskManagementService;
-  private templateData: Template[];
-  private activatedRoute: ActivatedRoute;
-  constructor(
+    constructor(
     activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService, private router: Router,
   ) {
     this.taskManagementService = taskManagementService;
@@ -42,15 +36,13 @@ export class SelectedTasksDisplayComponent implements OnInit{
     });
   }
 
-  @Input() y: Task [];
-  // selectedTaskId: string;
- public taskForGeneration: Task;
- // public selectedTasks: Task [] = [];
-public isEdit = false;
-  public action = 'generate';
-  eTaskId: string;
+  @Input() y: TaskModel [];
+    public taskForGeneration: TaskModel;
+    public isEdit = false;
+    public action = 'generate';
+   // eTaskId: string;
 
-  onClickGenerate(task: Task) {
+  onClickGenerate(task: TaskModel) {
 this.taskForGeneration = task;
     console.log(this.taskForGeneration);
     }
@@ -68,10 +60,6 @@ this.taskForGeneration = task;
   onClickRefresh() {
     this.selectedTasks.splice(0, this.selectedTasks.length);
    }
-
-  onSaveButtonClick(task: Task) {
-this.eTaskId = task.taskId;
-  }
 }
 
 
