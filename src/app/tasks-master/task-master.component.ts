@@ -14,11 +14,8 @@ export class TaskMasterComponent implements  OnInit {
   public taskManagementService: TaskManagementService;
   public templateData: Template[] ;
   public template: Template;
-// public a: Subscription;
   private messageBoxService: MessageBoxService;
 
-// public  taskList: TaskModel[] = [];
-// public selectedTaskId: string;
   constructor(private router: Router, taskManagementService: TaskManagementService, messageBoxService: MessageBoxService, ) {
     this.taskManagementService = taskManagementService;
     this.loadTemplates();
@@ -29,11 +26,6 @@ export class TaskMasterComponent implements  OnInit {
 
     this.taskManagementService.getTemplateTasks( null, 'children' )
       .subscribe({next: (data: Template []) => this.templateData = data}); }
-
-
-// {data: Template [] => this.templateData = data,
-//         error: (apiError: ApiError) => this.messageBoxService.info('Could not load templates', apiError.title, apiError.detail)}
-
   ngOnInit() {}
 
   onRowClick(templateId: string) {this.selectedTemplateId = templateId;
