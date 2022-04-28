@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {Template} from '../article/models/template.model';
-import {TaskModel} from '../article/models/taskModel';
+import {TaskModel} from '../article/models/task-detail.model';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 
 @Component({
   selector: 'app-template-task',

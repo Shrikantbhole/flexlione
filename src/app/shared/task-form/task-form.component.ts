@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {CreateTaskForm} from '../../article/models/task-detail.form';
 import {DatePipe} from '@angular/common';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {TaskManagementService} from '../../Services/task-management-service';

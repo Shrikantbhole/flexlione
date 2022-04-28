@@ -1,19 +1,10 @@
 import { Component, Inject } from '@angular/core';
-<<<<<<< HEAD
 import { TaskManagementService } from '../../Services/task-management-service';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { TaskModel } from '../../article/models/task-detail.model';
 import {ApiError} from '../../settings/api-error.model';
-=======
-import { TaskManagementService } from '../../article/service/task-management-service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { MessageBoxService } from '../../settings/message-box.service';
-import { TaskModel } from '../../article/models/taskModel';
-import { ApiError} from '../../settings/api-error.model';
->>>>>>> 1a78e45a9b1e19310bd3b368054a4e3a2f7fb39c
 import { DatePipe } from '@angular/common';
 
 

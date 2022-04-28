@@ -1,16 +1,11 @@
 
 import {Component, OnInit} from '@angular/core';
-<<<<<<< HEAD
-import {TaskModel} from '../article/models/task-detail.model';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ArticlesService, CommentsService, UserService} from '../core';
-import {ChecklistManagementService} from '../Services/checklist-management.service';
-=======
+
 import {Router} from '@angular/router';
 import {Template} from '../article/models/template.model';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
->>>>>>> 1a78e45a9b1e19310bd3b368054a4e3a2f7fb39c
+
 
 @Component({
   selector: 'app-task-master',
