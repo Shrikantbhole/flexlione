@@ -11,7 +11,6 @@ import {SearchManagementService} from '../../Services/search-management.service'
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
-import * as TaskActions from '../store/search-task.action';
 @Component({
   selector: 'app-article-list',
   styleUrls: ['article-list.component.css'],

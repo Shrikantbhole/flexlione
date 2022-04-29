@@ -17,6 +17,10 @@ import {CommentManagementService} from '../Services/comment-management.service';
 import {TaskComment} from './models/task-comment.model';
 import {DatePipe} from '@angular/common';
 import {CreateTaskForm, GetTaskFormFromTaskModel} from './models/task-detail.form';
+import {TaskHierarchyManagementService} from '../Services/task-hierarchy-management.service';
+import {TaskHierarchyModel} from './models/task-hierarchy.model';
+import {MatSelect} from '@angular/material/select';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-article-page',
@@ -34,8 +38,7 @@ export class ArticleComponent implements OnInit {
   isDeleting = false;
   selectedCheckListItem = '';
   TaskForm: FormGroup = CreateTaskForm();
-  // FormControl to track value of Deadline
-  deadline: FormControl = new FormControl(new Date());
+  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   constructor(
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
@@ -45,13 +48,14 @@ export class ArticleComponent implements OnInit {
     private taskManagementService: TaskManagementService,
     private messageBoxService: MessageBoxService,
     private  commentManagementService: CommentManagementService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private  taskHierarchyManagementService: TaskHierarchyManagementService,
+    private  snackBarService: MatSnackBar
   ) {// Retreive the prefetched article
     this.route.data.subscribe(
       (data: { article: TaskModel }) => {
         this.task = data.article;
         this.TaskForm = GetTaskFormFromTaskModel(this.task);
-        // this.TaskForm.controls['parentTaskId'].setValue(this.task.parentTaskId);
         console.log(this.task);
         this.comments = [];
         // Load the comments on this article
@@ -68,6 +72,14 @@ export class ArticleComponent implements OnInit {
         this.canModify = (this.currentUser.username === this.task.taskId);
       }
     );
+    // Receiving estimated hours and spent hours separately and then plugging into taskform
+    this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
+  }
+  public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
+    this.snackBarService.open('Task Hierarchy Successfully received' , '', {duration: 300});
+   this.TaskHierarchy = taskHierarchy;
+    this.TaskForm.controls['estimatedHrs'].setValue(taskHierarchy.totalEstimatedHours);
+    this.TaskForm.controls['hrsSpentTillNow'].setValue(taskHierarchy.totalHoursSpent);
   }
   seeInTaskTree() {
     // In hierarch view show three gen

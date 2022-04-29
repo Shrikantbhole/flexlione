@@ -26,7 +26,7 @@
 
   <mat-form-field>
     <mat-label>Created By</mat-label>
-    <mat-select formControlName="createdBy">
+    <mat-select formControlName="createdBy"  required>
       <mat-option></mat-option>
       <mat-option [value]="user" *ngFor="let  user of UserList" >
         {{user}}
@@ -44,8 +44,8 @@
     <mat-label>Position After</mat-label>
     <mat-select formControlName="positionAfter">
       <mat-option></mat-option>
-      <mat-option [value]="user" *ngFor="let  user of UserList" >
-        {{user}}
+      <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForPosition" >
+        {{taskId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -76,12 +76,21 @@
 
     <mat-form-field>
       <mat-label>Parent Task Id</mat-label>
-      <input matInput formControlName="parentTaskId" placeholder="parentTaskId">
+      <mat-select formControlName="parentTaskId">
+        <mat-option></mat-option>
+        <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForParent"  (click)="onParentTaskIdChange(taskId)" >
+          {{taskId}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </li>
 </form>>
 
-<button  mat-raised-button color="primary" (click)="onClick()">
-  Save Changes
-</button>
-<br/>
+  <div mat-dialog-actions>
+    <button mat-raised-button  color="primary" cdkFocusInitial (click)="onClick()" [disabled]="parentForm.invalid">
+    Save Changes
+    </button>
+  </div>
+
+
+

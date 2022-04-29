@@ -1,0 +1,29 @@
+
+
+<br/>
+<br/>
+
+<table class='table' *ngIf="TaskSummaryList">
+  <thead>
+  <tr>
+    <th>Task Summary Id</th>
+    <th>Expected Output</th>
+    <th>Expected Hours</th>
+    <th>Actual Output</th>
+    <th>Actual Hours</th>
+
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let taskSummary of TaskSummaryList">
+
+    <td>{{ taskSummary.taskId }}</td>
+    <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td>
+    <td>{{ taskSummary.expectedHour }}</td>
+    <td>{{ taskSummary.actualOutput |slice:0:20 }}{{1 == 1
+      ? '...' : ''}} </td>
+    <td>{{taskSummary.actualHour}}</td>
+  </tr>
+  </tbody>
+</table>

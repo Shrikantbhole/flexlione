@@ -55,6 +55,32 @@ export class TaskManagementService {
       );
   }
 
+  // Returns an observable for list of Line Items
+  getTaskIdList(taskId: string, callback: (taskIdList: string[]) => any): any {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+
+    let queryStringParams;
+    queryStringParams = {
+      taskId: taskId
+    };
+    return this.http_.get<string[]>(this.baseUrl + '/Task/GetTaskIdList', { params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      ).subscribe({
+        next : (taskIdList) => {
+          callback(taskIdList);
+        },
+        error : (apiError: ApiError) => {this.messageBoxService.info(
+          'Task Id List Not Received', apiError.title, apiError.detail);
+        }
+      });
+  }
+
   deleteTask(taskId: string): Observable<void> {
 
     const httpHeaders = {

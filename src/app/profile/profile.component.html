@@ -8,7 +8,7 @@
 
         <div class="col-xs-12 col-md-10">
 
-          <h3>{{GetProfileName(this.profileId)}}'s Profile</h3>
+          <h3>{{profileName}}'s Profile</h3>
           <app-auto-search class="pull-xs-right" [options]="this.options"
                            [description]= "'Select Other Profile'"
                            (newItemEvent) = "updateProfile($event)">
@@ -47,7 +47,7 @@
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'search'">
         <app-profile-task-dump [options]= "getSprintIds()"
-                               [profileId] = "profileId"></app-profile-task-dump>
+                               [profile] = "profileId"></app-profile-task-dump>
       </div>
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'day'" >

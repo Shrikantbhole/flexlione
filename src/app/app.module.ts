@@ -31,6 +31,7 @@ import {ProfileManagementService} from './Services/profile-management.service';
 import {SprintManagementService} from './Services/sprint-management.service';
 import {TaskScheduleManagementService} from './Services/task-schedule-management.service';
 import {TaskScheduleReducer} from './shared/store/task-schedule.reducer';
+import {TaskHierarchyManagementService} from './Services/task-hierarchy-management.service';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import {TaskScheduleReducer} from './shared/store/task-schedule.reducer';
     DailyPlanSummaryService,
     ProfileManagementService,
     SprintManagementService,
-    TaskScheduleManagementService
+    TaskScheduleManagementService,
+    TaskHierarchyManagementService
   ],
   exports: [],
   bootstrap: [AppComponent]

@@ -3,26 +3,11 @@
   <div class="banner">
     <div class="container">
       <h1>{{ task.taskId }}</h1>
-      <span >
-          <a class="btn btn-sm btn-outline-secondary"
-             [routerLink]="['/editor', '2']">
-            <i class="ion-edit"></i> Schedule Task
-          </a>
-
-          <button class="btn btn-sm btn-outline-danger"
-                  [ngClass]="{disabled: isDeleting}"
-                  (click)="deleteArticle()">
-            <i class="ion-edit"></i> Prioritize Task
-          </button>
-        </span>
-
-
     </div>
   </div>
 
   <div class="container page">
-
- <app-task-form [parentForm]="TaskForm"></app-task-form>
+    <app-task-form [parentForm]="TaskForm"></app-task-form>
 
     <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
          See in Task Tree
@@ -53,13 +38,15 @@
     <br/>
     <p><strong> Upstream Dependency</strong></p>
     <app-view-dependency [Type] = "'upstream'"></app-view-dependency>
+    <br/>
 
-
-
-
-
-    <hr/>
-
+    <br/>
+    <p><strong> Task Time Calculation</strong></p>
+    <app-article-time-calculation [TaskHierarchyList] = "[TaskHierarchy]" ></app-article-time-calculation>
+    <br/>
+    <p><strong> Children Task Time Calculation</strong></p>
+    <app-article-time-calculation [TaskHierarchyList] = "TaskHierarchy.childrenTaskHierarchy" ></app-article-time-calculation>
+    <br/>
     <div class="article-actions">
 
     </div>
@@ -67,7 +54,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2">
 
-        <div *appShowAuthed="true">
+        <div >
           <app-list-errors></app-list-errors>
           <form class="card comment-form" (ngSubmit)="addComment()">
             <fieldset [disabled]="isSubmitting">
@@ -86,11 +73,6 @@
               </div>
             </fieldset>
           </form>
-        </div>
-
-        <div *appShowAuthed="false">
-          <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on
-          this article.
         </div>
 
         <app-article-comment

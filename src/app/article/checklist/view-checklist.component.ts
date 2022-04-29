@@ -85,7 +85,7 @@ export class ViewChecklistComponent implements OnInit {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
 
         }
@@ -115,7 +115,7 @@ export class ViewChecklistComponent implements OnInit {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
 
         }

@@ -96,7 +96,7 @@ export class ViewChecklistDialogComponent {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
 
         }
@@ -126,7 +126,7 @@ export class ViewChecklistDialogComponent {
           }
 
           this.loadCheckList();
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
 
         }

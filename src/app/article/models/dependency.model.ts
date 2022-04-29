@@ -4,5 +4,5 @@ export class Dependency {
   taskId: string;
   dependentTaskId: string;
   description: string;
-  taskEditModel: TaskModel;
+  taskDetailEditModel: TaskModel;
 }

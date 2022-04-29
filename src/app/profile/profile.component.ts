@@ -32,7 +32,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   SelectedTaskScheduleList: TaskScheduleModel[] = []; // Shortlisted for seeing detail detail summary
   sprintUpdateCounter = 0;
   sprintList: SprintModel[] = [];
-  profileId = '';
+  profileId ;
+  profileName;
   parentForm: FormGroup = SearchQueryForm();
   public Profiles: ProfileStoreModel[] = [];
   @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -53,9 +54,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   currentUser: User;
   isUser: boolean;
 
-  ngOnInit() {
+  async ngOnInit() {
     // Update Options list to shift to another profile
-    this.getAllProfiles();
+    await this.getAllProfiles();
     // Store TaskModel Dump in @ngrx/Store
     this.route.data.subscribe(
       (data: { profile: SearchTaskViewStoreModel[] }) => {
@@ -65,9 +66,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           this.store.dispatch(new TaskActions.AddSearchTask(data.profile[i]));
         }
         this.profileId = data.profile[0].assignedTo;  // Get Profile Id
-        this.parentForm.controls['assignedTo'].setValue(
-          this.GetProfileName(this.profileId)
+         this.parentForm.controls['assignedTo'].setValue(
+            this.GetProfileName(this.profileId)
         );
+         this.profileName = this.GetProfileName(this.profileId);
         this.parentForm.controls['assignedTo'].disable();
         this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
         // This component will handle storing of task schedules and
@@ -104,8 +106,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.TaskScheduleList = newTaskScheduleList;
     this.store.dispatch(new TaskScheduleActions.AddTaskSchedule(taskScheduleModel));
   }
-  public updateProfile(profileName: string) {
-    this.profileId = this.GetProfileId(profileName);
+  public async updateProfile(profileName: string) {
+    this.profileId = await this.GetProfileId(profileName);
     this.updateSprintList(this.profileId);
     this.router.navigateByUrl('/profile/' + this.profileId);
   }
@@ -140,18 +142,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public onDaySummary() {
     this.togglePlanner = 'summary';
   }
-  getAllProfiles() {
-    this.store.select('profile')
-      .subscribe({ next: (profiles) => {
-          this.Profiles = profiles;
-          let  i = 0;
-          for ( i = 0; i < profiles.length; i++ ) {
-            this.options.push(profiles[i].name);
+  async getAllProfiles() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
+    for (let i = 0; i <   this.Profiles.length; i++ ) {
+            this.options.push( this.Profiles[i].name);
           }
-        },
-        error: () => {}
-      });
-    console.log('It works: ' + this.searchFormComponent.options[0]);
   }
   ngAfterViewInit(): void {
     this.route.queryParams.subscribe({
@@ -263,14 +258,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         error: () => {}
       });
   }
-  public GetProfileId(profileName: string): string {
+  public  GetProfileId(profileName: string): string {
     const profile = this.Profiles.filter(function (value) {
       return (value.name === profileName);
     });
     return profile[0] === undefined ? profileName : profile[0].profileId;
   }
 
-  public GetProfileName(profileId: string): string {
+  public  GetProfileName(profileId: string): string {
     const profile = this.Profiles.filter(function (value) {
       return (value.profileId === profileId);
     });

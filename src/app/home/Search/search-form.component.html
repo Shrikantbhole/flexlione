@@ -62,8 +62,8 @@
     <mat-label>Task Id</mat-label>
     <mat-select  formControlName ="taskId"  >
       <mat-option></mat-option>
-      <mat-option [value]="user" *ngFor="let  user of StatusList" >
-        {{user}}
+      <mat-option [value]="task" *ngFor="let  task of TaskIdList" >
+        {{task}}
       </mat-option>
     </mat-select>
   </mat-form-field>

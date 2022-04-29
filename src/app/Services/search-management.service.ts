@@ -57,10 +57,9 @@ export class SearchManagementService {
 
   getGlobalSearch(): SearchQuery {
    const query = new SearchQuery();
-   query.Tag = 'castor';
+   query.Deadline = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
    // query.Deadline = this.datepipe.transform(new Date().getDate() + 14, 'yyyy-MM-dd');
-
-  return query;
+    return query;
   }
 
   getPersonalSearch(): SearchQuery {

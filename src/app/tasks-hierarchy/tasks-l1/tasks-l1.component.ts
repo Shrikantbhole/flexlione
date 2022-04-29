@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ApiError} from '../../settings/api-error.model';
 import {TaskManagementService} from '../../Services/task-management-service';
-import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
 import {ViewChecklistDialogComponent} from './view-checklist-dialog.component';
 import * as TaskActions from '../../shared/store/create-task.action';
 import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
@@ -167,7 +166,7 @@ export class TasksL1Component {
             return;
           }
 
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
           // Load the list again
           this.loadL1TaskList();

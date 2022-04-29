@@ -11,6 +11,9 @@ import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-v
 import {DatePipe} from '@angular/common';
 import {MatAccordion} from '@angular/material/expansion';
 import {TaskSummaryModel} from '../profile/models/task-summary.model';
+import {ApiError} from '../settings/api-error.model';
+import {MessageBoxService} from '../settings/message-box.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.
@@ -25,7 +28,9 @@ export class DailyPlanSummaryService {
   private datepipe: DatePipe;
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
-  constructor(http: HttpClient, serverConfigService: ServerConfigService, datepipe: DatePipe) { // pass by reference
+  constructor(http: HttpClient, serverConfigService: ServerConfigService,
+              datepipe: DatePipe, private messageBoxService: MessageBoxService,
+              private snackBarService: MatSnackBar) { // pass by reference
     this.http_ = http;
     this.baseUrl = serverConfigService.getBaseUrl();
     this.datepipe = datepipe;
@@ -45,6 +50,29 @@ export class DailyPlanSummaryService {
         retry(1),
         catchError(HandlerError.handleError)
       );
+  }
+
+  // Returns an observable for list of TaskModel Search Line Items
+  getTaskSummaryByTaskId(taskId: string, include: string, callBack: (TaskSummaryList: TaskSummaryModel[]) => any): any {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json'
+    };
+    const queryParams = {
+      'taskId': taskId,
+      'include': include
+    };
+    return this.http_.get<TaskSummaryModel[]>(this.baseUrl + '/TaskSummary//GetAllTaskSummaryByTaskId', {headers: httpHeaders, params: queryParams})
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      ).subscribe({
+        next: (TaskSummaryList) => {
+          // this.snackBarService.open('Task Summary successfully retrieved', ' ', {duration: 3000});
+          callBack(TaskSummaryList);
+        },
+        error: (apiError: ApiError) => {this.messageBoxService.info('Error in retrieving Task Summary', apiError.title, apiError.detail); }
+      });
   }
 
   // Returns an observable for list of TaskModel Search Line Items
