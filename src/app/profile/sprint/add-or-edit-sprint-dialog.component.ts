@@ -6,11 +6,11 @@ import {DatePipe} from '@angular/common';
 import {SprintModel} from '../models/sprint.model';
 import {ApiError} from '../../settings/api-error.model';
 import {SprintManagementService} from '../../Services/sprint-management.service';
-import {getUserList} from '../../shared/shared-lists/user-list';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import {ProfileStoreModel} from '../../shared/store/interfaces/profile-store.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ProfileManagementService} from '../../Services/profile-management.service';
 
 
 @Component({
@@ -19,11 +19,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['../profile.component.css']
 })
 export class AddOrEditSprintDialogComponent implements OnInit {
-  public  UserList: string[] = getUserList();
+  public  UserList: string[] = [];
   private messageBoxService: MessageBoxService;
   public isEdit: boolean ;
   public taskId: string;
-  private Profiles: ProfileStoreModel[];
+  public Owner: string;
+  private Profiles: ProfileStoreModel[] = [];
   // members for data-binding
   newSprint: FormGroup = new FormGroup({
     'sprintId': new FormControl('', [Validators.required]),
@@ -35,20 +36,15 @@ export class AddOrEditSprintDialogComponent implements OnInit {
     'deliverable': new FormControl(''),
     'delivered': new FormControl('')
   });
-  constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditSprintDialogComponent>,
+   constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditSprintDialogComponent>,
               messageBoxService: MessageBoxService, @Inject(MAT_DIALOG_DATA) data,
               private  store: Store<AppState>,  private sprintManagementService: SprintManagementService,
-              private  snackBarService: MatSnackBar) {
+              private  snackBarService: MatSnackBar, private profileManagementService: ProfileManagementService) {
     this.messageBoxService = messageBoxService;
     // Need to toggle Add/Update Button on Form
     this.isEdit = data.isEdit;
+    this.Owner = data.sprint.owner;
     // Get Profile List from the store
-    this.store.select('profile')
-      .subscribe({ next: (profiles) => {
-          this.Profiles = profiles;
-        },
-        error: () => {}
-      });
     // members for data-binding
     this.newSprint.setValue({
       sprintId:  data.sprint.sprintId === undefined ? 'serverGenerated' : data.sprint.sprintId  ,
@@ -61,10 +57,16 @@ export class AddOrEditSprintDialogComponent implements OnInit {
       delivered: data.sprint.delivered === undefined ? '' : data.sprint.delivered
     });
     this.newSprint.controls['sprintId'].disable();
+    this.newSprint.controls['owner'].disable();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.dialogRef.updateSize('50%', '70%');
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
+    this.newSprint.controls['owner'].setValue(this.GetProfileName(this.Owner));
+    for (let i = 0; i < this.Profiles.length; i++ ) {
+      this.UserList.push(this.Profiles[i].name);
+    }
   }
     onNoClick(): void {
     this.dialogRef.close();

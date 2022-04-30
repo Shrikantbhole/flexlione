@@ -128,21 +128,6 @@ export class ArticleComponent implements OnInit {
       error: () => { }
     });
 
-   /*
-    this.comments.push({
-     id: 1,
-     author: 'shrikant',
-     body: 'What is the update?',
-     createdAt: ''
-   });
-    this.comments.push({
-      id: 2,
-      author: 'shrikant',
-      body: 'Has this task completed?',
-      createdAt: ''
-    });
-
-    */
   }
 
   addComment() {

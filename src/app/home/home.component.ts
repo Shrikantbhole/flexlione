@@ -9,9 +9,8 @@ import {ApiError} from '../settings/api-error.model';
 import {SearchQuery, SearchQueryForm} from './models/search-query-form.model';
 import * as TaskActions from '../shared/store/search-task.action';
 import {MessageBoxService} from '../settings/message-box.service';
-import {ProfileManagementService} from '../Services/profile-management.service';
 import {FormGroup} from '@angular/forms';
-import {TaskManagementService} from '../Services/task-management-service';
+
 
 
 @Component({

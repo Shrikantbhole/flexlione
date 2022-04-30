@@ -24,6 +24,7 @@ export function GetTaskFormFromTaskModel(task: TaskModel): FormGroup {
   taskForm.controls['parentTaskId'].setValue(task.parentTaskId);
   taskForm.controls['createdBy'].setValue(task.createdBy);
   taskForm.controls['status'].setValue(task.status);
+  taskForm.controls['deadline'].setValue(new Date(task.deadline));
   taskForm.controls['positionAfter'].setValue(task.positionAfter);
   taskForm.controls['description'].setValue(task.description);
   taskForm.controls['assignedTo'].setValue(task.assignedTo);

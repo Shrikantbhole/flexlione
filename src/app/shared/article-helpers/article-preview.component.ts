@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import {SearchTaskViewStoreModel} from '../store/interfaces/search-task-view-store.model';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
-import {ProfileModel} from '../../profile/models/profile.model';
 import {ProfileStoreModel} from '../store/interfaces/profile-store.model';
+import {ProfileManagementService} from '../../Services/profile-management.service';
 
 @Component({
   selector: 'app-article-preview',
@@ -13,17 +13,12 @@ export class ArticlePreviewComponent {
   @Input() SearchTask: SearchTaskViewStoreModel;
   sprintList: string[] = ['23', '24'];
   public Profiles: ProfileStoreModel[] = [];
-  constructor( private store: Store<AppState>) {
+  constructor( private profileManagementService: ProfileManagementService) {
     this.GetProfiles();
   }
 
-  private GetProfiles() {
-    this.store.select('profile')
-      .subscribe({
-        next: (profileList) => {
-         this.Profiles = profileList;
-        }
-      });
+  private async GetProfiles() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
   }
   public GetProfileName(profileId: string): string {
     const profile = this.Profiles.filter(function (value) {

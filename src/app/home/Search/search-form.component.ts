@@ -91,7 +91,7 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
     if (tag === undefined) {
       return;
     }
-    // this.getTaskSearchList(searchQuery);
+    this.getTaskSearchList(searchQuery);
   }
   private _filter(value: string): string[] {
     return this.options.filter(option => option.toLowerCase().includes(
@@ -150,21 +150,6 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
     for (let i = 0; i < profiles.length; i++ ) {
       this.UserList.push(profiles[i].name);
     }
-
-    this.route.queryParams.subscribe({
-      next: (param) => {
-        if ( param !== undefined) {
-          console.log(param.search);
-          const searchQuery: SearchQuery = new SearchQuery();
-          searchQuery.Tag = param.search;
-         if (searchQuery.Tag !== undefined){
-           this.getTaskSearchList(searchQuery);
-         }
-
-        }
-      },
-      error: () => {}
-    });
   }
 
   public async GetProfileId(profileName: string): Promise<string> {

@@ -97,6 +97,22 @@ export class TaskManagementService {
       );
   }
 
+  removeTask(taskId: string): Observable<void> {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      // 'accept': 'application/json;v=1.0'
+    };
+    const queryStringParams = {
+      taskId: taskId
+    };
+    return this.http_.post<void>(this.baseUrl + '/Task/RemoveTask', ' ' , { params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
+
   createOrUpdateTask(task: TaskModel): Observable<TaskModel> {
 
     const httpHeaders = {

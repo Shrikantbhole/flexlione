@@ -9,9 +9,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TaskScheduleModel} from '../models/task-schedule.model';
 import {MatAccordion} from '@angular/material/expansion';
 import {TaskSummaryModel} from '../models/task-summary.model';
-import * as TaskScheduleActions from '../../shared/store/task-schedule.action';
 import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
-import {ApiError} from '../../settings/api-error.model';
+
 
 /** @title Form field appearance variants */
 @Component({

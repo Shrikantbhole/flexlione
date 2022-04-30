@@ -25,7 +25,7 @@ export class TaskSummaryFormComponent implements  OnInit {
   set config(taskSummary: TaskSummaryModel) {
     this.updateTaskSummaryForm(taskSummary);
   }
-  // @Output() newScheduleEvent  = new EventEmitter<TaskSummaryModel>();
+
   constructor(
     private searchManagementService: DailyPlanSummaryService,
     private  messageBoxService: MessageBoxService,
