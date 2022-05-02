@@ -21,6 +21,7 @@ import {TaskHierarchyManagementService} from '../Services/task-hierarchy-managem
 import {TaskHierarchyModel} from './models/task-hierarchy.model';
 import {MatSelect} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ProfileModel} from '../profile/models/profile.model';
 
 @Component({
   selector: 'app-article-page',
@@ -29,7 +30,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class ArticleComponent implements OnInit {
   task: TaskModel;
-  currentUser: User;
+  currentUser: ProfileModel;
   canModify: boolean;
   comments: TaskComment[] = [];
   commentControl = new FormControl();
@@ -66,10 +67,10 @@ export class ArticleComponent implements OnInit {
   ngOnInit() {
       // Load the current user's data
     this.userService.currentUser.subscribe(
-      (userData: User) => {
+      (userData) => {
         this.currentUser = userData;
 
-        this.canModify = (this.currentUser.username === this.task.taskId);
+        this.canModify = (this.currentUser.name === this.task.taskId);
       }
     );
     // Receiving estimated hours and spent hours separately and then plugging into taskform
@@ -91,7 +92,7 @@ export class ArticleComponent implements OnInit {
        this.navigateToTaskHierarchy(parentTask);
       },
       error: () => {
-        this.messageBoxService.info('Error: TaskModel not created.');
+        this.messageBoxService.info('Error: Task not created.');
       }
     }); }
   navigateToTaskHierarchy(parentTask: TaskModel) {

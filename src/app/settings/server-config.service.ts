@@ -45,8 +45,8 @@ export class ServerConfigService {
       this.base_url = 'https://ptl-api-dev.flexli.in/flexli-erp-webapi/api/v1';
     } else if (currentUrl.includes('65.1.53.71/kd-ptl-webapp-beta')) {
       this.base_url = 'http://65.1.53.71/kd-ptl-webapi-beta/api/v1';
-    } else if (currentUrl.includes('3.6.158.79/kd-ptl-webapp-alpha')) {
-      this.base_url = 'http://3.6.158.79/kd-ptl-webapi-alpha/api/v1';
+    } else if (currentUrl.includes('3.6.158.79/flexli-erp-webapp')) {
+      this.base_url = 'http://3.6.158.79/erp-alpha/api/v1';
     } else if (currentUrl.includes('3.6.158.79/kd-ptl-webapp-beta')) {
       this.base_url = 'http://3.6.158.79/kd-ptl-webapi-beta/api/v1';
     }  else if (currentUrl.includes('3.6.158.79/kd-ptl-webapp-prod')) {

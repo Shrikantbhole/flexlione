@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     this.setListTo(this.searchManagementService.getGlobalSearch());
     this.userService.currentUser.subscribe(
       (userData) => {
-      this.personalSearch.AssignedTo = [userData.username];
+      this.personalSearch.AssignedTo = [userData.name];
       }
     );
   }

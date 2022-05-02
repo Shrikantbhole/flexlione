@@ -34,7 +34,7 @@ export class ProfileResolver implements Resolve<Profile> {
       .pipe(
         map(
           article => {
-            if (this.userService.getCurrentUser().username !== undefined) {
+            if (this.userService.getCurrentUser().name !== undefined) {
               return article;
             } else {
               // this.router.navigateByUrl('/login');

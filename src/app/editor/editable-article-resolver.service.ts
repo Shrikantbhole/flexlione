@@ -22,7 +22,7 @@ export class EditableArticleResolver implements Resolve<Article> {
       .pipe(
         map(
           article => {
-            if (this.userService.getCurrentUser().username === article.author.username) {
+            if (this.userService.getCurrentUser().name === article.author.username) {
               return article;
             } else {
               this.router.navigateByUrl('/');

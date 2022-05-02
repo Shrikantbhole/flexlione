@@ -3,7 +3,7 @@
     <a class="navbar-brand" routerLink="/">FlexStore</a>
 
     <!-- Show this for logged out users -->
-    <ul *appShowAuthed="true"
+    <ul *appShowAuthed="false"
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
@@ -32,7 +32,7 @@
     </ul>
 
     <!-- Show this for logged in users -->
-    <ul *appShowAuthed="false"
+    <ul *appShowAuthed="true"
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
@@ -40,7 +40,17 @@
           routerLink="/"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }">
+          <i class="icon ion-home"></i>
           Home
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link"
+           [routerLink]="['/profile', currentUser.profileId]"
+           routerLinkActive="active">
+          <i class="icon ion-calendar"></i>
+         Stand Up
         </a>
       </li>
 
@@ -58,7 +68,7 @@
         <a class="nav-link"
           routerLink="/task-tree"
           routerLinkActive="active">
-          <i class="ion-gear-a"></i>&nbsp;Task Tree
+          <i class="icon ion-grid"></i>&nbsp;Task Tree
         </a>
       </li>
       <li class="nav-item">
@@ -71,13 +81,12 @@
 
       <li class="nav-item">
         <a class="nav-link"
-          [routerLink]="['/profile', currentUser.username]"
+          [routerLink]="['/profile', currentUser.profileId]"
           routerLinkActive="active">
-          <img [src]="currentUser.image" *ngIf="currentUser.image" class="user-pic" />
-          {{ currentUser.username }}
+          <i class="icon ion-log-in"></i>
+          {{ currentUser.name }}
         </a>
       </li>
-
     </ul>
 
   </div>
