@@ -9,8 +9,6 @@ import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateTaskSummaryForm, TaskSummaryModel} from '../../models/task-summary.model';
-import {TaskScheduleModel} from '../../models/task-schedule.model';
-import * as TaskScheduleActions from '../../../shared/store/task-schedule.action';
 /** @title Form field appearance variants */
 @Component({
   selector: 'app-profile-task-summary-form',
@@ -52,6 +50,7 @@ export class TaskSummaryFormComponent implements  OnInit {
       expectedHours: taskSummary.expectedHour == null ? 'server-generated' : taskSummary.expectedHour,
       actualOutput: taskSummary.actualOutput == null ? '' : taskSummary.actualOutput,
       actualHours: taskSummary.actualHour == null ? '' : taskSummary.actualHour,
+      date: taskSummary.date
     });
   }
   private createTaskSummary(newTaskSummary: FormGroup): TaskSummaryModel {
@@ -61,6 +60,7 @@ export class TaskSummaryFormComponent implements  OnInit {
     taskSummary.taskId = newTaskSummary.getRawValue().taskId;
     taskSummary.description = newTaskSummary.getRawValue().description;
     taskSummary.expectedHour = newTaskSummary.getRawValue().expectedHours;
+    taskSummary.date = newTaskSummary.getRawValue().date;
     if (newTaskSummary.getRawValue().actualHours !== '' && newTaskSummary.getRawValue().actualHours !== undefined)  {
      taskSummary.actualHour = +newTaskSummary.getRawValue().actualHours;
     }

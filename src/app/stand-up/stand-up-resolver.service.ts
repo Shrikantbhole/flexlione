@@ -1,39 +1,35 @@
-import { Injectable, } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Article, ArticlesService, UserService } from '../core';
-import {catchError, map} from 'rxjs/operators';
-import {TaskManagementService} from '../Services/task-management-service';
-
+import { catchError ,  map } from 'rxjs/operators';
 
 @Injectable()
-export class TaskHierarchyResolverService implements Resolve<Article> {
+export class StandUpResolver implements Resolve<Article> {
   constructor(
     private articlesService: ArticlesService,
     private router: Router,
-    private userService: UserService,
-    private taskManagementService: TaskManagementService,
-  ) {}
+    private userService: UserService
+  ) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-    return this.taskManagementService.getTaskById('0', 'children')
+
+    return this.articlesService.get(route.params['slug'])
       .pipe(
         map(
           article => {
-            if (this.userService.getCurrentUser().name !== undefined) {
+            if (this.userService.getCurrentUser().name === article.author.username) {
               return article;
             } else {
-              // this.router.navigateByUrl('/login');
-              return article;
+              this.router.navigateByUrl('/');
             }
           }
         ),
         catchError((err) => this.router.navigateByUrl('/'))
       );
   }
-
 }

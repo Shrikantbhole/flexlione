@@ -5,9 +5,6 @@ import { TaskModel } from '../article/models/task-detail.model';
 import {catchError, retry} from 'rxjs/operators';
 import {ServerConfigService} from '../settings/server-config.service';
 import {HandlerError} from '../settings/handle-error.service';
-import { SearchQuery} from '../home/models/search-query-form.model';
-import {SearchTag} from '../home/models/searchTag';
-import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-view-store.model';
 import {DatePipe} from '@angular/common';
 import {MatAccordion} from '@angular/material/expansion';
 import {TaskSummaryModel} from '../profile/models/task-summary.model';
@@ -46,6 +43,22 @@ export class DailyPlanSummaryService {
       'taskSummaryId': taskSummaryId
     };
     return this.http_.get<TaskSummaryModel>(this.baseUrl + '/TaskSummary/GetTaskSummaryById', {headers: httpHeaders, params: queryParams})
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
+
+  getDailyTaskSummary(profileId: string, date: string): Observable<TaskSummaryModel[]> {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json'
+    };
+    const queryParams = {
+      'profileId': profileId,
+      'date': date
+    };
+    return this.http_.get<TaskSummaryModel[]>(this.baseUrl + '/TaskSummary/GetDailyTaskSUmmary', {headers: httpHeaders, params: queryParams})
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)

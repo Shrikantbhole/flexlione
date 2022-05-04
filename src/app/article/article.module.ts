@@ -58,7 +58,8 @@ import {TaskSessionSummaryComponent} from './time-calculation/task-session-summa
       TaskSessionSummaryComponent
     ],
     exports: [
-        TaskFormComponent
+        TaskFormComponent,
+        TaskSessionSummaryComponent
     ],
 
     providers: [

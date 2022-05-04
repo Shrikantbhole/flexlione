@@ -58,6 +58,7 @@ export class DailyPlanSummaryComponent implements  OnInit {
             newTaskSummaryModel = taskSummaryModel; }
           newTaskSummaryModel.expectedHour = (taskSchedule.stopHour - taskSchedule.startHour)
                                             + (taskSchedule.stopMinute - taskSchedule.startMinute) / 60;
+          newTaskSummaryModel.date = taskSchedule.date;
           this.TaskSummaryModel = newTaskSummaryModel;
           },
         error: () => {}

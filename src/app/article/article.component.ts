@@ -19,7 +19,6 @@ import {DatePipe} from '@angular/common';
 import {CreateTaskForm, GetTaskFormFromTaskModel} from './models/task-detail.form';
 import {TaskHierarchyManagementService} from '../Services/task-hierarchy-management.service';
 import {TaskHierarchyModel} from './models/task-hierarchy.model';
-import {MatSelect} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProfileModel} from '../profile/models/profile.model';
 

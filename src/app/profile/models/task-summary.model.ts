@@ -24,6 +24,7 @@ export function CreateTaskSummaryForm(): FormGroup {
     'expectedHours': new FormControl(''),
     'actualOutput': new FormControl(''),
     'actualHours': new FormControl(''),
+    'date': new FormControl(''),
   });
 }
 
