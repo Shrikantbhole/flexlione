@@ -24,7 +24,7 @@ export class TaskMasterComponent implements  OnInit {
 
   loadTemplates() {
 
-    this.taskManagementService.getTemplateTasks( null, 'children' )
+    this.taskManagementService.getAllTemplates( null, 'children' )
       .subscribe({next: (data: Template []) => this.templateData = data}); }
   ngOnInit() {}
 

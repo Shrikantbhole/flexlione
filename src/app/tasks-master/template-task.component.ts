@@ -18,7 +18,7 @@ export class TemplateTaskComponent {
   public selectedTemplateId: string;
   public selectedTasks: TaskModel [] = [];
   private taskManagementService: TaskManagementService;
-  private templateData: Template[];
+  private templateData: Template;
      constructor(
       activatedRoute: ActivatedRoute, taskManagementService: TaskManagementService, private router: Router,
      ) {
@@ -35,13 +35,18 @@ export class TemplateTaskComponent {
       });
     }
   loadSelectedTemplateTasks() {
-    this.templateTasks = [];
-      this.taskManagementService.getTemplateTasks(this.selectedTemplateId, 'children' )
-        .subscribe({next: (data: Template [] ) => {console.log(data); this.templateData = data;
 
-            this.templateTasks = this.templateData.filter(n => n.templateId = this.selectedTemplateId )[0].children;
-        }});
-      console.log(this.templateData);
+    // this.templateTasks = [];
+    //    this.taskManagementService.getTemplateTasks(this.selectedTemplateId, 'children' )
+    //      .subscribe({next: (data: Template [] ) => {console.log(data); this.templateData = data;
+//
+    //          this.templateTasks = this.templateData.filter(n => n.templateId = this.selectedTemplateId )[0].children;
+    //     }});
+    //    console.log(this.templateData);
+    this.templateTasks = [];
+     this.taskManagementService.getTemplateById(this.selectedTemplateId, 'taskDetails' )
+       .subscribe( data => {this.templateData = data;
+       this.templateTasks = this.templateData.taskList; });
     }
 
   onRowClick(task: TaskModel ) {

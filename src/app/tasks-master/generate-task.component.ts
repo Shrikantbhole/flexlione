@@ -33,25 +33,24 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
     private  router: Router
   ) {
   }
-    createTaskForm(task: TaskModel): FormGroup {
-      const newTask: FormGroup = CreateTaskForm();
-     // newTask.controls['taskId'].disable();
-     // newTask.controls['hrsSpentTillNow'].disable();
-      newTask.setValue({
-        taskId: '',
-        parentTaskId: '',
-        createdBy: '',
-        status: '',
-        positionAfter: '',
-        description: '',
-        deadline: '',
+   // createTaskForm(task: TaskModel): FormGroup
+   createTaskForm(task: TaskModel) {
+    const newTask: FormGroup = CreateTaskForm();
+    newTask.setValue({
+      taskId: this.generatedTask.taskId,
+      parentTaskId: '',
+      createdBy: '',
+       status: '',
+       positionAfter: '',
+       description: this.generatedTask.description,
+       deadline: '',
         score: '',
-        assignedTo: '',
-        estimatedHrs: '',
-        hrsSpentTillNow: '',
-      });
-      return newTask;
-    }
+       assignedTo: '',
+       estimatedHrs: '',
+       hrsSpentTillNow: '',
+     });
+     return newTask;
+  }
 
   ngOnInit() {}
   onAddTaskClick() {
@@ -83,7 +82,9 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
-    this.newTask = this.createTaskForm(this.generatedTask);
+      if (this.generatedTask !== undefined) {
+        this.newTask = this.createTaskForm(this.generatedTask);
+      }
   }
 
 }

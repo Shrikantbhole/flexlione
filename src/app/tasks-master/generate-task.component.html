@@ -42,7 +42,7 @@
   <mat-list class="mat-form-field--inline">
     <mat-form-field >
       <label >Task ID</label>
-      <input matInput formControlName="taskId" placeholder="Task Id" [ngModel]="generatedTask.taskId">
+      <input matInput formControlName="taskId" placeholder="Task Id">
     </mat-form-field>
 
     <mat-form-field class = "lm">
@@ -56,7 +56,7 @@
   <mat-list class="mat-form-field--inline">
     <mat-form-field>
       <mat-label>Assigned To</mat-label>
-      <mat-select formControlName="assignedTo"  [ngModel]="generatedTask.assignedTo">
+      <mat-select formControlName="assignedTo"  >
         <mat-option></mat-option>
         <mat-option [value]="user" *ngFor="let  user of UserList" >
           {{user}}
@@ -66,7 +66,7 @@
 
     <mat-form-field class = "lm">
       <mat-label>Created By</mat-label>
-      <mat-select formControlName="createdBy" [ngModel]="generatedTask.createdBy">
+      <mat-select formControlName="createdBy" >
         <mat-option></mat-option>
         <mat-option [value]="user" *ngFor="let  user of UserList" >
           {{user}}
@@ -77,7 +77,7 @@
   <br>
   <mat-list class="mat-form-field--inline">
     <mat-form-field>
-      <input matInput formControlName="description" placeholder="Task Description (Short)" [ngModel]="generatedTask.description">
+      <input matInput formControlName="description" placeholder="Task Description (Short)" >
     </mat-form-field>
 
     <mat-form-field class = "lm">
@@ -116,7 +116,7 @@
 
     <mat-form-field class = "lm">
       <mat-label>Parent Task Id</mat-label>
-      <input matInput formControlName="parentTaskId" placeholder="parentTaskId" [ngModel]="generatedTask.parentTaskId">
+      <input matInput formControlName="parentTaskId" placeholder="parentTaskId" >
     </mat-form-field>
   </mat-list>
 

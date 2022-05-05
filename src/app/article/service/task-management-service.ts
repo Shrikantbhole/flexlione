@@ -87,7 +87,7 @@ export class TaskManagementService {
   }
 
 
-  getTemplateTasks( templateId: string, include: string) {
+  getAllTemplates( templateId: string, include: string) {
 
 //  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
 
@@ -111,12 +111,44 @@ export class TaskManagementService {
     }
 // return[{templateId: '1', description: 'hello', children: [] }];
 
-    return this.http_.get<Template[]>(this.url, {params: queryStringParams});
+    return this.http_.get<Template[]>(this.baseUrl + '/Template/GetAllTemplates', {params: queryStringParams});
    // catchError(HandlerError.handleError)
  // const queryStringParams = {
   //    sprintId: sprintId,
    //   taskId: taskId
   //  };
+  }
+
+  getTemplateById( templateId: string, include: string) {
+
+//  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
+
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+
+
+    let queryStringParams;
+    if (templateId == null) {
+      queryStringParams = {
+        include: include
+      };
+    } else {
+      queryStringParams = {
+        include: include,
+        templateId: templateId
+      };
+    }
+// return[{templateId: '1', description: 'hello', children: [] }];
+
+    return this.http_.get<Template>(this.baseUrl + '/Template/GetTemplateById', {params: queryStringParams});
+    // catchError(HandlerError.handleError)
+    // const queryStringParams = {
+    //    sprintId: sprintId,
+    //   taskId: taskId
+    //  };
   }
 
 
