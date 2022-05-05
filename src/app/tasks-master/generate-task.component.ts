@@ -54,7 +54,7 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
 
   ngOnInit() {}
   onAddTaskClick() {
-    this.taskManagementService.addTaskToServer(this.createTask(this.newTask))
+    this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
       .subscribe({
         next: (task) => {
           console.log(task);

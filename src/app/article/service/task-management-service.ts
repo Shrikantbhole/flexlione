@@ -25,13 +25,7 @@ export class TaskManagementService {
   private http_: HttpClient;
 
   private baseUrl: string ;
-   // public url = '../../tasks-master/templateData.json';
-   public url = 'http://localhost:3000/posts';
-  public url1 = 'http://localhost:3000/written';
-
-
-
-  constructor(http: HttpClient, serverConfigService: ServerConfigService, private messageBoxService: MessageBoxService) { // pass by reference
+   constructor(http: HttpClient, serverConfigService: ServerConfigService, private messageBoxService: MessageBoxService) { // pass by reference
     this.http_ = http;
     this.baseUrl = serverConfigService.getBaseUrl();
 
@@ -87,43 +81,16 @@ export class TaskManagementService {
   }
 
 
-  getAllTemplates( templateId: string, include: string) {
-
-//  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
-
-
+  getAllTemplates( ) {
     const httpHeaders = {
       'Content-Type': 'application/json',
       'accept': 'application/json;v=1.0'
     };
-
-
-    let queryStringParams;
-    if (templateId == null) {
-      queryStringParams = {
-        include: include
-      };
-    } else {
-      queryStringParams = {
-        include: include,
-        templateId: templateId
-      };
+    return this.http_.get<Template[]>(this.baseUrl + '/Template/GetAllTemplates');
     }
-// return[{templateId: '1', description: 'hello', children: [] }];
-
-    return this.http_.get<Template[]>(this.baseUrl + '/Template/GetAllTemplates', {params: queryStringParams});
-   // catchError(HandlerError.handleError)
- // const queryStringParams = {
-  //    sprintId: sprintId,
-   //   taskId: taskId
-  //  };
-  }
 
   getTemplateById( templateId: string, include: string) {
 
-//  linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
-
-
     const httpHeaders = {
       'Content-Type': 'application/json',
       'accept': 'application/json;v=1.0'
@@ -141,15 +108,9 @@ export class TaskManagementService {
         templateId: templateId
       };
     }
-// return[{templateId: '1', description: 'hello', children: [] }];
 
     return this.http_.get<Template>(this.baseUrl + '/Template/GetTemplateById', {params: queryStringParams});
-    // catchError(HandlerError.handleError)
-    // const queryStringParams = {
-    //    sprintId: sprintId,
-    //   taskId: taskId
-    //  };
-  }
+      }
 
 
   removeTaskFromSprint(taskId: string, callback: (task: TaskModel) => any) {
@@ -207,15 +168,6 @@ export class TaskManagementService {
         catchError(HandlerError.handleError)
       );
   }
-
-   addTaskToServer(task: TaskModel) {
-     const httpHeaders = {
-    'Content-Type': 'application/json',
-    'accept': 'application/json;v=1.0'
-      };
-      return this.http_.post<TaskModel>(this.url1, task, {headers: httpHeaders} );
-      }
-
 
 }
 
