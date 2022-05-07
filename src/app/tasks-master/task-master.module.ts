@@ -22,6 +22,7 @@ import {SelectedTasksDisplayComponent} from './selected-tasks.component';
 import {GenerateTaskComponent} from './generate-task.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
+import {EditTemplateComponent} from './edit-template.component';
 
 
 
@@ -44,11 +45,12 @@ import {MatInputModule} from '@angular/material/input';
     MatButtonModule,
     ArticleModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
   ],
   declarations: [
     TaskMasterComponent, TemplateTaskComponent,
-    SelectedTasksDisplayComponent, GenerateTaskComponent
+    SelectedTasksDisplayComponent, GenerateTaskComponent,
+    EditTemplateComponent
   ],
   providers: [
     MatSnackBar,

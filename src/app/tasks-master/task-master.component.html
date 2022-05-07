@@ -41,10 +41,13 @@
 
       <br />
 
-      <button mat-raised-button color="primary" (click)="onClickBack()">
+      <button mat-raised-button color="primary" (click)="onClickBack()" style="margin-right:10px">
         Back
+      </button>
 
 
+      <button mat-raised-button color="primary" (click)="onClickCreateNewTemplate()">
+        Creat New Template
       </button>
 
       <br />
@@ -62,10 +65,21 @@
           <div mat-line>{{template.templateId}}</div>
           <div mat-line>{{template.description}} </div>
 
-
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
           <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onClickEdit()">
+              <mat-icon color="primary">edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="onClickDelete()">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Delete</span>
+            </button>
 
           </mat-menu>
+
 
           <mat-divider></mat-divider>
         </mat-list-item>

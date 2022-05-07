@@ -112,6 +112,15 @@ export class TaskManagementService {
     return this.http_.get<Template>(this.baseUrl + '/Template/GetTemplateById', {params: queryStringParams});
       }
 
+      addTaskToTemplate(taskIdList: string [], templateId: string ) {
+        let queryStringParams;
+        queryStringParams = {
+       taskIdList: taskIdList,
+          templateId: templateId
+        };
+     return this.http_.post(this.baseUrl + '/Template/AddTaskListToTemplate', {params: queryStringParams});
+      }
+
 
   removeTaskFromSprint(taskId: string, callback: (task: TaskModel) => any) {
 

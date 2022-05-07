@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello from edit component</title>
+</head>
+<body>
+<div class="container">
+
+  <div class="row">
+    <div class="col" >
+      <h4>Select Task to Add</h4>
+      <mat-list>
+        <mat-divider></mat-divider>
+        <mat-list-item *ngFor="let Task of childTaskList"
+                       [ngClass]="{highlight: Task.taskId == selectedTaskId}"
+
+                       >
+
+          <div mat-line>{{Task.taskId}}</div>
+          <div mat-line>{{Task.description}}
+          </div>
+
+
+          <button mat-icon-button (click)="onClickAdd(Task.taskId)">
+            <mat-icon>add_task</mat-icon>
+          </button>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+
+
+      </mat-list>
+    </div>
+
+    <div class="col">
+      <h4>Task In template</h4>
+      <mat-list>
+        <mat-divider></mat-divider>
+
+          <mat-list-item *ngFor="let task of templateTasks"
+                           [ngClass]="{highlight: task.taskId == selectedTaskId}">
+
+
+            <div mat-line>{{task.taskId}}</div>
+            <div mat-line> {{task.description}} </div>
+            <button mat-icon-button (click)="onClickRemove()">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+
+          </mat-list-item>
+
+
+      </mat-list>
+
+    </div>
+
+
+
+  </div>
+
+</div>
+
+</body>
+</html>

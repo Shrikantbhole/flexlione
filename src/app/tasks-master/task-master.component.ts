@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {Template} from '../article/models/template.model';
 import {TaskManagementService} from '../article/service/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
+import {MatDialog} from '@angular/material/dialog';
+import {EditTemplateComponent} from './edit-template.component';
 
 @Component({
   selector: 'app-task-master',
@@ -16,7 +18,7 @@ export class TaskMasterComponent implements  OnInit {
   public template: Template;
   private messageBoxService: MessageBoxService;
 
-  constructor(private router: Router, taskManagementService: TaskManagementService, messageBoxService: MessageBoxService, ) {
+  constructor(public dialog: MatDialog, private router: Router, taskManagementService: TaskManagementService, messageBoxService: MessageBoxService, ) {
     this.taskManagementService = taskManagementService;
     this.loadTemplates();
     this.messageBoxService = messageBoxService;
@@ -51,4 +53,15 @@ export class TaskMasterComponent implements  OnInit {
     });
   }
 
+  onClickCreateNewTemplate() {
+
   }
+
+  onClickEdit() {
+this.dialog.open(EditTemplateComponent);
+  }
+
+  onClickDelete() {
+
+  }
+}
