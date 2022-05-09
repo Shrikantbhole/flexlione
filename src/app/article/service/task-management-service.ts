@@ -80,7 +80,6 @@ export class TaskManagementService {
       );
   }
 
-
   getAllTemplates( ) {
     const httpHeaders = {
       'Content-Type': 'application/json',
@@ -110,17 +109,56 @@ export class TaskManagementService {
     }
 
     return this.http_.get<Template>(this.baseUrl + '/Template/GetTemplateById', {params: queryStringParams});
-      }
 
-      addTaskToTemplate(taskIdList: string [], templateId: string ) {
-        let queryStringParams;
+  }
+
+  addTaskToTemplate(taskIdList: string [], templateId: string, callback: (task: TaskModel) => any ) {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+     let queryStringParams;
         queryStringParams = {
        taskIdList: taskIdList,
           templateId: templateId
         };
-     return this.http_.post(this.baseUrl + '/Template/AddTaskListToTemplate', {params: queryStringParams});
+     return this.http_.post<TaskModel>(this.baseUrl + '/Template/AddTaskListToTemplate', '', {params: queryStringParams, headers: httpHeaders})
+  .pipe(
+      retry(1),
+      catchError(HandlerError.handleError)
+    ).subscribe({
+         next : (task) => {
+           callback(task);
+         },
+            error : (apiError: ApiError) => {
+        this.messageBoxService.info('Error in adding Task', apiError.title, apiError.detail);
       }
+    });
+   }
 
+  removeTaskFromTemplate(taskIdList: string [], templateId: String, callback: (task: TaskModel) => any) {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+    let queryStringParams;
+    queryStringParams = {
+      taskIdList: taskIdList,
+      templateId: templateId,
+    };
+    return this.http_.post<TaskModel>(this.baseUrl + '/Template/RemoveTaskListToTemplate', '', { params: queryStringParams, headers: httpHeaders})
+  .pipe(
+      retry(1),
+      catchError(HandlerError.handleError)
+    ).subscribe({
+      next : (task) => {
+        callback(task);
+      },
+      error : (apiError: ApiError) => {
+        this.messageBoxService.info('Error in removing Task', apiError.title, apiError.detail);
+      }
+    });
+   }
 
   removeTaskFromSprint(taskId: string, callback: (task: TaskModel) => any) {
 
@@ -158,7 +196,6 @@ export class TaskManagementService {
         }
       });
   }
-
 
   linkTaskToSprint(sprintId: string, taskId: string): Observable<TaskModel> {
 

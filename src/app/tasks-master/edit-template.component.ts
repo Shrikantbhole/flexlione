@@ -34,7 +34,7 @@ export class EditTemplateComponent {
   public selectedTemplateId: string;
   public selectedTasks: TaskModel [] = [];
   private templateData: Template;
-  public taskIdList: string[] = [];
+  public taskIdList: string[] = [] ;
 
   constructor(activatedRoute: ActivatedRoute, dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
               taskManagementService: TaskManagementService, router: Router, private store: Store<AppState> ) {
@@ -60,13 +60,10 @@ export class EditTemplateComponent {
     this.taskManagementService.getTaskById('0', 'children').subscribe(
       {
         next: (task: TaskModel) => {
-          console.log(task);
           this.Task = task;
           this.childTaskList = task.children;
-
-          console.log(this.Task);
         },
-        error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
+        error: (apiError: ApiError) => this.messageBoxService.info('Could not find taskId', apiError.title, apiError.detail)
       });
   }
 
@@ -82,9 +79,38 @@ export class EditTemplateComponent {
 
   onClickAdd(taskId: string) {
     this.taskIdList.push(taskId);
-    this.taskManagementService.addTaskToTemplate(this.taskIdList, this.selectedTemplateId);
+    this.messageBoxService.confirmWarn(
+      'Task Id ' + taskId + ' will be added to template ' + this.selectedTemplateId)
+      .afterClosed().subscribe({
+
+      next: (proceed: boolean) => {
+        if (proceed) {
+          this.taskManagementService.addTaskToTemplate(this.taskIdList, this.selectedTemplateId, this.onAddConfirm);
+        }
+      }
+    });
+
+    }
+  onAddConfirm = (task: TaskModel)  => {
+    this.snackBarService.open('Task Successfully added to template', '', {duration: 2000});
+    this.loadSelectedTemplateTasks();
   }
 
-  onClickRemove() {
+  onClickRemove(taskId: string) {
+    this.taskIdList.push(taskId);
+    this.messageBoxService.confirmWarn(
+      'Task Id ' + taskId + ' will be removed from template ' + this.selectedTemplateId)
+      .afterClosed().subscribe({
+
+      next: (proceed: boolean) => {
+        if (proceed) {
+          this.taskManagementService.removeTaskFromTemplate(this.taskIdList, this.selectedTemplateId, this.onRemoveConfirm);
+        }
+      }
+    });
+  }
+  onRemoveConfirm = (task: TaskModel)  => {
+      this.snackBarService.open('Task Successfully removed from template', '', {duration: 2000});
+      this.loadSelectedTemplateTasks();
   }
 }

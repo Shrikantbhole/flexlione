@@ -1,14 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Hello from edit component</title>
-</head>
-<body>
+<style>
+  mat-header-cell {
+    color: black;
+    font-size: 14px;
+    font-weight: bold
+  }
+
+  .highlight {
+    background-color: #e8f0fe;
+
+  }
+  .col {
+    margin-right: 10px;
+
+  }
+  /* code inspired from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidebar_responsive */
+  .master {
+    width: 1000px;
+    height: 700px;
+    overflow: auto;
+
+  }
+
+  div.detail {
+    margin-left: 345px;
+  }
+</style>
+<div class="master">
 <div class="container">
 
   <div class="row">
-    <div class="col" >
+    <div class="col-md" >
       <h4>Select Task to Add</h4>
       <mat-list>
         <mat-divider></mat-divider>
@@ -32,8 +53,8 @@
       </mat-list>
     </div>
 
-    <div class="col">
-      <h4>Task In template</h4>
+    <div class="col-md">
+      <h4>Tasks In template</h4>
       <mat-list>
         <mat-divider></mat-divider>
 
@@ -43,7 +64,7 @@
 
             <div mat-line>{{task.taskId}}</div>
             <div mat-line> {{task.description}} </div>
-            <button mat-icon-button (click)="onClickRemove()">
+            <button mat-icon-button (click)="onClickRemove(task.taskId)">
               <mat-icon>delete_outline</mat-icon>
             </button>
             <mat-divider></mat-divider>
@@ -61,5 +82,4 @@
 
 </div>
 
-</body>
-</html>
+</div>
