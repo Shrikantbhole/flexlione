@@ -12,6 +12,7 @@ import {CreateTaskForm} from '../article/models/task-detail.form';
 import {DatePipe} from '@angular/common';
 import {map, startWith} from 'rxjs/operators';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import {ProfileModel} from '../profile/models/profile.model';
 
 
 
@@ -26,8 +27,11 @@ export class StandUpComponent implements OnInit {
   public Profiles: ProfileStoreModel[] = [];
   options: string[] = [];
   public profileId: string;
-  public Name = 'anuj';
-  date = new FormControl({value: new Date()}, Validators.required);
+  public Name: string ;
+  newDate: FormGroup = new FormGroup({
+    newDate1: new FormControl(new Date(), [Validators.required]),
+  });
+  currentUser: ProfileModel;
 
   constructor(
     private articlesService: ArticlesService,
@@ -36,17 +40,24 @@ export class StandUpComponent implements OnInit {
     private dailyPlanSummaryService: DailyPlanSummaryService,
     private  messageBoxService: MessageBoxService,
     private  profileManagementService: ProfileManagementService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private userService: UserService,
   ) {
   }
 
   async ngOnInit() {
     await this.getAllProfiles();
-    console.log(this.date.value);
-    this.GetDailyTaskSummary('2', this.datePipe.transform(this.date.value.value, 'yyyy-MM-dd'));
+    this.userService.currentUser.subscribe(
+      (userData) => {
+        this.currentUser = userData;
+        this.Name = this.currentUser.name;
+        this.profileId = this.currentUser.profileId;
+      }
+    );
+    this.GetDailyTaskSummary(this.currentUser.profileId, this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
+  onDateChange(event: MatDatepickerInputEvent<Date | null>) {
     console.log(event.value);
     this.GetDailyTaskSummary(this.profileId, this.datePipe.transform(event.value, 'yyyy-MM-dd'));
 
@@ -85,10 +96,10 @@ export class StandUpComponent implements OnInit {
     return profile[0] === undefined ? profileName : profile[0].profileId;
   }
 
-  public async updateProfile(profileName: string) {
-    this.profileId = await this.GetProfileId(profileName);
+  public  updateProfile(profileName: string) {
+    this.profileId =  this.GetProfileId(profileName);
     this.Name = this.GetProfileName(this.profileId);
-    this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.date.value, 'yyyy-MM-dd'));
+    this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
 
 }

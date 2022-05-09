@@ -50,7 +50,7 @@ export class TaskSummaryFormComponent implements  OnInit {
       expectedHours: taskSummary.expectedHour == null ? 'server-generated' : taskSummary.expectedHour,
       actualOutput: taskSummary.actualOutput == null ? '' : taskSummary.actualOutput,
       actualHours: taskSummary.actualHour == null ? '' : taskSummary.actualHour,
-      date: taskSummary.date
+      date: taskSummary.date == null ? '' : taskSummary.date
     });
   }
   private createTaskSummary(newTaskSummary: FormGroup): TaskSummaryModel {

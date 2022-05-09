@@ -43,11 +43,10 @@ export class HomeComponent implements OnInit {
   tags: Array<string> = [];
   ngOnInit() {
     this.globalSearch = this.searchManagementService.getGlobalSearch();
-    this.personalSearch = this.searchManagementService.getPersonalSearch();
     this.setListTo(this.searchManagementService.getGlobalSearch());
     this.userService.currentUser.subscribe(
       (userData) => {
-      this.personalSearch.AssignedTo = [userData.name];
+        this.personalSearch = this.searchManagementService.getPersonalSearch(userData.profileId);
       }
     );
   }

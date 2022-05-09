@@ -13,7 +13,7 @@ export class TaskModel {
   isRemoved: boolean;
   description: string;
   score: number;
-  estimatedHours: number;
+  expectedHours: number;
   actualHours: number;
   children: TaskModel[];
   downStreamDependencies: TaskModel[];

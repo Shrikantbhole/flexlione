@@ -12,14 +12,20 @@
 
 
           ></app-auto-search>
+
+        <form [formGroup]="newDate" class="example-form">
         <mat-form-field class="pull-xs-left">
           <label >Select Date</label>
-          <input matInput [formControl]="date" [matDatepicker]="picker"
+          <input matInput formControlName ="newDate1" [matDatepicker]="picker3"
                  (dateInput)="onDateChange($event)" (dateChange)="onDateChange($event)">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
         </mat-form-field>
+
+
+        </form>
       </div>
+
 
 
     </div>
@@ -30,7 +36,8 @@
 <table class='table' *ngIf="TaskSummaryList">
   <thead>
   <tr>
-    <th>Task Summary Id</th>
+    <th>Task Id</th>
+    <th>Description</th>
     <th>Expected Output</th>
     <th>Expected Hours</th>
     <th>Actual Output</th>
@@ -43,6 +50,7 @@
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
     <td>{{ taskSummary.taskId }}</td>
+    <td>{{ taskSummary.description }}</td>
     <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
     <td>{{ taskSummary.expectedOutput }}</td>
     <td>{{ taskSummary.expectedHour }}</td>

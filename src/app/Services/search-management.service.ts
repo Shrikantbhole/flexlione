@@ -9,6 +9,7 @@ import { SearchQuery} from '../home/models/search-query-form.model';
 import {SearchTag} from '../home/models/searchTag';
 import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-view-store.model';
 import {DatePipe} from '@angular/common';
+import {getStatusList} from '../shared/shared-lists/status-list';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.
@@ -58,14 +59,20 @@ export class SearchManagementService {
   getGlobalSearch(): SearchQuery {
    const query = new SearchQuery();
    query.Deadline = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+   query.Status = getStatusList().filter(function (status) {
+     return status !== 'completed';
+   });
    // query.Deadline = this.datepipe.transform(new Date().getDate() + 14, 'yyyy-MM-dd');
     return query;
   }
 
-  getPersonalSearch(): SearchQuery {
+  getPersonalSearch(profileId: string): SearchQuery {
     const query = new SearchQuery();
-    query.Tag = 'conveyor';
-    // query.Deadline = this.datepipe.transform(new Date().getDate() + 14, 'yyyy-MM-dd');
+    query.Deadline = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    query.Status = getStatusList().filter(function (status) {
+      return status !== 'completed';
+    });
+    query.AssignedTo = [profileId];
 
     return query;
   }

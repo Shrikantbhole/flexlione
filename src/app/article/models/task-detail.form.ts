@@ -12,7 +12,7 @@ export function CreateTaskForm(): FormGroup {
     'deadline': new FormControl(''),
     'assignedTo': new FormControl('', [Validators.required]),
     'score': new FormControl(''),
-    'estimatedHrs': new FormControl(''),
+    'expectedHours': new FormControl(''),
     'hrsSpentTillNow': new FormControl(''),
 
   });
@@ -29,7 +29,7 @@ export function GetTaskFormFromTaskModel(task: TaskModel): FormGroup {
   taskForm.controls['description'].setValue(task.description);
   taskForm.controls['assignedTo'].setValue(task.assignedTo);
   taskForm.controls['score'].setValue(task.score);
-  taskForm.controls['estimatedHrs'].setValue(task.estimatedHours);
+  taskForm.controls['expectedHours'].setValue(task.expectedHours);
   taskForm.controls['hrsSpentTillNow'].setValue(task.actualHours);
   return taskForm;
 }

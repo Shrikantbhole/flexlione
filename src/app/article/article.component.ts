@@ -78,7 +78,6 @@ export class ArticleComponent implements OnInit {
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
     this.snackBarService.open('Task Hierarchy Successfully received' , '', {duration: 300});
    this.TaskHierarchy = taskHierarchy;
-    this.TaskForm.controls['estimatedHrs'].setValue(taskHierarchy.totalEstimatedHours);
     this.TaskForm.controls['hrsSpentTillNow'].setValue(taskHierarchy.totalHoursSpent);
   }
   seeInTaskTree() {

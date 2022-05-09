@@ -2,6 +2,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TaskModel} from '../models/task-detail.model';
 import {Component, Input, OnInit} from '@angular/core';
 import {DailyPlanSummaryService} from '../../Services/daily-plan-summary.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-article-task-session-summary',
@@ -14,7 +15,7 @@ export class TaskSessionSummaryComponent {
   task: TaskModel;
 
   constructor(
-    private route: ActivatedRoute,
-    private dailyPlanSummaryService: DailyPlanSummaryService,
+    private datepipe: DatePipe
   ) {}
+
 }

@@ -105,14 +105,13 @@ export class HeadTasksComponent {
 
   }
 
-  onDeleteTaskButtonClick(taskId: string): void {
+  onRemoveTaskButtonClick(taskId: string): void {
 
     // Open a dialog box to ask for confirmation
 
 
     this.messageBoxService.confirmWarn(
-      'Are you sure you want to delete task ' + taskId + '?'
-      + ' All theChild Tasks of this task  will also be deleted.', 'Delete')
+      'Are you sure you want to remove task ' + taskId + '?', 'Remove')
       .afterClosed().subscribe({
 
       next: (proceed: boolean) => {
@@ -121,18 +120,19 @@ export class HeadTasksComponent {
         if (proceed) {
 
           // send request to server to delete the PTL station
-          this.taskManagementService.deleteTask(taskId).subscribe({
+          this.taskManagementService.removeTask(taskId).subscribe({
             next: () => {
 
               // show acknowledgement to user
-              this.snackBarService.open('TaskModel deleted.');
+              this.snackBarService.open('Task Successfully Removed.', '', {duration: 3000});
+
 
               // load the list again
               this.loadParentTasks();
             },
 
             // show error dialog box if server failed to delete
-            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to delete TaskModel', apiError.title, apiError.detail)
+            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to remove Task', apiError.title, apiError.detail)
           });
         }
       }
