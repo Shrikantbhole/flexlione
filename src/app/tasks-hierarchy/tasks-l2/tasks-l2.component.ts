@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { TaskModel } from '../../article/models/taskModel';
+import { TaskModel } from '../../article/models/task-detail.model';
 
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,8 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {ApiError} from '../../settings/api-error.model';
-import {TaskManagementService} from '../../article/service/task-management-service';
-import {AddOrEditTaskDialogComponent} from '../task-tree/add-or-edit-task-dialog.component';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import * as TaskActions from '../../shared/store/create-task.action';
 import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
@@ -80,6 +79,9 @@ export class TasksL2Component {
         next: (task: TaskModel) => {
           console.log(task);
           this.l2Task = task;
+          this.l2Task.children = this.l2Task.children.filter(function ( taskModel) {
+            return taskModel.isRemoved === false;
+          }); // Hide removed tasks
           console.log(this.l2Task);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not start wave', apiError.title, apiError.detail)
@@ -107,14 +109,13 @@ export class TasksL2Component {
 
   }
 
-  onDeleteTaskButtonClick(taskId: string): void {
+  onRemoveTaskButtonClick(taskId: string): void {
 
     // Open a dialog box to ask for confirmation
 
 
     this.messageBoxService.confirmWarn(
-      'Are you sure you want to delete task ' + taskId + '?'
-      + ' All theChild Tasks of this task  will also be deleted.', 'Delete')
+      'Are you sure you want to remove task ' + taskId , 'Remove')
       .afterClosed().subscribe({
 
       next: (proceed: boolean) => {
@@ -123,18 +124,19 @@ export class TasksL2Component {
         if (proceed) {
 
           // send request to server to delete the PTL station
-          this.taskManagementService.deleteTask(taskId).subscribe({
+          this.taskManagementService.removeTask(taskId).subscribe({
             next: () => {
 
               // show acknowledgement to user
-              this.snackBarService.open('TaskModel deleted.');
+              this.snackBarService.open('Task Successfully Removed.', '', {duration: 3000});
+
 
               // load the list again
               this.loadL2TaskList();
             },
 
             // show error dialog box if server failed to delete
-            error: () => this.messageBoxService.info('Error: Failed to delete PTL station')
+            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to remove TaskId', apiError.title, apiError.detail)
           });
         }
       }
@@ -161,7 +163,7 @@ export class TasksL2Component {
             return;
           }
 
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
           // Load the list again
           this.loadL2TaskList();

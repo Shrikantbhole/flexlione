@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Article, ArticlesService, UserService } from '../core';
 import {catchError, map} from 'rxjs/operators';
-import {TaskManagementService} from './service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import { User } from '../core/models';
 import {MessageBoxService} from '../settings/message-box.service';
 
@@ -26,7 +26,7 @@ export class ArticleResolver implements Resolve<Article> {
       .pipe(
         map(
           article => {
-            if (this.userService.getCurrentUser().username !== undefined) {
+            if (this.userService.getCurrentUser().name !== undefined) {
               return article;
             } else {
               // this.router.navigateByUrl('/login');

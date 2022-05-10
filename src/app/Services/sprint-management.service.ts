@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 
 
 import {catchError, retry} from 'rxjs/operators';
-import {ServerConfigService} from '../../settings/server-config.service';
-import {HandlerError} from '../../settings/handle-error.service';
-import {ProfileModel} from '../models/profile.model';
-import {ProfileStoreModel} from '../../shared/store/interfaces/profile-store.model';
-import {SprintModel} from '../models/sprint.model';
-import {TaskScheduleModel} from '../models/task-schedule.model';
-import {TaskModel} from '../../article/models/taskModel';
+import {ServerConfigService} from '../settings/server-config.service';
+import {HandlerError} from '../settings/handle-error.service';
+import {ProfileModel} from '../profile/models/profile.model';
+import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
+import {SprintModel} from '../profile/models/sprint.model';
+import {TaskScheduleModel} from '../profile/models/task-schedule.model';
+import {TaskModel} from '../article/models/task-detail.model';
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
 // can used in other files.

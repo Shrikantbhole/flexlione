@@ -4,7 +4,7 @@ import {Template} from '../article/models/template.model';
 import {ApiError} from '../settings/api-error.model';
 import {ActivatedRoute} from '@angular/router';
 import {MessageBoxService} from '../settings/message-box.service';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';

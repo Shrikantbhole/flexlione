@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 import { User } from '../models';
 import { map ,  distinctUntilChanged } from 'rxjs/operators';
+import {ProfileModel} from '../../profile/models/profile.model';
 
 
 @Injectable()
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<User>({} as User);
+  private currentUserSubject = new BehaviorSubject<ProfileModel>({} as ProfileModel);
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
 
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
@@ -27,9 +28,13 @@ export class UserService {
   populate() {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
-      this.apiService.get('/user')
+    let params = new HttpParams();
+    params = params.append('profileId', this.jwtService.getToken().toString());
+      return this.apiService.get('/Profile/GetProfileById', params)
       .subscribe(
-        data => this.setAuth(data.user),
+        data => {
+          this.setAuth(data);
+        },
         err => this.purgeAuth()
       );
     } else {
@@ -38,9 +43,9 @@ export class UserService {
     }
   }
 
-  setAuth(user: User) {
+  setAuth(user: ProfileModel) {
     // Save JWT sent from server in localstorage
-    this.jwtService.saveToken(user.token);
+    this.jwtService.saveToken(user.profileId);
     // Set current user data into observable
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
@@ -51,34 +56,37 @@ export class UserService {
     // Remove JWT from localstorage
     this.jwtService.destroyToken();
     // Set current user to an empty object
-    this.currentUserSubject.next({} as User);
+    this.currentUserSubject.next({} as ProfileModel);
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
   }
 
-  attemptAuth(type, credentials): Observable<User> {
+  attemptAuth(type, credentials): Observable<ProfileModel> {
     const route = (type === 'login') ? '/login' : '';
-    return this.apiService.post('/users' + route, {user: credentials})
+    let params = new HttpParams();
+    params = params.append('emailId', credentials.email);
+    params = params.append('password', credentials.password);
+    return this.apiService.get('/Profile/AuthenticateProfile', params)
       .pipe(map(
       data => {
-        this.setAuth(data.user);
+        this.setAuth(data);
         return data;
       }
     ));
   }
 
-  getCurrentUser(): User {
+  getCurrentUser(): ProfileModel {
     return this.currentUserSubject.value;
   }
 
   // Update the user on the server (email, pass, etc)
-  update(user): Observable<User> {
+  update(profile: ProfileModel): Observable<ProfileModel> {
     return this.apiService
-    .put('/user', { user })
-    .pipe(map(data => {
+    .post('/Profile/AddOrUpdateProfile',  profile )
+    .pipe(map(newProfile => {
       // Update the currentUser observable
-      this.currentUserSubject.next(data.user);
-      return data.user;
+      this.currentUserSubject.next(newProfile);
+      return newProfile;
     }));
   }
 

@@ -1,15 +1,15 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {TaskModel} from '../article/models/taskModel';
+import {TaskModel} from '../article/models/task-detail.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {CreateTaskForm} from '../article/models/TaskForm';
 import {DatePipe} from '@angular/common';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
 import {ApiError} from '../settings/api-error.model';
 import {getUserList} from '../shared/shared-lists/user-list';
 import {getStatusList} from '../shared/shared-lists/status-list';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {CreateTaskForm} from '../article/models/task-detail.form';
 
 @Component({
   selector: 'app-generate-task',
@@ -40,15 +40,17 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
       taskId: this.generatedTask.taskId,
       parentTaskId: '',
       createdBy: '',
-       status: '',
-       positionAfter: '',
-       description: this.generatedTask.description,
-       deadline: '',
-        score: '',
-       assignedTo: '',
-       estimatedHrs: '',
-       hrsSpentTillNow: '',
-     });
+      status: '',
+      positionAfter: '',
+      description: this.generatedTask.description,
+      deadline: '',
+      score: '',
+      assignedTo: '',
+      expectedHours: 0,
+      hrsSpentTillNow: 0,
+      actualHours: 0,
+
+    });
      return newTask;
   }
 
@@ -78,6 +80,9 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
     task.parentTaskId = newTask.getRawValue().parentTaskId;
     task.positionAfter = newTask.getRawValue().positionAfter === '' ? null : newTask.getRawValue().positionAfter;
     task.deadline = this.datePipe.transform(this.newTask.getRawValue().deadline, 'yyyy-MM-dd');
+    task.expectedHours = newTask.getRawValue().expectedHours;
+    task.hrsSpentTillNow = newTask.getRawValue().hrsSpentTillNow;
+    task.actualHours = newTask.getRawValue().actualHours;
     return task;
   }
 

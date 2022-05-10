@@ -1,10 +1,9 @@
-import {Component, Output, EventEmitter, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, Output, EventEmitter, OnInit, Input, AfterViewInit} from '@angular/core';
+import { FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {CreateSearchForm, GetUserList, SearchQuery} from '../models/search-query-form.model';
-import {TaskModel} from '../../article/models/taskModel';
-import {SearchManagementService} from './search-management.service';
+import {SearchQuery} from '../models/search-query-form.model';
+import {SearchManagementService} from '../../Services/search-management.service';
 import {ApiError} from '../../settings/api-error.model';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
@@ -12,26 +11,28 @@ import {AppState} from '../../app.state';
 import * as TaskActions from '../../shared/store/search-task.action';
 import {DatePipe} from '@angular/common';
 import {getStatusList} from '../../shared/shared-lists/status-list';
-import {getUserList} from '../../shared/shared-lists/user-list';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
-import {ProfileStoreModel} from '../../shared/store/interfaces/profile-store.model';
+import {ProfileManagementService} from '../../Services/profile-management.service';
+import {TaskManagementService} from '../../Services/task-management-service';
 
 /** @title Form field appearance variants */
 @Component({
   selector: 'app-home-search-form',
   templateUrl: './search-form.component.html',
 })
-export class SearchFormComponent implements  OnInit {
+export class SearchFormComponent implements  OnInit, AfterViewInit  {
 
  //  FilteredOptions is Observable array created for Auto filling
+  @Input() form: FormGroup; // this is parent form
   public  options: string[] = [];
   filteredOptions: Observable<string[]>;
   public AddTag = '';
-  private Profiles: ProfileStoreModel[] = [];
-  UserList: string[] = getUserList();
+  UserList: string[] = [];
+  TaskIdList: string[] = [];
   StatusList: string[] = getStatusList();
-  newSearch: FormGroup = CreateSearchForm();
+  initialValue = true;
+
   constructor(
     private searchManagementService: SearchManagementService,
     private  messageBoxService: MessageBoxService,
@@ -39,8 +40,11 @@ export class SearchFormComponent implements  OnInit {
     private datePipe: DatePipe,
     private  snackBarService: MatSnackBar,
     private route: ActivatedRoute,
+    private  profileManagementService: ProfileManagementService,
+    private taskManagementService: TaskManagementService
   ) {
     this.getTagList();
+    // this.form.controls['includeRemoved'].setValue(true);
   }
   public getTaskSearchList(search: SearchQuery) {
     this.searchManagementService.getTaskSearchList(search)
@@ -58,10 +62,10 @@ export class SearchFormComponent implements  OnInit {
         }
       });
   }
-  onSearch() {
+  async onSearch() {
     // console.log(this.createSearch(this.newSearch));
     // Get Search result for search query
-    this.getTaskSearchList(this.createSearch(this.newSearch));
+    this.getTaskSearchList(await this.createSearch(this.form));
   }
 
   getTagList() {
@@ -84,6 +88,9 @@ export class SearchFormComponent implements  OnInit {
   public _searchByTag(tag: string) {
     const searchQuery: SearchQuery = new SearchQuery();
     searchQuery.Tag = tag;
+    if (tag === undefined) {
+      return;
+    }
     this.getTaskSearchList(searchQuery);
   }
   private _filter(value: string): string[] {
@@ -92,24 +99,32 @@ export class SearchFormComponent implements  OnInit {
     ));
   }
 
-  private createSearch(newSearch: FormGroup): SearchQuery {
+  private async createSearch(newSearch: FormGroup): Promise<SearchQuery> {
     const search = new SearchQuery();
     if (newSearch.getRawValue().description !== '' && newSearch.getRawValue().description !== undefined)  {
       search.Description = newSearch.getRawValue().description;
     }
     if (newSearch.getRawValue().createdBy !== '' && newSearch.getRawValue().createdBy !== undefined)  {
-      search.CreatedBy = [this.GetProfileId(newSearch.getRawValue().createdBy)];
+      search.CreatedBy = [await this.GetProfileId(newSearch.getRawValue().createdBy)];
     }
 
     if (newSearch.getRawValue().assignedTo !== '' && newSearch.getRawValue().assignedTo !== undefined) {
-      search.AssignedTo = [this.GetProfileId(newSearch.getRawValue().assignedTo)];
+      search.AssignedTo = [await this.GetProfileId(newSearch.getRawValue().assignedTo)];
     }
     if (newSearch.getRawValue().deadline !== '' && newSearch.getRawValue().deadline !== undefined) {
       search.Deadline = this.datePipe.transform(newSearch.getRawValue().deadline, 'yyyy-MM-dd');
     }
 
     if (newSearch.getRawValue().status !== '' && newSearch.getRawValue().status !== undefined) {
-      search.Status = [newSearch.getRawValue().status];
+      search.Status = [newSearch.getRawValue().status.toLowerCase()];
+    }
+
+    if (newSearch.getRawValue().includeRemoved !== '' && newSearch.getRawValue().includeRemoved !== undefined) {
+      search.IncludeRemoved = newSearch.getRawValue().includeRemoved;
+    }
+
+    if (newSearch.getRawValue().taskId !== '' && newSearch.getRawValue().taskId !== undefined) {
+      search.TaskId = newSearch.getRawValue().taskId;
     }
     return search;
   }
@@ -126,37 +141,30 @@ export class SearchFormComponent implements  OnInit {
       error: () => {}
     });
   }
-  ngOnInit() {
-    this.filteredOptions = this.newSearch.valueChanges.pipe(
+  async ngOnInit() {
+    this.filteredOptions = this.form.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value.tag)),
     );
-    this.store.select('profile')
-      .subscribe({
-        next: (profiles) => {
-          this.Profiles = profiles;
-        },
-        error: () => {}
-      });
-
-    this.route.queryParams.subscribe({
-      next: (param) => {
-        if ( param !== undefined) {
-          console.log(param.search);
-          const searchQuery: SearchQuery = new SearchQuery();
-          searchQuery.Tag = param.search;
-         this.getTaskSearchList(searchQuery);
-        }
-      },
-      error: () => {}
-    });
+    const profiles = await this.profileManagementService.getAllProfiles().toPromise();
+    for (let i = 0; i < profiles.length; i++ ) {
+      this.UserList.push(profiles[i].name);
+    }
   }
 
-  public GetProfileId(profileName: string): string {
-    const profile = this.Profiles.filter(function (value) {
+  public async GetProfileId(profileName: string): Promise<string> {
+    const profiles = await this.profileManagementService.getAllProfiles().toPromise();
+    const profile = profiles.filter(function (value) {
       return (value.name === profileName);
     });
     return profile[0] === undefined ? profileName : profile[0].profileId;
+  }
+
+  ngAfterViewInit(): void {
+    this.taskManagementService.getTaskIdList('', this.getTaskIdList);
+  }
+  getTaskIdList = (taskIdList: string[]) => { // Assigning parent task id from all existing task
+    this.TaskIdList = taskIdList;
   }
 
 }

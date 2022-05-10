@@ -3,13 +3,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { User, UserService } from '../core';
+import {ProfileModel} from '../profile/models/profile.model';
+import {ApiError} from './api-error.model';
+import {MessageBoxService} from './message-box.service';
 
 @Component({
   selector: 'app-settings-page',
   templateUrl: './settings.component.html'
 })
 export class SettingsComponent implements OnInit {
-  user: User = {} as User;
+  user: ProfileModel = {} as ProfileModel;
   settingsForm: FormGroup;
   errors: Object = {};
   isSubmitting = false;
@@ -17,16 +20,18 @@ export class SettingsComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private  messageBoxService: MessageBoxService
   ) {
     // create form group using the form builder
     this.settingsForm = this.fb.group({
       image: '',
-      username: '',
+      name: '',
       bio: '',
-      email: '',
+      emailId: '',
       password: ''
     });
+    this.settingsForm.controls['emailId'].disable();
     // Optional: subscribe to changes on the form
     // this.settingsForm.valueChanges.subscribe(values => this.updateUser(values));
   }
@@ -51,13 +56,16 @@ export class SettingsComponent implements OnInit {
 
     this.userService
       .update(this.user)
-      .subscribe(
-        updatedUser => this.router.navigateByUrl('/profile/' + updatedUser.username),
-        err => {
-          this.errors = err;
+      .subscribe({
+        next : (updatedProfile) => {
+          this.router.navigateByUrl('/profile/' + updatedProfile.profileId);
+        },
+        error : (apiError: ApiError) => {
+          this.messageBoxService.info('Error in updating profile', apiError.title, apiError.detail);
+          this.errors = apiError;
           this.isSubmitting = false;
         }
-      );
+      });
   }
 
   updateUser(values: Object) {

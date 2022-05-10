@@ -5,4 +5,6 @@ export class ProfileModel {
   type: string;
   name: string;
   sprints: SprintModel[];
+  emailId: string;
+  password: string;
 }

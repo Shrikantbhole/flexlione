@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component: EditorComponent,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: ':slug',

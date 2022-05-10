@@ -4,7 +4,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
 import {DatePipe} from '@angular/common';
 import {getHourList} from '../../shared/shared-lists/hour-list';
-import {TaskScheduleManagementService} from '../service/task-schedule-management.service';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TaskScheduleModel} from '../models/task-schedule.model';
 

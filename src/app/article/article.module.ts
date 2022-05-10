@@ -5,7 +5,6 @@ import { ArticleResolver } from './article-resolver.service';
 import { MarkdownPipe } from './markdown.pipe';
 import { SharedModule } from '../shared';
 import { ArticleRoutingModule } from './article-routing.module';
-import {AddOrEditTaskDialogComponent} from '../tasks-hierarchy/task-tree/add-or-edit-task-dialog.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
@@ -22,6 +21,9 @@ import {MatDialogConfig, MatDialogModule, MatDialogRef} from '@angular/material/
 import {AddOrEditChecklistDialogComponent} from './checklist/add-or-edit-checklist-dialog.component';
 import {ViewDependencyComponent} from './dependency/view-dependency.component';
 import {AddOrEditDependencyDialogComponent} from './dependency/add-or-edit-dependency-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {TimeCalculationComponent} from './time-calculation/time-calculation.component';
+import {TaskSessionSummaryComponent} from './time-calculation/task-session-summary.component';
 
 
 
@@ -40,21 +42,24 @@ import {AddOrEditDependencyDialogComponent} from './dependency/add-or-edit-depen
         MatIconModule,
         MatListModule,
         MatDialogModule,
-        MatInputModule
+        MatInputModule,
+        MatExpansionModule
     ],
     declarations: [
         ArticleComponent,
         ArticleCommentComponent,
         MarkdownPipe,
-        AddOrEditTaskDialogComponent,
         ViewChecklistComponent,
         TaskFormComponent,
         AddOrEditChecklistDialogComponent,
       ViewDependencyComponent,
-      AddOrEditDependencyDialogComponent
+      AddOrEditDependencyDialogComponent,
+      TimeCalculationComponent,
+      TaskSessionSummaryComponent
     ],
     exports: [
-        TaskFormComponent
+        TaskFormComponent,
+        TaskSessionSummaryComponent
     ],
 
     providers: [

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import {TaskModel} from './models/taskModel';
+import {TaskModel} from './models/task-detail.model';
 
 
 import {
@@ -10,13 +10,17 @@ import {
   User,
   UserService
 } from '../core';
-import {CheckListItem} from './models/check-list-item.model';
-import {ChecklistManagementService} from './service/checklist-management.service';
-import {TaskManagementService} from './service/task-management-service';
+
+import {TaskManagementService} from '../Services/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
-import {CommentManagementService} from './service/comment-management.service';
+import {CommentManagementService} from '../Services/comment-management.service';
 import {TaskComment} from './models/task-comment.model';
 import {DatePipe} from '@angular/common';
+import {CreateTaskForm, GetTaskFormFromTaskModel} from './models/task-detail.form';
+import {TaskHierarchyManagementService} from '../Services/task-hierarchy-management.service';
+import {TaskHierarchyModel} from './models/task-hierarchy.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ProfileModel} from '../profile/models/profile.model';
 
 @Component({
   selector: 'app-article-page',
@@ -24,10 +28,8 @@ import {DatePipe} from '@angular/common';
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
-  UserList: string[] = ['Chirag', 'Venkatesh', 'Birendra', 'Akash',
-    'Tejesh', 'Anuj', 'Sundeep', 'Raja', 'Shrikant', 'Nimmit'];
   task: TaskModel;
-  currentUser: User;
+  currentUser: ProfileModel;
   canModify: boolean;
   comments: TaskComment[] = [];
   commentControl = new FormControl();
@@ -35,8 +37,8 @@ export class ArticleComponent implements OnInit {
   isSubmitting = false;
   isDeleting = false;
   selectedCheckListItem = '';
-  // FormControl to track value of Deadline
-  deadline: FormControl = new FormControl(new Date());
+  TaskForm: FormGroup = CreateTaskForm();
+  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   constructor(
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
@@ -46,11 +48,14 @@ export class ArticleComponent implements OnInit {
     private taskManagementService: TaskManagementService,
     private messageBoxService: MessageBoxService,
     private  commentManagementService: CommentManagementService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private  taskHierarchyManagementService: TaskHierarchyManagementService,
+    private  snackBarService: MatSnackBar
   ) {// Retreive the prefetched article
     this.route.data.subscribe(
       (data: { article: TaskModel }) => {
         this.task = data.article;
+        this.TaskForm = GetTaskFormFromTaskModel(this.task);
         console.log(this.task);
         this.comments = [];
         // Load the comments on this article
@@ -61,12 +66,19 @@ export class ArticleComponent implements OnInit {
   ngOnInit() {
       // Load the current user's data
     this.userService.currentUser.subscribe(
-      (userData: User) => {
+      (userData) => {
         this.currentUser = userData;
 
-        this.canModify = (this.currentUser.username === this.task.taskId);
+        this.canModify = (this.currentUser.name === this.task.taskId);
       }
     );
+    // Receiving estimated hours and spent hours separately and then plugging into taskform
+    this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
+  }
+  public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
+    this.snackBarService.open('Task Hierarchy Successfully received' , '', {duration: 300});
+   this.TaskHierarchy = taskHierarchy;
+    this.TaskForm.controls['hrsSpentTillNow'].setValue(taskHierarchy.totalHoursSpent);
   }
   seeInTaskTree() {
     // In hierarch view show three gen
@@ -78,7 +90,7 @@ export class ArticleComponent implements OnInit {
        this.navigateToTaskHierarchy(parentTask);
       },
       error: () => {
-        this.messageBoxService.info('Error: TaskModel not created.');
+        this.messageBoxService.info('Error: Task not created.');
       }
     }); }
   navigateToTaskHierarchy(parentTask: TaskModel) {
@@ -115,21 +127,6 @@ export class ArticleComponent implements OnInit {
       error: () => { }
     });
 
-   /*
-    this.comments.push({
-     id: 1,
-     author: 'shrikant',
-     body: 'What is the update?',
-     createdAt: ''
-   });
-    this.comments.push({
-      id: 2,
-      author: 'shrikant',
-      body: 'Has this task completed?',
-      createdAt: ''
-    });
-
-    */
   }
 
   addComment() {

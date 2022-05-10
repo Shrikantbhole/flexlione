@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {TaskModel} from '../article/models/taskModel';
+import {TaskModel} from '../article/models/task-detail.model';
 import {ApiError} from '../settings/api-error.model';
 import {MatDialog} from '@angular/material/dialog';
 import {MessageBoxService} from '../settings/message-box.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
@@ -59,16 +59,12 @@ export class EditTemplateComponent {
   }
 
   loadParentTasks() {
-    this.taskManagementService.getTaskIdList(null).subscribe(
-      {
-        next: (taskIdList: string []) => {
-          this.taskIdList = taskIdList;
-          console.log(this.taskIdList);
-        },
-        error: (apiError: ApiError) => this.messageBoxService.info('Could not find taskId', apiError.title, apiError.detail)
-      });
+    this.taskManagementService.getTaskIdList('' , this.getTaskIdList);
   }
-
+  getTaskIdList = (taskIdList: string[]) => {
+    this.taskIdList = taskIdList;
+    console.log(this.taskIdList);
+  }
   onRowClick(taskId: string) {
   }
 
@@ -114,5 +110,9 @@ export class EditTemplateComponent {
   onRemoveConfirm = (task: TaskModel)  => {
       this.snackBarService.open('Task Successfully removed from template', '', {duration: 2000});
       this.loadSelectedTemplateTasks();
+  }
+
+  onReceiveTaskListConfirm() {
+    console.log('Task List Received');
   }
 }

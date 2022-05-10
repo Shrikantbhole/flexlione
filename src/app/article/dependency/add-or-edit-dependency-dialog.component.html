@@ -21,7 +21,7 @@
     <br />
 
     <mat-form-field>
-      <label >TaskModel Id</label>
+      <label >Task Id</label>
       <input matInput formControlName="taskId" required />
       <mat-error *ngIf="newDependency.get('taskId').invalid">You must enter a value</mat-error>
     </mat-form-field>
@@ -30,7 +30,7 @@
 
 
     <mat-form-field>
-      <mat-label>Dependent TaskModel id</mat-label>
+      <mat-label>Dependent Task id</mat-label>
       <input matInput formControlName="dependentTaskId" />
     </mat-form-field>
 

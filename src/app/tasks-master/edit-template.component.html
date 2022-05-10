@@ -9,11 +9,8 @@
     background-color: #e8f0fe;
 
   }
-  .col {
-    margin-right: 10px;
 
-  }
-  /* code inspired from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidebar_responsive */
+
   .master {
     width: 1000px;
     height: 700px;
@@ -21,9 +18,7 @@
 
   }
 
-  div.detail {
-    margin-left: 345px;
-  }
+
 </style>
 <div class="master">
 <div class="container">
@@ -33,10 +28,7 @@
       <h4>Select Task to Add</h4>
       <mat-list>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let taskId of taskIdList"
-                       [ngClass]="{highlight: taskId == selectedTaskId}"
-
-                       >
+        <mat-list-item *ngFor="let taskId of taskIdList">
 
           <div mat-line>{{taskId}}</div>
 
@@ -56,8 +48,7 @@
       <mat-list>
         <mat-divider></mat-divider>
 
-          <mat-list-item *ngFor="let task of templateTasks"
-                           [ngClass]="{highlight: task.taskId == selectedTaskId}">
+          <mat-list-item *ngFor="let task of templateTasks">
 
 
             <div mat-line>{{task.taskId}}</div>

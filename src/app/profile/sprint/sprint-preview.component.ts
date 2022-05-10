@@ -8,9 +8,9 @@ import { TaskScheduleModel} from '../models/task-schedule.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SprintModel} from '../models/sprint.model';
 import {AddOrEditSprintDialogComponent} from './add-or-edit-sprint-dialog.component';
-import {SprintManagementService} from '../service/sprint-management.service';
-import {TaskModel} from '../../article/models/taskModel';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {SprintManagementService} from '../../Services/sprint-management.service';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 
@@ -65,16 +65,18 @@ export class SprintPreviewComponent {
   }
   onAddOrEditSprint( isEdit: boolean, sprint?: SprintModel) {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
+    const newSprint: SprintModel = new SprintModel();
+    newSprint.owner = this.sprintList[0].owner;
     dialogConfig.data = {
 
       isEdit: isEdit,
-      sprint: sprint === undefined ? new SprintModel() : sprint
+      sprint: sprint === undefined ? newSprint : sprint
     };
     this.dialog.open(AddOrEditSprintDialogComponent, dialogConfig).afterClosed().subscribe(
       {
-        next: (newSprint: SprintModel) => {
-          console.log('Added Sprint: ' + newSprint);
-          this.newItemEvent.emit(newSprint.owner);
+        next: (newSprintModel: SprintModel) => {
+          console.log('Added Sprint: ' + newSprintModel);
+          this.newItemEvent.emit(newSprintModel.owner);
         },
         error: () => {}
       }

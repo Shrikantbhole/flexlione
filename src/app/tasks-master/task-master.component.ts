@@ -1,13 +1,15 @@
 
 import {Component, OnInit} from '@angular/core';
+
 import {Router} from '@angular/router';
 import {Template} from '../article/models/template.model';
-import {TaskManagementService} from '../article/service/task-management-service';
+import {TaskManagementService} from '../Services/task-management-service';
 import {MessageBoxService} from '../settings/message-box.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EditTemplateComponent} from './edit-template.component';
 import {AddTemplateComponent} from './add-template.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-task-master',

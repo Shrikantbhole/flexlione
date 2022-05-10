@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { TaskManagementService } from '../service/task-management-service';
+import { TaskManagementService } from '../../Services/task-management-service';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { CheckListItem } from '../models/check-list-item.model';
-import {ChecklistManagementService} from '../service/checklist-management.service';
+import {ChecklistManagementService} from '../../Services/checklist-management.service';
 
 
 @Component({

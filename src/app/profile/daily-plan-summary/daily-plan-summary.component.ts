@@ -1,15 +1,16 @@
 import {Component, Output, EventEmitter, OnInit, Input, ViewChild} from '@angular/core';
-import {DailyPlanSummaryService} from '../service/daily-plan-summary.service';
+import {DailyPlanSummaryService} from '../../Services/daily-plan-summary.service';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TaskScheduleModel} from '../models/task-schedule.model';
 import {MatAccordion} from '@angular/material/expansion';
 import {TaskSummaryModel} from '../models/task-summary.model';
-import * as TaskScheduleActions from '../../shared/store/task-schedule.action';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
+
 
 /** @title Form field appearance variants */
 @Component({
@@ -33,7 +34,9 @@ export class DailyPlanSummaryComponent implements  OnInit {
     private datePipe: DatePipe,
     private snackBarService: MatSnackBar,
     private route: ActivatedRoute,
-    private  dailyPlanSummaryService: DailyPlanSummaryService
+    private  dailyPlanSummaryService: DailyPlanSummaryService,
+    private taskScheduleManagementService: TaskScheduleManagementService,
+    private router: Router
   ) {
   }
 
@@ -55,10 +58,20 @@ export class DailyPlanSummaryComponent implements  OnInit {
             newTaskSummaryModel = taskSummaryModel; }
           newTaskSummaryModel.expectedHour = (taskSchedule.stopHour - taskSchedule.startHour)
                                             + (taskSchedule.stopMinute - taskSchedule.startMinute) / 60;
+          newTaskSummaryModel.date = taskSchedule.date;
           this.TaskSummaryModel = newTaskSummaryModel;
           },
         error: () => {}
       });
+  }
+
+  onDeleteTaskSchedule(taskScheduleId: string) {
+    this.taskScheduleManagementService.deleteTaskScheduleById(taskScheduleId);
+    const newTaskScheduleList = this.TaskScheduleList.filter(function (value) {
+      return value.taskScheduleId !== taskScheduleId;
+    });
+    this.TaskScheduleList = newTaskScheduleList;
+     this.router.navigateByUrl(this.router.url + '?removeTaskScheduleId=' + taskScheduleId);
   }
 
 

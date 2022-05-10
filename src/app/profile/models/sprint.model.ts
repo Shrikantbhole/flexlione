@@ -1,5 +1,5 @@
 // tslint:disable-next-line:import-spacing
-import  {TaskModel} from '../../article/models/taskModel';
+import  {TaskModel} from '../../article/models/task-detail.model';
 export class SprintModel {
 sprintId: string;
 owner: string;

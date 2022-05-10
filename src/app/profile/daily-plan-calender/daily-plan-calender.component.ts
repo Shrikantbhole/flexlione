@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Input} from '@angular/core';
 import {CalendarEvent, CalendarView} from 'angular-calendar';
 import {ProfileComponent} from '../profile.component';
 import {TaskScheduleModel} from '../models/task-schedule.model';
-import {TaskScheduleManagementService} from '../service/task-schedule-management.service';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import {Router} from '@angular/router';

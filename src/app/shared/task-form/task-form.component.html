@@ -1,4 +1,4 @@
-<form [formGroup]="newTask">
+<form [formGroup]="parentForm">
 
 <li class="mat-form-field--inline">
   <mat-form-field>
@@ -26,7 +26,7 @@
 
   <mat-form-field>
     <mat-label>Created By</mat-label>
-    <mat-select formControlName="createdBy">
+    <mat-select formControlName="createdBy"  required>
       <mat-option></mat-option>
       <mat-option [value]="user" *ngFor="let  user of UserList" >
         {{user}}
@@ -37,15 +37,15 @@
 
 <li class="mat-form-field--inline">
   <mat-form-field>
-    <input matInput formControlName="description" placeholder="TaskModel Description (Short)">
+    <input matInput formControlName="description" placeholder="Task Description (Short)">
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Position After</mat-label>
     <mat-select formControlName="positionAfter">
       <mat-option></mat-option>
-      <mat-option [value]="user" *ngFor="let  user of UserList" >
-        {{user}}
+      <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForPosition" >
+        {{taskId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -54,7 +54,7 @@
 <li class="mat-form-field--inline">
   <mat-form-field>
     <mat-label>Estimated Hrs</mat-label>
-    <input matInput formControlName="estimatedHrs" placeholder="Estimated Hours">
+    <input matInput formControlName="expectedHours" placeholder="Expected Hours">
   </mat-form-field>
 
   <mat-form-field>
@@ -75,13 +75,22 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Parent TaskModel Id</mat-label>
-      <input matInput formControlName="parentTaskId" placeholder="parentTaskId">
+      <mat-label>Parent Task Id</mat-label>
+      <mat-select formControlName="parentTaskId">
+        <mat-option></mat-option>
+        <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForParent"  (click)="onParentTaskIdChange(taskId)" >
+          {{taskId}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </li>
 </form>>
 
-<button  mat-raised-button color="primary" (click)="onClick()">
-  Save Changes
-</button>
-<br/>
+  <div mat-dialog-actions>
+    <button mat-raised-button  color="primary" cdkFocusInitial (click)="onClick()" [disabled]="parentForm.invalid">
+    Save Changes
+    </button>
+  </div>
+
+
+

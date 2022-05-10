@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-import {TaskModel} from '../../article/models/taskModel';
+import {TaskModel} from '../../article/models/task-detail.model';
 import { MessageBoxService } from '../../settings/message-box.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {TaskManagementService} from '../../article/service/task-management-service';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {ApiError} from '../../settings/api-error.model';
 import {ViewChecklistDialogComponent} from '../tasks-l1/view-checklist-dialog.component';
 import { Router } from '@angular/router';
@@ -64,7 +64,9 @@ export class HeadTasksComponent {
         next: (task: TaskModel) => {
           console.log(task);
           this.Task = task;
-          this.childTaskList = task.children;
+          this.childTaskList = task.children.filter(function ( taskModel) {
+            return taskModel.isRemoved === false;
+          }); // Hide Removed Tasks in Hierarchy view
 
           console.log(this.Task);
         },
@@ -103,14 +105,13 @@ export class HeadTasksComponent {
 
   }
 
-  onDeleteTaskButtonClick(taskId: string): void {
+  onRemoveTaskButtonClick(taskId: string): void {
 
     // Open a dialog box to ask for confirmation
 
 
     this.messageBoxService.confirmWarn(
-      'Are you sure you want to delete task ' + taskId + '?'
-      + ' All theChild Tasks of this task  will also be deleted.', 'Delete')
+      'Are you sure you want to remove task ' + taskId + '?', 'Remove')
       .afterClosed().subscribe({
 
       next: (proceed: boolean) => {
@@ -119,18 +120,19 @@ export class HeadTasksComponent {
         if (proceed) {
 
           // send request to server to delete the PTL station
-          this.taskManagementService.deleteTask(taskId).subscribe({
+          this.taskManagementService.removeTask(taskId).subscribe({
             next: () => {
 
               // show acknowledgement to user
-              this.snackBarService.open('TaskModel deleted.');
+              this.snackBarService.open('Task Successfully Removed.', '', {duration: 3000});
+
 
               // load the list again
               this.loadParentTasks();
             },
 
             // show error dialog box if server failed to delete
-            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to delete TaskModel', apiError.title, apiError.detail)
+            error: (apiError: ApiError) => this.messageBoxService.info('Error: Failed to remove Task', apiError.title, apiError.detail)
           });
         }
       }
@@ -157,7 +159,7 @@ export class HeadTasksComponent {
             return;
           }
 
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
           // Load the list again
           this.loadParentTasks();

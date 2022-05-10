@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {DailyPlanSummaryService} from '../../service/daily-plan-summary.service';
+import {DailyPlanSummaryService} from '../../../Services/daily-plan-summary.service';
 import {ApiError} from '../../../settings/api-error.model';
 import {MessageBoxService} from '../../../settings/message-box.service';
 import {Store} from '@ngrx/store';
@@ -9,8 +9,6 @@ import {DatePipe} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CreateTaskSummaryForm, TaskSummaryModel} from '../../models/task-summary.model';
-import {TaskScheduleModel} from '../../models/task-schedule.model';
-import * as TaskScheduleActions from '../../../shared/store/task-schedule.action';
 /** @title Form field appearance variants */
 @Component({
   selector: 'app-profile-task-summary-form',
@@ -25,7 +23,7 @@ export class TaskSummaryFormComponent implements  OnInit {
   set config(taskSummary: TaskSummaryModel) {
     this.updateTaskSummaryForm(taskSummary);
   }
-  // @Output() newScheduleEvent  = new EventEmitter<TaskSummaryModel>();
+
   constructor(
     private searchManagementService: DailyPlanSummaryService,
     private  messageBoxService: MessageBoxService,
@@ -52,6 +50,7 @@ export class TaskSummaryFormComponent implements  OnInit {
       expectedHours: taskSummary.expectedHour == null ? 'server-generated' : taskSummary.expectedHour,
       actualOutput: taskSummary.actualOutput == null ? '' : taskSummary.actualOutput,
       actualHours: taskSummary.actualHour == null ? '' : taskSummary.actualHour,
+      date: taskSummary.date == null ? '' : taskSummary.date
     });
   }
   private createTaskSummary(newTaskSummary: FormGroup): TaskSummaryModel {
@@ -61,6 +60,7 @@ export class TaskSummaryFormComponent implements  OnInit {
     taskSummary.taskId = newTaskSummary.getRawValue().taskId;
     taskSummary.description = newTaskSummary.getRawValue().description;
     taskSummary.expectedHour = newTaskSummary.getRawValue().expectedHours;
+    taskSummary.date = newTaskSummary.getRawValue().date;
     if (newTaskSummary.getRawValue().actualHours !== '' && newTaskSummary.getRawValue().actualHours !== undefined)  {
      taskSummary.actualHour = +newTaskSummary.getRawValue().actualHours;
     }
@@ -79,8 +79,9 @@ export class TaskSummaryFormComponent implements  OnInit {
         next: (taskSummary) => {
           this.snackBarService.open('Task Summary Successfully updated', '' , {duration: 300});
           console.log(taskSummary);
-          this.router.navigateByUrl(this.router.url + '?taskScheduleId=' + taskSummary.taskScheduleId);
-        },
+          // Update Task Summary Id of Task Schedule Id (In case of new task summary created)
+          this.router.navigateByUrl(this.router.url + '?updateTaskScheduleId=' + taskSummary.taskScheduleId);
+          },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });
   }

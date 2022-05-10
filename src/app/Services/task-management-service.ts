@@ -1,17 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaskModel } from '../models/taskModel';
+import { TaskModel } from '../article/models/task-detail.model';
 import {catchError, retry} from 'rxjs/operators';
-import {ServerConfigService} from '../../settings/server-config.service';
-import {HandlerError} from '../../settings/handle-error.service';
-import {Template} from '../models/template.model';
-import {MessageBoxService} from '../../settings/message-box.service';
-import {ApiError} from '../../settings/api-error.model';
+
+import {ServerConfigService} from '../settings/server-config.service';
+import {HandlerError} from '../settings/handle-error.service';
+import {ApiError} from '../settings/api-error.model';
+import {MessageBoxService} from '../settings/message-box.service';
+import {Template} from '../article/models/template.model';
 
 
-// import {ApiError} from '../../settings/api-error.model';
-// import {MessageBoxService} from '../../settings/message-box.service';
 
 
 // export keyword is same as public keyword in C# and Java. If export keyword is used, the class
@@ -50,26 +49,29 @@ export class TaskManagementService {
       );
   }
 
-  getTaskIdList( taskId: string): Observable<string []> {
+  // Returns an observable for list of Line Items
+  getTaskIdList(taskId: string, callback: (taskIdList: string[]) => any): any {
     const httpHeaders = {
       'Content-Type': 'application/json',
       'accept': 'application/json;v=1.0'
     };
-
     let queryStringParams;
-    if (taskId === null) {
-      queryStringParams = {
-      };
-    } else {
-      queryStringParams = {
-        taskId: taskId
-      };
-    }
+    queryStringParams = {
+      taskId: taskId
+    };
     return this.http_.get<string[]>(this.baseUrl + '/Task/GetTaskIdList', { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)
-      );
+
+      ).subscribe({
+        next : (taskIdList) => {
+          callback(taskIdList);
+        },
+        error : (apiError: ApiError) => {this.messageBoxService.info(
+          'Task Id List Not Received', apiError.title, apiError.detail);
+        }
+      });
   }
 
   deleteTask(taskId: string): Observable<void> {
@@ -82,6 +84,22 @@ export class TaskManagementService {
       taskId: taskId
     };
     return this.http_.delete<void>(this.baseUrl + '/Task/DeleteTask', { params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
+
+  removeTask(taskId: string): Observable<void> {
+
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      // 'accept': 'application/json;v=1.0'
+    };
+    const queryStringParams = {
+      taskId: taskId
+    };
+    return this.http_.post<void>(this.baseUrl + '/Task/RemoveTask', ' ' , { params: queryStringParams, headers: httpHeaders })
       .pipe(
         retry(1),
         catchError(HandlerError.handleError)

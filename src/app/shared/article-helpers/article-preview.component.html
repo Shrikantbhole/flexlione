@@ -12,17 +12,26 @@
 
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{SearchTask.taskId}} - {{SearchTask.description}}
+        <a [routerLink]="['/article/',SearchTask.taskId ]">
+          {{SearchTask.taskId}} - {{SearchTask.description}}
+        </a>
+
+
+        <div class="tag-list" [hidden]="!SearchTask.isRemoved" >
+          <a class="tag-default tag-pill">
+            {{ 'Removed' }}
+          </a>
+        </div>
       </mat-panel-title>
       <mat-panel-description>
-        <p class="master"> </p>
-        <a *ngFor="let sprint of sprintList"
-           [routerLink]="['/article/',sprint ]">
-          {{sprint}} >
-        </a>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-content></ng-content>
+    <p class="master"> </p>
+    <a *ngFor="let sprint of sprintList"
+       [routerLink]="['/article/',sprint ]">
+      {{sprint}} >
+    </a>
     <div class="info">
       <a class="author"
          [routerLink]="['/profile/',SearchTask.assignedTo ]">
@@ -34,7 +43,6 @@
       <h6>Status:  {{ SearchTask.status }}</h6>
       <span>Read more...</span>
     </a>
-
   </mat-expansion-panel>
 
 </mat-accordion>

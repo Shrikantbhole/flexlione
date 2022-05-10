@@ -1,0 +1,26 @@
+
+<div *ngIf="TaskHierarchyList">
+
+  <p *ngIf="TaskHierarchyList.length == 0">No Task Hierarchy Found</p>
+  <div *ngIf="TaskHierarchyList.length != 0">
+    <br/>
+    <mat-accordion>
+      <mat-expansion-panel  *ngFor="let taskHierarchy of TaskHierarchyList"
+      (click)="GetTaskSummaryForTaskId(taskHierarchy.taskId)">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <a [routerLink]="['/article/',taskHierarchy.taskId ]">
+              {{taskHierarchy.taskId}} - {{taskHierarchy.description}}
+            </a>
+
+          </mat-panel-title>
+          <mat-panel-description>
+            Time Balance - {{taskHierarchy.totalHoursSpent}}/{{taskHierarchy.totalEstimatedHours}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+       <app-article-task-session-summary [TaskSummaryList]="TaskSummaryList" ></app-article-task-session-summary>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

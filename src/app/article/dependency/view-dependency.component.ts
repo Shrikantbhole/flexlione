@@ -1,7 +1,7 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService, CommentsService, UserService} from '../../core';
-import {ChecklistManagementService} from '../service/checklist-management.service';
-import {TaskModel} from '../models/taskModel';
+import {ChecklistManagementService} from '../../Services/checklist-management.service';
+import {TaskModel} from '../models/task-detail.model';
 import {Component, Input, OnInit} from '@angular/core';
 import {CheckListItem} from '../models/check-list-item.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {ViewChecklistDialogComponent} from '../../tasks-hierarchy/tasks-l1/view-checklist-dialog.component';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Dependency} from '../models/dependency.model';
-import {DependencyManagementService} from '../service/dependency-management.service';
+import {DependencyManagementService} from '../../Services/dependency-management.service';
 
 @Component({
   selector: 'app-view-dependency',
@@ -133,7 +133,7 @@ export class ViewDependencyComponent implements OnInit {
           }
 
           this.loadDependency();
-          this.snackBarService.open('Success. New TaskModel has been  created.', '', { duration: 3000 });
+          this.snackBarService.open('Success. New Task has been  created.', '', { duration: 3000 });
 
 
         }

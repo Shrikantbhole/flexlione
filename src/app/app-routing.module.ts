@@ -26,6 +26,10 @@ const routes: Routes = [
   {
     path: 'master',
     loadChildren: () => import('./tasks-master/task-master.module').then(m => m.TaskMasterModule)
+  },
+  {
+    path: 'stand-up',
+    loadChildren: () => import('./stand-up/stand-up.module').then(m => m.StandUpModule)
   }
 ];
 

@@ -5,6 +5,7 @@ import * as TaskActions from '../store/create-task.action';
 import {CreateTaskStoreModel} from '../store/interfaces/create-task-store.model';
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
+import {ProfileModel} from '../../profile/models/profile.model';
 
 @Component({
   selector: 'app-layout-header',
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
     private store: Store<AppState>
   ) {}
 
-  currentUser: User;
+  currentUser: ProfileModel;
 
   ngOnInit() {
     this.userService.currentUser.subscribe(
@@ -28,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
   onAddNewTask() {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskStoreModel = {parentTaskId : '1'};
+    const task: CreateTaskStoreModel = {parentTaskId : '2'};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
   }
 }
