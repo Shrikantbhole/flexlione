@@ -35,6 +35,8 @@ export class EditTemplateComponent {
   public selectedTasks: TaskModel [] = [];
   private templateData: Template;
   public taskIdList: string[] = [] ;
+  public taskToAddList: string[] = [] ;
+  public taskToRemoveList: string[] = [] ;
 
   constructor(activatedRoute: ActivatedRoute, dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
               taskManagementService: TaskManagementService, router: Router, private store: Store<AppState> ) {
@@ -57,11 +59,11 @@ export class EditTemplateComponent {
   }
 
   loadParentTasks() {
-    this.taskManagementService.getTaskById('0', 'children').subscribe(
+    this.taskManagementService.getTaskIdList(null).subscribe(
       {
-        next: (task: TaskModel) => {
-          this.Task = task;
-          this.childTaskList = task.children;
+        next: (taskIdList: string []) => {
+          this.taskIdList = taskIdList;
+          console.log(this.taskIdList);
         },
         error: (apiError: ApiError) => this.messageBoxService.info('Could not find taskId', apiError.title, apiError.detail)
       });
@@ -78,14 +80,14 @@ export class EditTemplateComponent {
   }
 
   onClickAdd(taskId: string) {
-    this.taskIdList.push(taskId);
+    this.taskToAddList.push(taskId);
     this.messageBoxService.confirmWarn(
       'Task Id ' + taskId + ' will be added to template ' + this.selectedTemplateId)
       .afterClosed().subscribe({
 
       next: (proceed: boolean) => {
         if (proceed) {
-          this.taskManagementService.addTaskToTemplate(this.taskIdList, this.selectedTemplateId, this.onAddConfirm);
+          this.taskManagementService.addTaskToTemplate(this.taskToAddList, this.selectedTemplateId, this.onAddConfirm);
         }
       }
     });
@@ -97,14 +99,14 @@ export class EditTemplateComponent {
   }
 
   onClickRemove(taskId: string) {
-    this.taskIdList.push(taskId);
+    this.taskToRemoveList.push(taskId);
     this.messageBoxService.confirmWarn(
       'Task Id ' + taskId + ' will be removed from template ' + this.selectedTemplateId)
       .afterClosed().subscribe({
 
       next: (proceed: boolean) => {
         if (proceed) {
-          this.taskManagementService.removeTaskFromTemplate(this.taskIdList, this.selectedTemplateId, this.onRemoveConfirm);
+          this.taskManagementService.removeTaskFromTemplate(this.taskToRemoveList, this.selectedTemplateId, this.onRemoveConfirm);
         }
       }
     });

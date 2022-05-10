@@ -33,17 +33,15 @@
       <h4>Select Task to Add</h4>
       <mat-list>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let Task of childTaskList"
-                       [ngClass]="{highlight: Task.taskId == selectedTaskId}"
+        <mat-list-item *ngFor="let taskId of taskIdList"
+                       [ngClass]="{highlight: taskId == selectedTaskId}"
 
                        >
 
-          <div mat-line>{{Task.taskId}}</div>
-          <div mat-line>{{Task.description}}
-          </div>
+          <div mat-line>{{taskId}}</div>
 
 
-          <button mat-icon-button (click)="onClickAdd(Task.taskId)">
+          <button mat-icon-button (click)="onClickAdd(taskId)">
             <mat-icon>add_task</mat-icon>
           </button>
           <mat-divider></mat-divider>

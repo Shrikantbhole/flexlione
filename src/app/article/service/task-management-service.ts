@@ -50,6 +50,28 @@ export class TaskManagementService {
       );
   }
 
+  getTaskIdList( taskId: string): Observable<string []> {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+
+    let queryStringParams;
+    if (taskId === null) {
+      queryStringParams = {
+      };
+    } else {
+      queryStringParams = {
+        taskId: taskId
+      };
+    }
+    return this.http_.get<string[]>(this.baseUrl + '/Task/GetTaskIdList', { params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
+
   deleteTask(taskId: string): Observable<void> {
 
     const httpHeaders = {
@@ -110,6 +132,31 @@ export class TaskManagementService {
 
     return this.http_.get<Template>(this.baseUrl + '/Template/GetTemplateById', {params: queryStringParams});
 
+  }
+
+  createOrUpdateTemplate(template: Template) {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+    console.log(template);
+    return this.http_.put<Template>(this.baseUrl + '/Template/AddOrEditTemplate', template );
+
+  }
+
+  deleteTemplate(templateId: string): Observable<Template> {
+    const httpHeaders = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json;v=1.0'
+    };
+    const queryStringParams = {
+      templateId: templateId
+    };
+    return this.http_.delete<Template>(this.baseUrl + '/Template/DeleteTemplate', { params: queryStringParams, headers: httpHeaders })
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
   }
 
   addTaskToTemplate(taskIdList: string [], templateId: string, callback: (task: TaskModel) => any ) {

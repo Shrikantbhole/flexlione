@@ -23,6 +23,8 @@ import {GenerateTaskComponent} from './generate-task.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {EditTemplateComponent} from './edit-template.component';
+import {AddTemplateComponent} from './add-template.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -46,11 +48,12 @@ import {EditTemplateComponent} from './edit-template.component';
     ArticleModule,
     MatDialogModule,
     MatInputModule,
+    ReactiveFormsModule
   ],
   declarations: [
     TaskMasterComponent, TemplateTaskComponent,
     SelectedTasksDisplayComponent, GenerateTaskComponent,
-    EditTemplateComponent
+    EditTemplateComponent, AddTemplateComponent
   ],
   providers: [
     MatSnackBar,
