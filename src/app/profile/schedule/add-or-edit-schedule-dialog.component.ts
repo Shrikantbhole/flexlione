@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
 import {DatePipe} from '@angular/common';
@@ -7,6 +7,7 @@ import {getHourList} from '../../shared/shared-lists/hour-list';
 import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TaskScheduleModel} from '../models/task-schedule.model';
+import {TaskModel} from '../../article/models/task-detail.model';
 
 
 @Component({
@@ -53,7 +54,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dialogRef.updateSize('50%', '70%');
+    this.dialogRef.updateSize('30%', '85%');
   }
   onNoClick(): void {
     this.dialogRef.close();

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import {TaskModel} from './models/task-detail.model';
-
+import {AddOrEditScheduleDialogComponent} from '../profile/schedule/add-or-edit-schedule-dialog.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 import {
   ArticlesService,
@@ -21,6 +22,7 @@ import {TaskHierarchyManagementService} from '../Services/task-hierarchy-managem
 import {TaskHierarchyModel} from './models/task-hierarchy.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProfileModel} from '../profile/models/profile.model';
+import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 
 @Component({
   selector: 'app-article-page',
@@ -40,6 +42,7 @@ export class ArticleComponent implements OnInit {
   TaskForm: FormGroup = CreateTaskForm();
   TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   constructor(
+    private dialog: MatDialog,
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
     private commentsService: CommentsService,
@@ -75,11 +78,13 @@ export class ArticleComponent implements OnInit {
     // Receiving estimated hours and spent hours separately and then plugging into taskform
     this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
   }
+
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
     this.snackBarService.open('Task Hierarchy Successfully received' , '', {duration: 300});
    this.TaskHierarchy = taskHierarchy;
     this.TaskForm.controls['hrsSpentTillNow'].setValue(taskHierarchy.totalHoursSpent);
   }
+
   seeInTaskTree() {
     // In hierarch view show three gen
     // l1 = parent of parent
@@ -93,6 +98,7 @@ export class ArticleComponent implements OnInit {
         this.messageBoxService.info('Error: Task not created.');
       }
     }); }
+
   navigateToTaskHierarchy(parentTask: TaskModel) {
     if ( parentTask.taskId === '0') {
       this.router.navigateByUrl('/task-tree?L1=' + this.task.taskId);
@@ -105,9 +111,11 @@ export class ArticleComponent implements OnInit {
     this.router.navigateByUrl('/task-tree?L1=' + parentTask.parentTaskId + '&L2=' + this.task.parentTaskId
       + '&L3=' + this.task.taskId);
   }
+
   goToParentTask() {
       this.router.navigateByUrl('/article/' + this.task.parentTaskId);
   }
+
   deleteArticle() {
     this.isDeleting = true;
 
@@ -160,7 +168,20 @@ export class ArticleComponent implements OnInit {
       );
   }
 
+  onAddToSchedule(task: TaskModel): void {
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      task : task
+    };
 
+    this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
+      .afterClosed().subscribe({
+      next: (taskSchedule: TaskScheduleModel) => {
+       // this.newScheduleEvent.emit(taskSchedule);
+      },
+      error: () => {}
+    });
+  }
 
 
 }
