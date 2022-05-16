@@ -25,6 +25,7 @@ import {MatInputModule} from '@angular/material/input';
 import {EditTemplateComponent} from './edit-template.component';
 import {AddTemplateComponent} from './add-template.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {TaskFormComponent} from '../shared/task-form/task-form.component';
 
 
 

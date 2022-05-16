@@ -70,7 +70,16 @@
   </mat-form-field>
   </form>
 </div>
+<div>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="sawComing">
+    <mat-radio-button value= "true" style='margin-right:16px'>Planned</mat-radio-button>
 
+    <mat-radio-button value= "false">Unplanned</mat-radio-button>
+  </mat-radio-group>
+<div>
+  saw coming:  {{sawComing}}
+</div>
+</div>
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Cancel</button>

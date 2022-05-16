@@ -26,6 +26,8 @@ import {TaskSummaryFormComponent} from './daily-plan-summary/task-summary/task-s
 import {SearchFormComponent} from '../home/Search/search-form.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import {AddOrEditSprintDialogComponent} from './sprint/add-or-edit-sprint-dialog.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -41,7 +43,9 @@ import {AddOrEditSprintDialogComponent} from './sprint/add-or-edit-sprint-dialog
     MatListModule,
     MatMenuModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatRadioModule,
+    MatDialogModule
   ],
   declarations: [
     ProfileTaskDumpComponent,

@@ -33,6 +33,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
     'stopMinute': new FormControl(''),
     'owner' : new FormControl(''),
   });
+  sawComing = true;
   constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditScheduleDialogComponent>,
               messageBoxService: MessageBoxService, @Inject(MAT_DIALOG_DATA) data,
               private taskScheduleManagementService: TaskScheduleManagementService,
@@ -54,7 +55,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dialogRef.updateSize('30%', '85%');
+    this.dialogRef.updateSize('30%', '90%');
   }
   onNoClick(): void {
     this.dialogRef.close();

@@ -65,7 +65,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
           console.log(task);
           this.snackBarService.open('Success. Task has been updated.', '', {duration: 3000});
 
-          this.router.navigateByUrl('/article/' + task.taskId);
+         // this.router.navigateByUrl('/article/' + task.taskId);
         },
         error: (apiError: ApiError) => {
           this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
