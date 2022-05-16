@@ -64,9 +64,12 @@ export class TaskMasterComponent implements  OnInit {
   }
 
   onClickCreateNewTemplate() {
-   // const dialogRef = this.dialog.open(AddTemplateComponent);
+    const dialogRef = this.dialog.open(AddTemplateComponent);
     // dialogRef.close();
-    this.dialog.open(AddTemplateComponent);
+   // this.dialog.open(AddTemplateComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTemplates();
+  });
   }
 
   onClickEdit() {
