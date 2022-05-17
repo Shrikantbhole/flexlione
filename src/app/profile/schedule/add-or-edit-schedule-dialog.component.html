@@ -67,19 +67,30 @@
     <label >min </label>
     <input matInput formControlName="stopMinute" required />
     <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
+
   </mat-form-field>
+
+
+
+
+    <div>
+
+        <label >Type of activity </label>
+        <div class = "FormControl" >
+          <mat-label>
+          <input type="radio" formControlName="isPlanned" value="true">Planned</mat-label>
+          <mat-label>
+          <input type="radio" formControlName="isPlanned" value="false">Unplanned</mat-label>
+
+
+        </div>
+
+
+    </div>
+
   </form>
 </div>
-<div>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="sawComing">
-    <mat-radio-button value= "true" style='margin-right:16px'>Planned</mat-radio-button>
 
-    <mat-radio-button value= "false">Unplanned</mat-radio-button>
-  </mat-radio-group>
-<div>
-  saw coming:  {{sawComing}}
-</div>
-</div>
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Cancel</button>

@@ -86,7 +86,7 @@ this.dialog.open(EditTemplateComponent);
           this.taskManagementService.deleteTemplate(templateId)
             .subscribe({
               next: () => {
-                this.snackBarService.open('Template deleted.');
+                this.snackBarService.open('Template deleted.', '', { duration: 1000 });
                 this.loadTemplates();
               },
               error: () => this.messageBoxService.info('Error: Failed to delete template')
