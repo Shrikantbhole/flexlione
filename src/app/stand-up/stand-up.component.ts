@@ -46,7 +46,6 @@ export class StandUpComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getAllProfiles();
     this.userService.currentUser.subscribe(
       (userData) => {
         this.currentUser = userData;
@@ -55,6 +54,7 @@ export class StandUpComponent implements OnInit {
       }
     );
     this.GetDailyTaskSummary(this.currentUser.profileId, this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
+    await this.getAllProfiles();
   }
 
   onDateChange(event: MatDatepickerInputEvent<Date | null>) {
@@ -74,15 +74,11 @@ export class StandUpComponent implements OnInit {
   }
 
   async getAllProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-    for (let i = 0; i <   this.Profiles.length; i++ ) {
+   this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
+   for (let i = 0; i <   this.Profiles.length; i++ ) {
       this.options.push( this.Profiles[i].name);
     }
   }
-  onAddFromTemplate(): void {
-    this.router.navigateByUrl('/master');
-  }
-
   private GetProfileName(profileId: string): string {
     const profile = this.Profiles.filter(function (value) {
       return (value.profileId === profileId);

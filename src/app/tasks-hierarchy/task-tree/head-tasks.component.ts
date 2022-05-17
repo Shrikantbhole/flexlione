@@ -86,7 +86,7 @@ export class HeadTasksComponent {
   // and send request again.
   onAddNewTaskButtonClick(): void {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
-    const task: CreateTaskStoreModel = {taskId : null};
+    const task: CreateTaskStoreModel = {parentTaskId : '0'};
     this.store.dispatch(new TaskActions.AddCreateTask(task));
     this.router.navigateByUrl('/editor');
   }

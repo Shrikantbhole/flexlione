@@ -16,9 +16,17 @@ import {AppState} from '../../app.state';
   styleUrls: ['article-list.component.css'],
   templateUrl: './article-list.component.html'
 })
-export class ArticleListComponent implements OnInit {
+export class ArticleListComponent {
   searchTaskViewModel: Observable<SearchTaskViewStoreModel[]>;
-  results: Observable<SearchTaskViewStoreModel[]>;
+  results: SearchTaskViewStoreModel[];
+  loading = false;
+  currentPage = 1;
+  totalPages: Array<number> = [1];
+  @Input() limit: number;
+  @Input()
+  set config(config: ArticleListConfig) {
+    this.runQuery();
+  }
   constructor (
     private articlesService: ArticlesService,
     private taskManagementService: TaskManagementService,
@@ -26,18 +34,20 @@ export class ArticleListComponent implements OnInit {
     private searchManagementService: SearchManagementService,
     private store: Store<AppState>
   ) {
-    this.results = store.select('searchTaskView');
+     store.select('searchTaskView').subscribe(
+      {
+        next: (results) => {
+          this.results = results.sort((a, b) => {
+            return this.getTime(new Date(a.deadline)) - this.getTime(new Date(b.deadline));
+          });
+          },
+        error: () => {}
+      });
   }
 
-  @Input() limit: number;
-  @Input()
-  set config(config: ArticleListConfig) {
-    this.runQuery();
+  private getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
   }
-  loading = false;
-  currentPage = 1;
-  totalPages: Array<number> = [1];
-
   setPageTo(pageNumber) {
     this.currentPage = pageNumber;
     this.runQuery();
@@ -45,9 +55,5 @@ export class ArticleListComponent implements OnInit {
 
   runQuery() {
     console.log('hi');
-  }
-
-  ngOnInit(): void {
-    this.results = this.store.select('searchTaskView');
   }
 }

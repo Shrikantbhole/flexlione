@@ -18,18 +18,6 @@ export class StandUpResolver implements Resolve<Article> {
     state: RouterStateSnapshot
   ): Observable<any> {
 
-    return this.articlesService.get(route.params['slug'])
-      .pipe(
-        map(
-          article => {
-            if (this.userService.getCurrentUser().name === article.author.username) {
-              return article;
-            } else {
-              this.router.navigateByUrl('/');
-            }
-          }
-        ),
-        catchError((err) => this.router.navigateByUrl('/'))
-      );
+    return null;
   }
 }

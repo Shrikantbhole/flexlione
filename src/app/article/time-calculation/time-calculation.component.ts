@@ -23,8 +23,7 @@ export class TimeCalculationComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private dailyPlanSummaryService: DailyPlanSummaryService,
-    private datePipe: DatePipe
+    private dailyPlanSummaryService: DailyPlanSummaryService
   ) {
   }
 

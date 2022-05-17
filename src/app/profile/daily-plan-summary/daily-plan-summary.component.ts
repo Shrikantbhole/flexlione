@@ -42,6 +42,7 @@ export class DailyPlanSummaryComponent implements  OnInit {
 
   ngOnInit() {}
   getTaskSummary(taskSchedule: TaskScheduleModel) {
+    // Avoid unnecessary updates on Task Summary Page
     if (this.TaskSummaryModel.taskScheduleId === taskSchedule.taskScheduleId) {
       return;
     }
