@@ -1,34 +1,40 @@
 <style>
   .viewTemp {
-    width: 300px;
-    height: 80%;
-    overflow: auto;
+    min-width: 500px;
+    max-width: 500px;
+    width: 100%;
+    height: 100%;
+
 
   }
+
+  .fieldView {
+    width: 100%;
+  }
 </style>
-<div class = "viewTemp">
+<div >
 
   <h3>New template</h3>
   <mat-divider></mat-divider>
   <br>
-<form [formGroup]="newTemplateForm" (ngSubmit)="onSubmit()">
+<form class = "viewTemp" [formGroup]="newTemplateForm" (ngSubmit)="onSubmit()">
 
-  <mat-form-field appearance="fill">
+  <mat-form-field class="fieldView" appearance="fill">
     <label >Template Id: </label>
-    <input disabled  formControlName="templateId" placeholder="Server generated">
+    <input matInput formControlName="templateId" >
 
   </mat-form-field>
 
   <br>
-  <mat-form-field appearance="standard">
+  <mat-form-field class="fieldView" appearance="fill">
   <label >Description: </label>
-<input type = "text" formControlName = "description" >
+<input  matInput type = "text" formControlName = "description" placeholder="Please enter a description for template.">
     </mat-form-field>
 
 <br>
-  <mat-form-field>
-    <label for="taskList">Task List: </label>
-    <input  id="taskList"  formControlName="taskList">
+  <mat-form-field class="fieldView" appearance="fill">
+    <label >Task List: </label>
+    <input matInput   formControlName="taskList">
     </mat-form-field>
   <br>
   <mat-divider></mat-divider>
