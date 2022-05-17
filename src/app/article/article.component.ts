@@ -21,6 +21,9 @@ import {TaskHierarchyManagementService} from '../Services/task-hierarchy-managem
 import {TaskHierarchyModel} from './models/task-hierarchy.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProfileModel} from '../profile/models/profile.model';
+import {ApiError} from '../settings/api-error.model';
+import {ProfileManagementService} from '../Services/profile-management.service';
+import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
 
 @Component({
   selector: 'app-article-page',
@@ -39,6 +42,7 @@ export class ArticleComponent implements OnInit {
   selectedCheckListItem = '';
   TaskForm: FormGroup = CreateTaskForm();
   TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
+  Profiles: ProfileStoreModel[];
   constructor(
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
@@ -50,12 +54,14 @@ export class ArticleComponent implements OnInit {
     private  commentManagementService: CommentManagementService,
     private datepipe: DatePipe,
     private  taskHierarchyManagementService: TaskHierarchyManagementService,
-    private  snackBarService: MatSnackBar
+    private  snackBarService: MatSnackBar,
+    private profileManagementService: ProfileManagementService
   ) {// Retreive the prefetched article
     this.route.data.subscribe(
       (data: { article: TaskModel }) => {
         this.task = data.article;
         this.TaskForm = GetTaskFormFromTaskModel(this.task);
+        this.TaskForm.controls['taskId'].disable();
         console.log(this.task);
         this.comments = [];
         // Load the comments on this article
@@ -63,17 +69,17 @@ export class ArticleComponent implements OnInit {
       }
     );   }
 
-  ngOnInit() {
+  async ngOnInit() {
       // Load the current user's data
     this.userService.currentUser.subscribe(
       (userData) => {
         this.currentUser = userData;
-
-        this.canModify = (this.currentUser.name === this.task.taskId);
       }
     );
     // Receiving estimated hours and spent hours separately and then plugging into taskform
     this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
+    // Get All Profiles
+    await this.getAllProfiles();
   }
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
     this.snackBarService.open('Task Hierarchy Successfully received' , '', {duration: 300});
@@ -130,24 +136,29 @@ export class ArticleComponent implements OnInit {
   }
 
   addComment() {
-    this.isSubmitting = true;
-    this.commentFormErrors = {};
+     // this.isSubmitting = true;
+    // this.commentFormErrors = {};
 
     const commentBody = this.commentControl.value;
     const newComment: TaskComment = {
       commentId: 'next',
       taskId: this.task.taskId,
-      createdBy: 'shrikant',
+      createdBy: this.currentUser.profileId,
       message: commentBody,
       createdAt: this.datepipe.transform(Date.now(), 'yyyy-MM-dd')};
-    this.comments.unshift(newComment);
-    this.commentControl.reset('');
-    this.isSubmitting = false;
+
+    // this.comments.unshift(newComment);
+     this.commentControl.reset('');
+    // this.isSubmitting = false;
+    this.comments = [];
+
     this.commentManagementService.createOrUpdateComment(newComment).subscribe({
       next: (comment) => {
        console.log(comment);
-      },
-      error: () => { }
+       this.snackBarService.open('Comment Successfully logged', '', {duration: 3000});
+        this.populateComments();
+       },
+      error: (apiError: ApiError) => {this.messageBoxService.info('Error in logging comment', apiError.title, apiError.detail); }
     });
   }
 
@@ -158,6 +169,17 @@ export class ArticleComponent implements OnInit {
           this.comments = this.comments.filter((item) => item !== comment);
         }
       );
+  }
+
+  async getAllProfiles() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
+  }
+
+  public  GetProfileId(profileName: string): string {
+    const profile = this.Profiles.filter(function (value) {
+      return (value.name === profileName);
+    });
+    return profile[0] === undefined ? profileName : profile[0].profileId;
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SearchTaskViewStoreModel} from '../store/interfaces/search-task-view-store.model';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
@@ -16,6 +16,8 @@ export class ArticlePreviewComponent {
   constructor( private profileManagementService: ProfileManagementService) {
     this.GetProfiles();
   }
+
+
 
   private async GetProfiles() {
     this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();

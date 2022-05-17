@@ -1,4 +1,4 @@
-import {Component, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, Input, Output, ViewChild, EventEmitter, OnInit} from '@angular/core';
 import {UserService} from '../../core';
 
 import {MatAccordion} from '@angular/material/expansion';
@@ -12,6 +12,7 @@ import {SprintManagementService} from '../../Services/sprint-management.service'
 import {TaskModel} from '../../article/models/task-detail.model';
 import {TaskManagementService} from '../../Services/task-management-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ProfileModel} from '../models/profile.model';
 
 
 
@@ -19,12 +20,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   selector: 'app-sprint-preview',
   templateUrl: './sprint-preview.component.html'
 })
-export class SprintPreviewComponent {
+export class SprintPreviewComponent implements OnInit{
  @Input() sprintList: SprintModel[];
-
-  @Output() newItemEvent  = new EventEmitter<string>();
+ @Output() newItemEvent  = new EventEmitter<string>();
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  public currentUser: ProfileModel;
   public selectedSprint: SprintModel = new SprintModel();
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,15 @@ export class SprintPreviewComponent {
     private snackBarService: MatSnackBar
   ) {  }
 
+  ngOnInit() {
+    // Load the current user's data
+    this.userService.currentUser.subscribe(
+      (userData) => {
+        this.currentUser = userData;
+      }
+    );
+    }
+
   onUpdateOrScheduleNewTask(task: TaskModel): void {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -45,8 +55,10 @@ export class SprintPreviewComponent {
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
-       this.newScheduleEvent.emit(taskSchedule);
-      },
+        if (taskSchedule !== undefined) {
+          this.newScheduleEvent.emit(taskSchedule);
+        }
+        },
       error: () => {}
     });
   }
@@ -66,7 +78,7 @@ export class SprintPreviewComponent {
   onAddOrEditSprint( isEdit: boolean, sprint?: SprintModel) {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
     const newSprint: SprintModel = new SprintModel();
-    newSprint.owner = this.sprintList[0].owner;
+    newSprint.owner = this.currentUser.profileId;
     dialogConfig.data = {
 
       isEdit: isEdit,

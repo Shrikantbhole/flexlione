@@ -13,7 +13,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <a [routerLink]="['/article/',SearchTask.taskId ]">
-          {{SearchTask.taskId}} - {{SearchTask.description}}
+          {{SearchTask.taskId}} - {{SearchTask.description|slice:0:80 }}{{1 == 1 ? '...' : ''}}
         </a>
 
 

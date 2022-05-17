@@ -54,9 +54,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   currentUser: User;
   isUser: boolean;
 
-  async ngOnInit() {
-    // Update Options list to shift to another profile
-    await this.getAllProfiles();
+   ngOnInit() {
     // Store TaskModel Dump in @ngrx/Store
     this.route.data.subscribe(
       (data: { profile: SearchTaskViewStoreModel[] }) => {
@@ -65,17 +63,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           // Add Task Search result in Store
           this.store.dispatch(new TaskActions.AddSearchTask(data.profile[i]));
         }
-        this.profileId = data.profile[0].assignedTo;  // Get Profile Id
          this.parentForm.controls['assignedTo'].setValue(
             this.GetProfileName(this.profileId)
         );
          this.profileName = this.GetProfileName(this.profileId);
         this.parentForm.controls['assignedTo'].disable();
-        this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
-        // This component will handle storing of task schedules and
-        // send relevant schedules to calendar component
-        this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
-      }
+         }
     );
   }
   // Fetch Task Schedules , bind to TaskScheduleList and store in Store Module
@@ -109,6 +102,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public async updateProfile(profileName: string) {
     this.profileId = await this.GetProfileId(profileName);
     this.updateSprintList(this.profileId);
+    this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
+
     this.router.navigateByUrl('/profile/' + this.profileId);
   }
   public updateSprintList(profileId: string) {
@@ -142,14 +137,31 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public onDaySummary() {
     this.togglePlanner = 'summary';
   }
-  async getAllProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-    for (let i = 0; i <   this.Profiles.length; i++ ) {
-            this.options.push( this.Profiles[i].name);
-          }
-  }
   ngAfterViewInit(): void {
-    this.route.queryParams.subscribe({
+
+    this.userService.currentUser.subscribe(
+      (userData) => {
+        this.profileId = userData.profileId;
+        this.profileName = userData.name;
+      }
+    );
+    // Fetch Sprint list
+    this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
+    // This component will handle storing of task schedules and
+    // send relevant schedules to calendar component
+    this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
+
+    this.profileManagementService.getAllProfiles()
+       .subscribe({
+         next : (profiles) => {
+           this.Profiles = profiles;
+           for (let i = 0; i <   this.Profiles.length; i++ ) {
+             this.options.push( this.Profiles[i].name);
+           }
+         },
+         error : () => {}
+       });
+     this.route.queryParams.subscribe({
       next: (param) => {
         if ( param !== undefined) {
           if ( param.taskId !== undefined) {

@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Sprint: {{sprint.sprintId}} - {{sprint.description}}
+        Sprint: {{sprint.sprintId}} - {{sprint.description|slice:0:50 }}{{1 == 1 ? '...' : ''}}
 
       </mat-panel-title>
       <mat-panel-description>
@@ -41,7 +41,7 @@
     <p *ngFor="let task of selectedSprint.tasks"
        class="grid5">
       <a [routerLink]="['/article',task.taskId]" >
-        {{task.taskId}} - {{task.description}} </a>
+        {{task.taskId}} - {{task.description|slice:0:50 }}{{1 == 1 ? '...' : ''}} </a>
       <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onRemoveTaskFromSprint(task)">
         <i class="icon ion-arrow-swap"></i>
       </button>

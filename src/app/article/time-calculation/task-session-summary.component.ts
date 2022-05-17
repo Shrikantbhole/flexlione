@@ -14,8 +14,6 @@ export class TaskSessionSummaryComponent {
   @Input() TaskSummaryList;
   task: TaskModel;
 
-  constructor(
-    private datepipe: DatePipe
-  ) {}
+  constructor() {}
 
 }

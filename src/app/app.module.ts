@@ -50,6 +50,11 @@ import {TaskHierarchyManagementService} from './Services/task-hierarchy-manageme
       createTask: CreateTaskReducer,
       profile: ProfileReducer,
       taskSchedule: TaskScheduleReducer
+    }, {
+      runtimeChecks: {
+        strictStateImmutability: false, // <- what you need
+        strictActionImmutability: false, // <- what you need
+      },
     })
     ,
     CalendarModule.forRoot({
