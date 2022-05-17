@@ -1,33 +1,47 @@
+<style>
+  .viewSchedule {
+    min-width: 650px;
+    max-width: 650px;
+    width: 100%;
+    
+  }
+
+  .fieldView {
+    width: 50%;
+  }
+  .mat-radio-button ~ .mat-radio-button {
+    margin-left: 10px;
+    margin-right: 100px
+  }
+</style>
 
 
-<div mat-dialog-content>
 
   <h1 mat-dialog-title>{{ isEdit ? "Update Schedule" : "Add Schedule" }}</h1>
 
-  <form [formGroup]="newTaskSchedule">
+  <form class = "viewSchedule" [formGroup]="newTaskSchedule">
 
 
-    <mat-form-field>
+    <mat-form-field class = "fieldView">
       <label >Task Schedule Id</label>
       <input matInput formControlName="taskScheduleId" required />
       <mat-error *ngIf="newTaskSchedule.get('taskScheduleId').invalid">You must enter a value</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class = "fieldView">
       <label >Task Id</label>
       <input matInput formControlName="taskId" required />
       <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
     </mat-form-field>
     <br />
-    <br />
 
-    <mat-form-field>
-      <mat-label>Description</mat-label>
+
+    <mat-form-field class = "fieldView">
+      <label>Description</label>
       <input matInput formControlName="description" />
     </mat-form-field>
-    <br />
-    <br />
-    <mat-form-field>
+
+    <mat-form-field class = "fieldView">
       <label > Date </label>
       <input matInput formControlName ="date" [matDatepicker]="picker" >
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -35,67 +49,55 @@
     </mat-form-field>
 
     <br />
-    <br />
 
-    <mat-form-field>
+
+    <mat-form-field class = "fieldView">
       <label >Start hr </label>
       <input matInput formControlName="startHour" required />
       <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class = "fieldView">
       <label >Start min </label>
       <input matInput formControlName="startMinute" required />
       <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
     </mat-form-field>
 
   <br/>
-  <br/>
 
-  <mat-form-field>
+
+  <mat-form-field class = "fieldView">
     <label >Stop hr </label>
     <input matInput formControlName="stopHour" required />
     <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class = "fieldView">
     <label >Stop min </label>
     <input matInput formControlName="stopMinute" required />
     <mat-error *ngIf="newTaskSchedule.get('taskId').invalid">You must enter a value</mat-error>
-
+    <br>
   </mat-form-field>
 
-
-
-
-    <div>
-
-        <label >Type of activity </label>
-        <div class = "FormControl" >
-          <mat-label>
-          <input type="radio" formControlName="isPlanned" value="true">Planned</mat-label>
-          <mat-label>
-          <input type="radio" formControlName="isPlanned" value="false">Unplanned</mat-label>
-
-
-        </div>
-
-
-    </div>
+    <mat-radio-group formControlName="isPlanned">
+      <mat-radio-button labelPosition="before" name="isPlanned" value="true">Planned</mat-radio-button>
+      <mat-radio-button labelPosition="before" name="isPlanned" value="false">Unplanned</mat-radio-button>
+    </mat-radio-group>
 
 
     <div mat-dialog-actions align="end">
-      <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button color="primary" cdkFocusInitial [disabled]="newTaskSchedule.invalid"
+      <button mat-raised-button (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button color="primary" cdkFocusInitial [disabled]="newTaskSchedule.invalid"
               (click)="onUpdate()">
         {{ isEdit ? "Update" : "Add" }}
       </button>
     </div>
 
 
-
   </form>
-</div>
+
+
+
 
 
 
