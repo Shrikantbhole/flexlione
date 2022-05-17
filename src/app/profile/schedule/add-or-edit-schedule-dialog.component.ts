@@ -57,8 +57,8 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dialogRef.updateSize('50%', '80%');
-   // this.isPlanned = true;
+    this.dialogRef.updateSize('50%', '70%');
+    // this.isPlanned = true;
   }
   onNoClick(): void {
     this.dialogRef.close();
