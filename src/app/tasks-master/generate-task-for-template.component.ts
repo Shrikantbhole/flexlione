@@ -13,11 +13,11 @@ import {CreateTaskForm, GetTaskFormFromTaskModel} from '../article/models/task-d
 
 @Component({
   selector: 'app-generate-task',
-  templateUrl: './generate-task.component.html',
+  templateUrl: './generate-task-for-template.component.html',
 
 })
 
-export class GenerateTaskComponent implements OnChanges, OnInit {
+export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
   @Input() generatedTask: TaskModel;
 
   UserList: string[] = getUserList();

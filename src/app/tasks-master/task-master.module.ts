@@ -19,7 +19,7 @@ import {ArticleModule} from '../article/article.module';
 import {TasksMasterResolverService} from './tasks-master-resolver.service';
 import {TemplateTaskComponent} from './template-task.component';
 import {SelectedTasksDisplayComponent} from './selected-tasks.component';
-import {GenerateTaskComponent} from './generate-task.component';
+import {GenerateTaskForTemplateComponent} from './generate-task-for-template.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {EditTemplateComponent} from './edit-template.component';
@@ -53,7 +53,7 @@ import {TaskFormComponent} from '../shared/task-form/task-form.component';
   ],
   declarations: [
     TaskMasterComponent, TemplateTaskComponent,
-    SelectedTasksDisplayComponent, GenerateTaskComponent,
+    SelectedTasksDisplayComponent, GenerateTaskForTemplateComponent,
     EditTemplateComponent, AddTemplateComponent
   ],
   providers: [
