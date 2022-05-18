@@ -1,28 +1,40 @@
+<style>
+  button {
+display: inline-block;
+    margin: 4%;
+  }
+
+</style>
 <div class="article-page">
 
   <div class="banner">
     <div class="container">
       <h1>{{ task.taskId }}</h1>
+
     </div>
   </div>
 
   <div class="container page">
     <app-task-form [parentForm]="TaskForm"></app-task-form>
 
-    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+    <button mat-raised-button color="primary" (click)="seeInTaskTree()">
          See in Task Tree
     </button>
 
-    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+    <button  mat-raised-button color="primary" (click)="goToParentTask()">
       Go to Parent Task
     </button>
 
-    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="seeInTaskTree()">
+    <button mat-raised-button color="primary" (click)="seeInTaskTree()">
       Start Task
     </button>
 
-    <button style=" display: inline-block ; margin: 5%" mat-raised-button color="primary" (click)="goToParentTask()">
+    <button mat-raised-button color="primary" (click)="goToParentTask()">
      Stop Task
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onAddToSchedule(task)">
+      Add to schedule
     </button>
 
     <p><strong>Complete Task Description</strong></p>

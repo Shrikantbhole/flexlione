@@ -1,61 +1,41 @@
 <style>
-  mat-header-cell {
-    color: black;
-    font-size: 14px;
-    font-weight: bold
-  }
-  #submit {
-    margin:0 auto;
-    display:block;
-    }
-
-
-  input {
+  .viewTemp {
+    min-width: 500px;
+    max-width: 500px;
     width: 100%;
+    height: 100%;
+
 
   }
-  label {
+
+  .fieldView {
     width: 100%;
-    display: inline-block;
-
-  }
-  /* code inspired from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidebar_responsive */
-  .master {
-    width: 500px;
-    height:350px;
-    overflow: auto;
-
-  }
-
-  div.detail {
-    margin-left: 345px;
   }
 </style>
-<div class = "master">
+<div >
+
   <h3>New template</h3>
   <mat-divider></mat-divider>
   <br>
-<form [formGroup]="newTemplateForm" (ngSubmit)="onSubmit()">
+<form class = "viewTemp" [formGroup]="newTemplateForm" (ngSubmit)="onSubmit()">
 
-  <div class="mat-form-field">
-    <label for="templateId">Template Id: </label>
-    <input id="templateId" disabled  formControlName="templateId" placeholder="Server generated">
+  <mat-form-field class="fieldView" appearance="fill">
+    <label >Template Id: </label>
+    <input matInput formControlName="templateId" >
 
+  </mat-form-field>
 
-  </div>
   <br>
-<div class ="mat-form-field">
-  <label for="description">Description: </label>
-<input id="description" type = "text" formControlName = "description">
-</div>
+  <mat-form-field class="fieldView" appearance="fill">
+  <label >Description: </label>
+<input  matInput type = "text" formControlName = "description" placeholder="Please enter a description for template.">
+    </mat-form-field>
 
 <br>
-  <div class="mat-form-field">
-    <label for="taskList">Task List: </label>
-    <input id="taskList"  formControlName="taskList">
-
-
-  </div >
+  <mat-form-field class="fieldView" appearance="fill">
+    <label >Task List: </label>
+    <input matInput   formControlName="taskList">
+    </mat-form-field>
   <br>
   <mat-divider></mat-divider>
 
@@ -65,5 +45,6 @@
   <button id = "submit" type="submit" mat-raised-button color="primary" >Add Template</button>
 
 </form>
+
 
 </div>

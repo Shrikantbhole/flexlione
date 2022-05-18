@@ -64,9 +64,12 @@ export class TaskMasterComponent implements  OnInit {
   }
 
   onClickCreateNewTemplate() {
-   // const dialogRef = this.dialog.open(AddTemplateComponent);
+    const dialogRef = this.dialog.open(AddTemplateComponent);
     // dialogRef.close();
-    this.dialog.open(AddTemplateComponent);
+   // this.dialog.open(AddTemplateComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTemplates();
+  });
   }
 
   onClickEdit() {
@@ -83,7 +86,7 @@ this.dialog.open(EditTemplateComponent);
           this.taskManagementService.deleteTemplate(templateId)
             .subscribe({
               next: () => {
-                this.snackBarService.open('Template deleted.');
+                this.snackBarService.open('Template deleted.', '', { duration: 1000 });
                 this.loadTemplates();
               },
               error: () => this.messageBoxService.info('Error: Failed to delete template')

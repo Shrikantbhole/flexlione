@@ -17,8 +17,8 @@ export class AddTemplateComponent implements OnInit {
 
 
   newTemplateForm = new FormGroup ({
-    templateId: new FormControl(''),
-    description: new FormControl('Please enter a description for template.'),
+    templateId: new FormControl({value : 'server generated', disabled : true}),
+    description: new FormControl(''),
     taskList: new FormControl([]),
   });
 

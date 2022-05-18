@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MessageBoxService } from '../../settings/message-box.service';
 import {DatePipe} from '@angular/common';
@@ -7,6 +7,8 @@ import {getHourList} from '../../shared/shared-lists/hour-list';
 import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TaskScheduleModel} from '../models/task-schedule.model';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {isBoolean} from 'util';
 
 
 @Component({
@@ -18,7 +20,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
   public isEdit: boolean ;
   public taskId: string;
   public hourList: number[] = getHourList();
-
+  public isPlanned: boolean;
 
   // members for data-binding
   newTaskSchedule: FormGroup = new FormGroup({
@@ -31,6 +33,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
     'stopHour': new FormControl(''),
     'stopMinute': new FormControl(''),
     'owner' : new FormControl(''),
+    'isPlanned' : new FormControl(null),
   });
   constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditScheduleDialogComponent>,
               messageBoxService: MessageBoxService, @Inject(MAT_DIALOG_DATA) data,
@@ -46,7 +49,8 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
       startMinute:  '',
       stopHour:  '',
       stopMinute: '' ,
-      owner: data.task.assignedTo
+      owner: data.task.assignedTo,
+      isPlanned: true,
     });
     this.newTaskSchedule.controls['description'].disable();
     this.newTaskSchedule.controls['taskId'].disable();
@@ -54,6 +58,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogRef.updateSize('50%', '70%');
+    // this.isPlanned = true;
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -68,6 +73,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
           },
         error: () => {}
       });
+    console.log(this.createTaskSchedule(this.newTaskSchedule));
   }
 
   createTaskSchedule(newTaskSchedule: FormGroup): TaskScheduleModel {
@@ -81,10 +87,8 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
     taskSchedule.stopHour = newTaskSchedule.getRawValue().stopHour;
     taskSchedule.stopMinute = newTaskSchedule.getRawValue().stopMinute;
     taskSchedule.owner = newTaskSchedule.getRawValue().owner;
+    taskSchedule.isPlanned = newTaskSchedule.getRawValue().isPlanned;
     return taskSchedule;
   }
-
-
-
 }
 

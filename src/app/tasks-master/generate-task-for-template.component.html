@@ -1,0 +1,44 @@
+<style xmlns="http://www.w3.org/1999/html">
+  mat-header-cell {
+    color: black;
+    font-size: 14px;
+    font-weight: bold
+  }
+
+  .highlight {
+    background-color: #e8f0fe;
+  }
+  .is-active {
+    background-color: mediumaquamarine;
+  }
+  .master {
+    width: 100%;
+    position: fixed;
+    height: 80%;
+    overflow: auto;
+    border-right: 2px solid #dbdbdb;
+  }
+  .slave {
+    width: 405px;
+    position: fixed;
+    height: 700px;
+    overflow: auto;
+    border-right: 2px solid #dbdbdb;
+    padding-left: 5px;
+  }
+  div.detail {
+    margin-left: 345px;
+  }
+  .lm{
+    margin-left: 5px;
+  }
+</style>
+
+<div class = "slave">
+  <h3>Template task to generate</h3>
+  <br>
+<div *ngIf = "generatedTask">
+  <app-task-form [parentForm]="TaskForm"></app-task-form>
+</div>
+
+</div>

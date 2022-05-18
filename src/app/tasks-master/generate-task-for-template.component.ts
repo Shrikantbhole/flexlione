@@ -9,21 +9,22 @@ import {getUserList} from '../shared/shared-lists/user-list';
 import {getStatusList} from '../shared/shared-lists/status-list';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CreateTaskForm} from '../article/models/task-detail.form';
+import {CreateTaskForm, GetTaskFormFromTaskModel} from '../article/models/task-detail.form';
 
 @Component({
   selector: 'app-generate-task',
-  templateUrl: './generate-task.component.html',
+  templateUrl: './generate-task-for-template.component.html',
 
 })
 
-export class GenerateTaskComponent implements OnChanges, OnInit {
+export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
   @Input() generatedTask: TaskModel;
 
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
   deadline: FormControl = new FormControl(new Date());
   newTask: FormGroup;
+  TaskForm: FormGroup = CreateTaskForm();
     constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
@@ -33,28 +34,30 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
     private  router: Router
   ) {
   }
-   // createTaskForm(task: TaskModel): FormGroup
-   createTaskForm(task: TaskModel) {
-    const newTask: FormGroup = CreateTaskForm();
-    newTask.setValue({
-      taskId: this.generatedTask.taskId,
-      parentTaskId: '',
-      createdBy: '',
-      status: '',
-      positionAfter: '',
-      description: this.generatedTask.description,
-      deadline: '',
-      score: '',
-      assignedTo: '',
-      expectedHours: 0,
-      hrsSpentTillNow: 0,
-      actualHours: 0,
 
-    });
-     return newTask;
-  }
+   // createTaskForm(task: TaskModel): FormGroup
+  // createTaskForm(task: TaskModel) {
+   // const newTask: FormGroup = CreateTaskForm();
+   // newTask.setValue({
+    //  taskId: this.generatedTask.taskId,
+    //  parentTaskId: '',
+    //  createdBy: '',
+    //  status: '',
+    //  positionAfter: '',
+    //  description: this.generatedTask.description,
+    //  deadline: '',
+    //  score: '',
+    //  assignedTo: '',
+    //  expectedHours: 0,
+    //  hrsSpentTillNow: 0,
+     // actualHours: 0,
+
+  //  });
+   //  return newTask;
+ // }
 
   ngOnInit() {}
+
   onAddTaskClick() {
     this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
       .subscribe({
@@ -88,7 +91,10 @@ export class GenerateTaskComponent implements OnChanges, OnInit {
 
   ngOnChanges() {
       if (this.generatedTask !== undefined) {
-        this.newTask = this.createTaskForm(this.generatedTask);
+      //  this.newTask = this.createTaskForm(this.generatedTask);
+        this.TaskForm = GetTaskFormFromTaskModel(this.generatedTask);
+        this.TaskForm.controls['taskId'].setValue('server generated');
+        this.TaskForm.controls['taskId'].disable();
       }
   }
 

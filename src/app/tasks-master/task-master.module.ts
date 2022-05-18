@@ -19,12 +19,13 @@ import {ArticleModule} from '../article/article.module';
 import {TasksMasterResolverService} from './tasks-master-resolver.service';
 import {TemplateTaskComponent} from './template-task.component';
 import {SelectedTasksDisplayComponent} from './selected-tasks.component';
-import {GenerateTaskComponent} from './generate-task.component';
+import {GenerateTaskForTemplateComponent} from './generate-task-for-template.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {EditTemplateComponent} from './edit-template.component';
 import {AddTemplateComponent} from './add-template.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {TaskFormComponent} from '../shared/task-form/task-form.component';
 
 
 
@@ -52,7 +53,7 @@ import {ReactiveFormsModule} from '@angular/forms';
   ],
   declarations: [
     TaskMasterComponent, TemplateTaskComponent,
-    SelectedTasksDisplayComponent, GenerateTaskComponent,
+    SelectedTasksDisplayComponent, GenerateTaskForTemplateComponent,
     EditTemplateComponent, AddTemplateComponent
   ],
   providers: [

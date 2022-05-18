@@ -9,4 +9,5 @@ export class TaskScheduleModel {
   stopMinute: number;
   owner: string;
   taskSummaryId: string;
+  isPlanned: boolean;
 }
