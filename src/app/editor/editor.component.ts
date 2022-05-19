@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Article, ArticlesService, UserService} from '../core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
-import {DatePipe} from '@angular/common';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
 import {CreateTaskForm} from '../article/models/task-detail.form';
 
@@ -29,8 +28,6 @@ export class EditorComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private userService: UserService,
-    private datePipe: DatePipe
   ) {
     this.store.select('profile')
       .subscribe({ next: (profiles) => {
