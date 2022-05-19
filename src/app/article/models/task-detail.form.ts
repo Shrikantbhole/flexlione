@@ -15,6 +15,7 @@ export function CreateTaskForm(): FormGroup {
     'expectedHours': new FormControl(''),
     'hrsSpentTillNow': new FormControl(''),
     'actualHours': new FormControl(''),
+    'createdAt': new FormControl('')
   });
 }
 
@@ -32,5 +33,6 @@ export function GetTaskFormFromTaskModel(task: TaskModel): FormGroup {
   taskForm.controls['expectedHours'].setValue(task.expectedHours);
   taskForm.controls['hrsSpentTillNow'].setValue(task.hrsSpentTillNow);
   taskForm.controls['actualHours'].setValue(task.actualHours);
+  taskForm.controls['createdAt'].setValue(task.createdAt);
   return taskForm;
 }

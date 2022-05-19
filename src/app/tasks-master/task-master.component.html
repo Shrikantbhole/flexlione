@@ -21,6 +21,12 @@
   div.detail {
     margin-left: 345px;
   }
+  :host /deep/ .mat-list-item-content {
+    padding: 0!important;
+
+  }
+  .app-class .mat-list-item {
+    height: auto;}
 </style>
 
 <!-- the html tags for master and detail components are needed. They are same as selector tags
@@ -54,7 +60,7 @@
 
       <p *ngIf="templateData.length == 0">No Tasks exist.</p>
 
-      <mat-list>
+      <mat-list class = "app-class">
         <mat-divider></mat-divider>
         <mat-list-item *ngFor="let template of templateData"
                        [ngClass]="{highlight: template.templateId == selectedTemplateId}"
@@ -62,7 +68,7 @@
                        [routerLinkActive]="['is-active']"
                        [routerLink]='["/master"]' [queryParams]="{templateId: template.templateId}">
 
-          <div mat-line>{{template.templateId}}</div>
+          <div mat-line>{{ template.templateId}}</div>
           <div mat-line>{{template.description}} </div>
 
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">

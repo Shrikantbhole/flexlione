@@ -84,6 +84,12 @@
       </mat-select>
     </mat-form-field>
   </li>
+  <mat-form-field>
+    <label >Created at</label>
+    <input matInput formControlName="createdAt" [matDatepicker]="picker1" >
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
 </form>
 
   <div mat-dialog-actions>

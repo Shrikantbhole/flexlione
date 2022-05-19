@@ -24,6 +24,13 @@
 
   div.detail {
     margin-left: 320px;
+
+  }
+  .app-class .mat-list-item {
+    height: auto;
+  }
+  :host /deep/ .mat-list-item-content {
+    padding: 0!important;
   }
 </style>
 
@@ -46,11 +53,9 @@
       <br />
       <br />
 
-
-
       <p *ngIf="childTaskList?.length == 0">No project exists.</p>
 
-      <mat-list>
+      <mat-list class="app-class">
         <mat-divider></mat-divider>
         <mat-list-item *ngFor="let Task of childTaskList"
                        (click)="onRowClick(Task.taskId)"
@@ -58,12 +63,12 @@
                        [routerLinkActive]="['is-active']"
                        [routerLink]='["/task-tree"]' [queryParams]="{L1: Task.taskId}">
 
-        <div mat-line>{{Task.taskId}}</div>
-          <div mat-line>{{Task.description}} </div>
+          <div mat-line>{{Task.taskId +'. '+ Task.description}} </div>
 
 
-          <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
-          Menu </button>
+
+          <button mat-icon-button color="primary" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon></button>
 
           <mat-menu #menu="matMenu">
 

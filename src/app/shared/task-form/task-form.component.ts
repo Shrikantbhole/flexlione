@@ -91,6 +91,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     task.positionAfter = newTask.getRawValue().positionAfter === '' ? null : newTask.getRawValue().positionAfter;
     task.deadline = this.datePipe.transform(newTask.getRawValue().deadline, 'yyyy-MM-dd');
     task.expectedHours = newTask.getRawValue().expectedHours === '' ? 0 : +newTask.getRawValue().expectedHours;
+    task.createdAt = this.datePipe.transform(newTask.getRawValue().createdAt, 'yyyy-MM-dd');
     return task;
   }
 
