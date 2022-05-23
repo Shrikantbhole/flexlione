@@ -1,6 +1,6 @@
 <br/>
 <app-article-preview
-  *ngFor="let task of results"
+  *ngFor="let task of sortedResult"
   (click)="onRowClick(task.taskId)"
   [SearchTask] ="task">
 

@@ -12,7 +12,7 @@
     <mat-accordion>
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
-                            [ngClass]="{'make-light-blue': taskSchedule.taskSummaryId  !== ''}" >
+                            [ngClass]=" { 'make-light-blue': taskSchedule.taskSummaryId  !== '' }">
 
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -33,7 +33,7 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-
+ <p></p>
 </div>
 
 
