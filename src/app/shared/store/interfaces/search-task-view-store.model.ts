@@ -10,6 +10,7 @@ export interface SearchTaskViewStoreModel {
   description: string;
   deadline: Date;
   isRemoved: boolean;
+  createdAt: string;
 }
 
 

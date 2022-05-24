@@ -14,10 +14,7 @@
   margin-right: 10px;
 }
 .make-light-blue {
-  background-color: floralwhite;
-}
-.make-green {
-  background-color: lightskyblue;
+  background-color: lightblue;
 }
 
 td , th {
@@ -25,4 +22,6 @@ td , th {
   word-wrap: break-word;
   max-width: 200px;
 }
-
+.make-green {
+  background-color: green;
+}

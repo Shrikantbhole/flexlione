@@ -46,6 +46,7 @@
 
   </tr>
   </thead>
+
   <tbody>
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
@@ -60,5 +61,15 @@
     <td>{{taskSummary.actualHour}}</td>
   </tr>
   </tbody>
+  <tfoot>
+  <tr>
+    <td></td>
+    <td></td>
+    <td><b>Total</b></td>
+    <td> <b>{{ totalExpectedHr }} </b></td>
+    <td></td>
+    <td><b> {{ totalActualHr }}</b></td>
+  </tr>
+  </tfoot>
 </table>
 </div>
