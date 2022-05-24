@@ -32,6 +32,8 @@ export class StandUpComponent implements OnInit {
     newDate1: new FormControl(new Date(), [Validators.required]),
   });
   currentUser: ProfileModel;
+  totalExpectedHr = 0;
+  totalActualHr = 0;
 
   constructor(
     private articlesService: ArticlesService,
@@ -67,6 +69,11 @@ export class StandUpComponent implements OnInit {
     this.dailyPlanSummaryService.getDailyTaskSummary(profileId, date).subscribe({
       next : (taskSummaryList) => {
         this.TaskSummaryList = taskSummaryList;
+        this.totalExpectedHr = 0;
+        this.TaskSummaryList.forEach(item => { this.totalExpectedHr += item.expectedHour; });
+        this.totalActualHr = 0;
+        this.TaskSummaryList.forEach(item => { this.totalActualHr += item.actualHour; });
+
       },
       error : (apiError: ApiError) => {this.messageBoxService.info('Error in getting Task Summary List', apiError.title, apiError. detail);
       }
@@ -97,5 +104,4 @@ export class StandUpComponent implements OnInit {
     this.Name = this.GetProfileName(this.profileId);
     this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
-
-}
+  }

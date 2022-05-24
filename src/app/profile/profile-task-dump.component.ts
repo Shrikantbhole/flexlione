@@ -15,6 +15,7 @@ import {TaskModel} from '../article/models/task-detail.model';
 })
 export class ProfileTaskDumpComponent implements AfterViewInit {
   results: SearchTaskViewStoreModel[];
+  sortedResult: SearchTaskViewStoreModel[];
   ProfileId = '';
   @Input() options: string[] ;
   @Input()
@@ -26,6 +27,7 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
             console.log('repeat');
             return  value.assignedTo === profileId;
           });
+          this.sortedResult = this.results.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
         }
       });
   }

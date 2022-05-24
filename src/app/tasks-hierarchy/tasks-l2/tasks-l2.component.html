@@ -10,6 +10,11 @@
   .is-active {
     background-color: mediumaquamarine;
   }
+  :host /deep/ .mat-list-item-content {
+    padding: 0!important;
+  }
+  .app-class .mat-list-item {
+    height: auto;}
 
 </style>
 
@@ -37,7 +42,7 @@
     <br />
     <br />
 
-    <mat-list>
+    <mat-list class = "app-class">
       <mat-divider></mat-divider>
       <mat-list-item *ngFor="let task of l2Task.children"
                      (click)="onRowClick(task.taskId)"
@@ -46,10 +51,9 @@
                      [routerLink]='["/task-tree"]' [queryParams]="{L1: l1TaskId, L2: l2TaskId, L3: task.taskId}">
 
 
-        <div mat-line>{{task.taskId}}</div>
-        <div mat-line> {{task.description}} </div>
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
-          Menu </button>
+        <div mat-line>{{task.taskId +'. '+ task.description}} </div>
+        <button mat-icon-button color="primary" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon></button>
 
         <mat-menu #menu="matMenu">
 

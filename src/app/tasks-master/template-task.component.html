@@ -44,16 +44,10 @@
       <mat-divider></mat-divider>
       <mat-selection-list #t >
       <mat-list-option *ngFor="let task of templateTasks"
-
-                       (click)="onRowClick(task)"
-                     [ngClass]="{highlight: task.taskId == selectedTaskId}"
-                     >
-
+                       (click)="onRowClick(task)">
 
         <div mat-line>{{task.taskId}}</div>
         <div mat-line> {{task.description}} </div>
-
-
 
       </mat-list-option>
 
