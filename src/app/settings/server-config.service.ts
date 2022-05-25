@@ -40,17 +40,11 @@ export class ServerConfigService {
     const currentUrl = window.location.href;
 
     if (currentUrl.includes('localhost')) {
-      this.base_url = 'https://ptl-api-dev.flexli.in/flexli-erp-webapi/api/v1';
-    } else if (currentUrl.includes('ptl-api-dev.flexli.in/flexli-erp-webapp')) {
-      this.base_url = 'https://ptl-api-dev.flexli.in/flexli-erp-webapi/api/v1';
-    } else if (currentUrl.includes('65.1.53.71/kd-ptl-webapp-beta')) {
-      this.base_url = 'http://65.1.53.71/kd-ptl-webapi-beta/api/v1';
-    } else if (currentUrl.includes('3.6.158.79/flexli-erp-webapp')) {
-      this.base_url = 'http://3.6.158.79/erp-alpha/api/v1';
-    } else if (currentUrl.includes('3.6.158.79/kd-ptl-webapp-beta')) {
-      this.base_url = 'http://3.6.158.79/kd-ptl-webapi-beta/api/v1';
-    }  else if (currentUrl.includes('3.6.158.79/kd-ptl-webapp-prod')) {
-      this.base_url = 'http://3.6.158.79/kd-ptl-webapi-prod/api/v1';
+      this.base_url = 'https://ptl-api-dev.flexli.in/flexlione-webapi-alpha/api/v1';
+    } else if (currentUrl.includes('beta')) {
+      this.base_url = 'https://ptl-api-dev.flexli.in/flexlione-webapi-beta/api/v1';
+    } else if (currentUrl.includes('alpha')) {
+      this.base_url = 'https://ptl-api-dev.flexli.in/flexlione-webapi-alpha/api/v1';
     }
     return this.base_url;
 
