@@ -40,7 +40,7 @@ export class ServerConfigService {
     const currentUrl = window.location.href;
 
     if (currentUrl.includes('localhost')) {
-      this.base_url = 'https://ptl-api-dev.flexli.in/flexli-erp-webapi/api/v1';
+      this.base_url = 'https://ptl-api-dev.flexli.in/flexlione-webapi-alpha/api/v1';
     } else if (currentUrl.includes('ptl-api-dev.flexli.in/flexli-erp-webapp')) {
       this.base_url = 'https://ptl-api-dev.flexli.in/flexli-erp-webapi/api/v1';
     } else if (currentUrl.includes('65.1.53.71/kd-ptl-webapp-beta')) {

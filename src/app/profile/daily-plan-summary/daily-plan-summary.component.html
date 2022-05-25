@@ -1,3 +1,9 @@
+<style>
+.expectedOutputAdded {background-color: #FFFDDE}
+.actualOutputAdded {background-color: #E7FBBE}
+</style>
+
+
 <div class="example-action-buttons">
   <button mat-button (click)="accordion.closeAll()">Collapse All</button>
 </div>
@@ -12,7 +18,11 @@
     <mat-accordion>
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
-                            [ngClass]=" { 'make-light-blue': taskSchedule.taskSummaryId  !== '' }">
+
+                            [ngClass]="{ 'expectedOutputAdded' : taskSchedule.taskSummaryId  !== '',
+                                    'actualOutputAdded': ''
+                                     }"
+      >
 
         <mat-expansion-panel-header>
           <mat-panel-title>

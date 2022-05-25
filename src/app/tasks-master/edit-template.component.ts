@@ -34,10 +34,9 @@ export class EditTemplateComponent {
   public selectedTemplateId: string;
   public selectedTasks: TaskModel [] = [];
   private templateData: Template;
-  public taskIdList: string[] = [] ;
+  public taskIdList: [{taskId: string, description: string}]  ;
   public taskToAddList: string[] = [] ;
   public taskToRemoveList: string[] = [] ;
-
   constructor(activatedRoute: ActivatedRoute, dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
               taskManagementService: TaskManagementService, router: Router, private store: Store<AppState> ) {
     this.dialog = dialog;
@@ -61,7 +60,7 @@ export class EditTemplateComponent {
   loadParentTasks() {
     this.taskManagementService.getTaskIdList('' , this.getTaskIdList);
   }
-  getTaskIdList = (taskIdList: string[]) => {
+  getTaskIdList = (taskIdList) => {
     this.taskIdList = taskIdList;
     console.log(this.taskIdList);
   }

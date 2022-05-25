@@ -1,3 +1,4 @@
+import {TaskSummaryModel} from './task-summary.model';
 export class TaskScheduleModel {
   taskScheduleId: string;
   taskId: string;
@@ -10,4 +11,15 @@ export class TaskScheduleModel {
   owner: string;
   taskSummaryId: string;
   isPlanned: boolean;
+  taskSummary: {
+    taskSummaryId: string;
+    taskScheduleId: string;
+    taskId: string;
+    description?: string;
+    expectedOutput?: string;
+    expectedHour?: number;
+    actualOutput?: string;
+    actualHour?: number;
+    date?: string;
+};
 }

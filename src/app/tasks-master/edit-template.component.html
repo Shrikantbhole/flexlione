@@ -12,7 +12,7 @@
 
 
   .master {
-    width: 1000px;
+    width: 900px;
     height: 700px;
     overflow: auto;
 
@@ -24,16 +24,16 @@
 <div class="container">
 
   <div class="row">
-    <div class="col-md" >
+    <div class="col-sm-6" >
       <h4>Select Task to Add</h4>
       <mat-list>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let taskId of taskIdList">
+        <mat-list-item *ngFor="let shortTask of taskIdList">
 
-          <div mat-line>{{taskId}}</div>
+          <div mat-line>{{shortTask.taskId +'. '+ shortTask.description}}</div>
 
 
-          <button mat-icon-button (click)="onClickAdd(taskId)">
+          <button mat-icon-button (click)="onClickAdd(shortTask.taskId)">
             <mat-icon>add_task</mat-icon>
           </button>
           <mat-divider></mat-divider>
@@ -43,7 +43,7 @@
       </mat-list>
     </div>
 
-    <div class="col-md">
+    <div class="col-sm-6">
       <h4>Tasks In template</h4>
       <mat-list>
         <mat-divider></mat-divider>
@@ -51,8 +51,7 @@
           <mat-list-item *ngFor="let task of templateTasks">
 
 
-            <div mat-line>{{task.taskId}}</div>
-            <div mat-line> {{task.description}} </div>
+            <div mat-line>{{task.taskId +'. '+task.description}} </div>
             <button mat-icon-button (click)="onClickRemove(task.taskId)">
               <mat-icon>delete_outline</mat-icon>
             </button>

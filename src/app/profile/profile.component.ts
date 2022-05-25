@@ -77,6 +77,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (taskScheduleList) => {
          this.TaskScheduleList = taskScheduleList;
+         console.log(this.TaskScheduleList);
          this.SelectedTaskScheduleList = taskScheduleList.filter(function(value) { // List for Task Summary
            return new Date(value.date).getDate() === new Date().getDate();
          });
@@ -87,7 +88,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           }
         },
         error: () => {}
-      });
+      }
+      );
+    console.log(month);
   }
 // Add a Task Schedule to current task schedule
   public AddNewTaskSchedule(taskScheduleModel: TaskScheduleModel) {

@@ -25,6 +25,7 @@ export class DailyPlanSummaryComponent implements  OnInit {
   @Input()
   set config(taskScheduleList: TaskScheduleModel[]) {
     this.TaskScheduleList = taskScheduleList;
+    console.log(this.TaskScheduleList);
   }
   constructor(
     private searchManagementService: DailyPlanSummaryService,
