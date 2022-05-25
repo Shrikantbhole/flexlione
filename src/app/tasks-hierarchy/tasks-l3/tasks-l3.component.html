@@ -9,6 +9,12 @@
   }
   .app-class .mat-list-item {
     height: auto;}
+  .unscheduled {background-color: white}
+  .scheduled {background-color: #D9D7F1}
+  .ongoing {background-color: #FFFDDE}
+  .completed{background-color: #E7FBBE }
+  .paused {background-color: gray}
+  .critical {background-color: #FFCBCB}
 </style>
 
 
@@ -37,7 +43,12 @@
     <mat-list class = "app-class">
       <mat-divider></mat-divider>
       <mat-list-item *ngFor="let task of l3Task.children"
-                     [ngClass]="{highlight: task.taskId == selectedTaskId}"
+                     [ngClass]="{ 'critical' : task.deadline < this.currentDate,
+                                    'unscheduled': task.status === '',
+                                    'scheduled' : task.status === 'yettostart',
+                                    'ongoing' : task.status === 'ongoing',
+                                    'completed' : task.status === 'completed',
+                                    'paused' : task.status === 'onhold'}"
                      (click)="onRowClick(task.taskId)"
                      [routerLink]='["/task-tree"]' [queryParams]="{L1: task.parentTaskId,L2: task.taskId}">
 

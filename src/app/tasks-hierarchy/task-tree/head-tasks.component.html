@@ -32,6 +32,14 @@
   :host /deep/ .mat-list-item-content {
     padding: 0!important;
   }
+  .unscheduled {background-color: white}
+  .scheduled {background-color: #D9D7F1}
+  .ongoing {background-color: #FFFDDE}
+  .completed{background-color: #E7FBBE }
+  .paused {background-color: gray}
+  .critical {background-color: #FFCBCB}
+
+
 </style>
 
 <!-- the html tags for master and detail components are needed. They are same as selector tags
@@ -59,9 +67,17 @@
         <mat-divider></mat-divider>
         <mat-list-item *ngFor="let Task of childTaskList"
                        (click)="onRowClick(Task.taskId)"
-                       [ngClass]="{highlight: Task.taskId == selectedTaskId}"
+                       [ngClass]="{ 'critical' : Task.deadline < this.currentDate,
+                                    'unscheduled': Task.status === '',
+                                    'scheduled' : Task.status === 'yettostart',
+                                    'ongoing' : Task.status === 'ongoing',
+                                    'completed' : Task.status === 'completed',
+                                    'paused' : Task.status === 'onhold'
+
+                                     }"
                        [routerLinkActive]="['is-active']"
-                       [routerLink]='["/task-tree"]' [queryParams]="{L1: Task.taskId}">
+                       [routerLink]='["/task-tree"]' [queryParams]="{L1: Task.taskId}"
+                        >
 
           <div mat-line>{{Task.taskId +'. '+ Task.description}} </div>
 
@@ -107,4 +123,3 @@
 
   </div>
 </div>
-

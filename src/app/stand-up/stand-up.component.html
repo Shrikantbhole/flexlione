@@ -48,7 +48,8 @@
   </thead>
 
   <tbody>
-  <tr *ngFor="let taskSummary of TaskSummaryList">
+  <tr *ngFor="let taskSummary of TaskSummaryList"
+      >
 
     <td> <a [routerLink]="['/article/',taskSummary.taskId ]">
       {{taskSummary.taskId}}

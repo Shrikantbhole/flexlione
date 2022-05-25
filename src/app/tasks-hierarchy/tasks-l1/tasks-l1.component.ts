@@ -64,7 +64,7 @@ export class TasksL1Component {
       }
     });
   }
-
+  currentDate: Date = new Date();
   onRowClick(taskId: string): void {
     this.selectedTaskId = taskId;
     this.l2TaskId = taskId;
