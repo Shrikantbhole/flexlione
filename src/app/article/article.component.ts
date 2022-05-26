@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import {TaskModel} from './models/task-detail.model';
@@ -36,6 +36,7 @@ import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model'
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
+  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   task: TaskModel;
   currentUser: ProfileModel;
   canModify: boolean;
@@ -191,7 +192,7 @@ export class ArticleComponent implements OnInit {
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
-        // this.newScheduleEvent.emit(taskSchedule);
+        this.newScheduleEvent.emit(taskSchedule);
       },
       error: () => {}
     });

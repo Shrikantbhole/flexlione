@@ -2,6 +2,7 @@
   .master {
     margin-right:5%
   }
+
 </style>
 
 <div class="author" xmlns="http://www.w3.org/1999/html">
@@ -25,6 +26,15 @@
       </mat-panel-title>
       <mat-panel-description>
       </mat-panel-description>
+
+
+    <mat-panel-description>
+
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onUpdateOrScheduleNewTask(SearchTask)">
+        <i class="icon ion-star"></i>
+      </button>
+
+    </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-content></ng-content>
     <p class="master"> </p>

@@ -20,7 +20,7 @@ import {ProfileModel} from '../models/profile.model';
   selector: 'app-sprint-preview',
   templateUrl: './sprint-preview.component.html'
 })
-export class SprintPreviewComponent implements OnInit{
+export class SprintPreviewComponent implements OnInit {
  @Input() sprintList: SprintModel[];
  @Output() newItemEvent  = new EventEmitter<string>();
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
