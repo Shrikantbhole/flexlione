@@ -19,10 +19,8 @@
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
 
-                            [ngClass]="{ 'expectedOutputAdded' : taskSchedule.taskSummaryId  !== '',
-                                    'actualOutputAdded': ''
-                                     }"
-      >
+                            [ngClass]=" { 'make-light-blue': taskSchedule.taskSummaryId  !== '' }">
+
 
         <mat-expansion-panel-header>
           <mat-panel-title>
