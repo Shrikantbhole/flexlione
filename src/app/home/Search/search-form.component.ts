@@ -29,7 +29,7 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
   filteredOptions: Observable<string[]>;
   public AddTag = '';
   UserList: string[] = [];
-  TaskIdList: string[] = [];
+  TaskIdList: {'taskId': string, 'description': string}[] = [];
   StatusList: string[] = getStatusList();
   initialValue = true;
 
@@ -163,7 +163,7 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
   ngAfterViewInit(): void {
     this.taskManagementService.getTaskIdList('', this.getTaskIdList);
   }
-  getTaskIdList = (taskIdList: string[]) => { // Assigning parent task id from all existing task
+  getTaskIdList = (taskIdList: {'taskId': string, 'description': string}[]) => { // Assigning parent task id from all existing task
     this.TaskIdList = taskIdList;
   }
 

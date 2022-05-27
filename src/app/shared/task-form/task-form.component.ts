@@ -22,8 +22,8 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
    StatusList: string[] = getStatusList();
    newTask: FormGroup;
    @Input() parentForm; // Fetch preloaded details in the form
-  public taskIdListForPosition: string[];
-  public taskIdListForParent: string[];
+  public taskIdListForPosition: {'taskId': string, 'description': string}[];
+  public taskIdListForParent: {'taskId': string, 'description': string}[];
   constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
@@ -40,10 +40,10 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     this.taskManagementService.getTaskIdList(this.parentForm.getRawValue().parentTaskId, this.getTaskIdListForPosition);
   }
 
-  getTaskIdListForParent = (taskIdList: string[]) => { // Assigning parent task id from all existing task
+  getTaskIdListForParent = (taskIdList: {'taskId': string, 'description': string}[]) => { // Assigning parent task id from all existing task
     this.taskIdListForParent = taskIdList;
   }
-  getTaskIdListForPosition = (taskIdList: string[]) => { // Assigning position after task id from all sibling tasks
+  getTaskIdListForPosition = (taskIdList: {'taskId': string, 'description': string}[]) => { // Assigning position after task id from all sibling tasks
     this.taskIdListForPosition = taskIdList;
   }
   async ngOnInit() {

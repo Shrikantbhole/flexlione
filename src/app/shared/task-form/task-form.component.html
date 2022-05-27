@@ -44,8 +44,8 @@
     <mat-label>Position After</mat-label>
     <mat-select formControlName="positionAfter">
       <mat-option></mat-option>
-      <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForPosition" >
-        {{taskId}}
+      <mat-option [value]="shortTask.taskId" *ngFor="let  shortTask of taskIdListForPosition" >
+        {{shortTask.taskId + '. ' + shortTask.description}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -78,8 +78,8 @@
       <mat-label>Parent Task Id</mat-label>
       <mat-select formControlName="parentTaskId">
         <mat-option></mat-option>
-        <mat-option [value]="taskId" *ngFor="let  taskId of taskIdListForParent"  (click)="onParentTaskIdChange(taskId)" >
-          {{taskId}}
+        <mat-option [value]="shortTask.taskId" *ngFor="let  shortTask of taskIdListForParent"  (click)="onParentTaskIdChange(shortTask.taskId)" >
+          {{shortTask.taskId + '. ' + shortTask.description}}
         </mat-option>
       </mat-select>
     </mat-form-field>
