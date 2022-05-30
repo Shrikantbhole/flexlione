@@ -36,6 +36,7 @@ import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model'
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
+
   task: TaskModel;
   currentUser: ProfileModel;
   canModify: boolean;

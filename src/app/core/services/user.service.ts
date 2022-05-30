@@ -29,8 +29,8 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
     let params = new HttpParams();
-    params = params.append('profileId', this.jwtService.getToken().toString());
-      return this.apiService.get('/Profile/GetProfileById', params)
+    params = params.append('profileId', this.jwtService.getToken().toString()); // Get Profile Id from local Ram
+      return this.apiService.get('/Profile/GetProfileById', params) // Fetch Profile Object corresponding to profile Id
       .subscribe(
         data => {
           this.setAuth(data);
