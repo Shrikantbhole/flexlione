@@ -126,6 +126,9 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
     if (newSearch.getRawValue().taskId !== '' && newSearch.getRawValue().taskId !== undefined) {
       search.TaskId = newSearch.getRawValue().taskId;
     }
+    if (newSearch.getRawValue().createdAt !== '' && newSearch.getRawValue().createdAt !== undefined) {
+      search.CreatedAt = this.datePipe.transform(newSearch.getRawValue().createdAt, 'yyyy-MM-dd');
+    }
     return search;
   }
 

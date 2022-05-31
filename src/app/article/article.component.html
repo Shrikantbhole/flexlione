@@ -1,7 +1,7 @@
 <style>
   button {
 display: inline-block;
-    margin: 4%;
+    margin: 1.5%;
   }
 
 </style>
@@ -9,7 +9,7 @@ display: inline-block;
 
   <div class="banner">
     <div class="container">
-      <h1>{{ task.taskId }}</h1>
+      <h1> {{text}} {{ task.taskId }}</h1>
 
     </div>
   </div>
@@ -35,6 +35,14 @@ display: inline-block;
 
     <button mat-raised-button color="primary" (click)="onAddToSchedule(task)">
       Add to schedule
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onAddChildTask(task)">
+      Add child task
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onAddSiblingTask(task)">
+      Add sibling task
     </button>
 
     <p><strong>Complete Task Description</strong></p>

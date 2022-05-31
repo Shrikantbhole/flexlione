@@ -28,6 +28,7 @@ import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 import {ApiError} from '../settings/api-error.model';
 import {ProfileManagementService} from '../Services/profile-management.service';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
+import {TaskFormComponent} from '../shared/task-form/task-form.component';
 
 
 @Component({
@@ -36,19 +37,6 @@ import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model'
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
-  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
-  task: TaskModel;
-  currentUser: ProfileModel;
-  canModify: boolean;
-  comments: TaskComment[] = [];
-  commentControl = new FormControl();
-  commentFormErrors = {};
-  isSubmitting = false;
-  isDeleting = false;
-  selectedCheckListItem = '';
-  TaskForm: FormGroup = CreateTaskForm();
-  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
-  Profiles: ProfileStoreModel[];
   constructor(
     private dialog: MatDialog,
     private route: ActivatedRoute,
@@ -75,6 +63,20 @@ export class ArticleComponent implements OnInit {
         this.populateComments();
       }
     );   }
+  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
+  task: TaskModel;
+  currentUser: ProfileModel;
+  canModify: boolean;
+  comments: TaskComment[] = [];
+  commentControl = new FormControl();
+  commentFormErrors = {};
+  isSubmitting = false;
+  isDeleting = false;
+  selectedCheckListItem = '';
+  TaskForm: FormGroup = CreateTaskForm();
+  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
+  Profiles: ProfileStoreModel[];
+  text = '';
 
   async ngOnInit() {
       // Load the current user's data
@@ -210,6 +212,31 @@ export class ArticleComponent implements OnInit {
   }
 
 
+  onAddSiblingTask(task: TaskModel) {
 
+     this.text = 'Sibling of task ID';
+    this.TaskForm = GetTaskFormFromTaskModel(task);
+    this.TaskForm.controls['createdBy'].setValue(task.createdBy);
+    this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
+    this.TaskForm.controls['parentTaskId'].setValue(task.parentTaskId);
+    this.TaskForm.controls['taskId'].setValue('server generated');
+    this.TaskForm.controls['taskId'].disable();
+    this.TaskForm.controls['description'].setValue('');
+    this.TaskForm.controls['positionAfter'].setValue(task.taskId);
+    this.TaskForm.controls['expectedHours'].setValue('');
+  }
 
+  onAddChildTask(task: TaskModel) {
+     this.text = 'Child of task ID';
+    this.TaskForm = GetTaskFormFromTaskModel(task);
+    this.TaskForm.controls['parentTaskId'].setValue(task.taskId);
+    this.TaskForm.controls['taskId'].setValue('server generated');
+    this.TaskForm.controls['taskId'].disable();
+    this.TaskForm.controls['createdBy'].setValue(task.createdBy);
+    this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
+    this.TaskForm.controls['description'].setValue('');
+    this.TaskForm.controls['positionAfter'].setValue('');
+    this.TaskForm.controls['expectedHours'].setValue('');
+
+  }
 }
