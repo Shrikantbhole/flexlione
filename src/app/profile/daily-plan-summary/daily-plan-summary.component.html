@@ -1,6 +1,7 @@
 <style>
-.expectedOutputAdded {background-color: #FFFDDE}
-.actualOutputAdded {background-color: #E7FBBE}
+.expectedOutputAdded {background-color: #F9FFA4}
+.actualOutputAdded {background-color: #B4FF9F}
+.noTaskId { background-color: white}
 </style>
 
 
@@ -19,7 +20,7 @@
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
 
-                            [ngClass]=" { 'make-light-blue': taskSchedule.taskSummaryId  !== '' }">
+                            [ngClass]= " taskSchedule.taskSummary !== null ? ({'expectedOutputAdded':  taskSchedule.taskSummary.actualOutput === null, 'actualOutputAdded': taskSchedule.taskSummary.actualOutput !== null}): 'noTaskId'">
 
 
         <mat-expansion-panel-header>
