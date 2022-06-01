@@ -1,3 +1,11 @@
+<style>
+  .unscheduled {background-color: white}
+  .scheduled {background-color: #D9D7F1}
+  .ongoing {background-color: #FFFDDE}
+  .completed{background-color: #E7FBBE }
+  .paused {background-color: gray}
+  .critical {background-color: #FFCBCB}
+</style>
 <div class="profile-page">
 <div class="user-info">
   <div class="container">
@@ -32,16 +40,17 @@
   </div>
 </div>
 
-
+<div class = "mat-h2">
 <table class='table' *ngIf="TaskSummaryList">
   <thead>
   <tr>
-    <th>Task Id</th>
+    <th>Id</th>
     <th>Description</th>
     <th>Expected Output</th>
-    <th>Expected Hours</th>
+    <th>Exp </th>
     <th>Actual Output</th>
-    <th>Actual Hours</th>
+    <th>Act</th>
+    <th>Status</th>
 
 
   </tr>
@@ -60,17 +69,29 @@
     <td>{{ taskSummary.expectedHour }}</td>
     <td>{{ taskSummary.actualOutput}} </td>
     <td>{{taskSummary.actualHour}}</td>
+    <td [ngClass]="{
+                                    'unscheduled': taskSummary.task.status === '',
+                                    'scheduled' : taskSummary.task.status === 'yettostart',
+                                    'ongoing' : taskSummary.task.status === 'ongoing',
+                                    'completed' : taskSummary.task.status === 'completed',
+                                    'paused' : taskSummary.task.status === 'onhold'
+
+                                     }">{{taskSummary.task.status}}</td>
   </tr>
   </tbody>
   <tfoot>
   <tr>
     <td></td>
     <td></td>
-    <td><b>Total</b></td>
+    <td><b>Total Hrs</b></td>
     <td> <b>{{ totalExpectedHr }} </b></td>
     <td></td>
     <td><b> {{ totalActualHr }}</b></td>
+    <td></td>
   </tr>
   </tfoot>
 </table>
+
+</div>
+
 </div>

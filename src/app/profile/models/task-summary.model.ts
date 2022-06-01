@@ -12,6 +12,11 @@ export class TaskSummaryModel {
   actualOutput?: string;
   actualHour?: number;
   date?: string;
+  task: {
+    taskId: string,
+    description: string,
+    status: string
+  };
 }
 
 export function CreateTaskSummaryForm(): FormGroup {
