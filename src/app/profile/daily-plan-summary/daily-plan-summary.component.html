@@ -20,7 +20,9 @@
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
 
-                            [ngClass]= " taskSchedule.taskSummary !== null ? ({'expectedOutputAdded':  taskSchedule.taskSummary.actualOutput === null, 'actualOutputAdded': taskSchedule.taskSummary.actualOutput !== null}): 'noTaskId'">
+                            [ngClass]= " taskSchedule.taskSummary !== null ?
+                            ({'expectedOutputAdded':  taskSchedule.taskSummary.actualOutput === null,
+                            'actualOutputAdded': taskSchedule.taskSummary.actualOutput !== null}): 'noTaskId'">
 
 
         <mat-expansion-panel-header>

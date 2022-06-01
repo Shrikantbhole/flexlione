@@ -41,16 +41,11 @@
     </mat-expansion-panel-header>
     <ng-content></ng-content>
     <p class="master"> </p>
-    <a *ngFor="let sprint of sprintList"
-       [routerLink]="['/article/',sprint ]">
-      {{sprint}} >
-    </a>
-    <div class="info">
-      <a class="author"
-         [routerLink]="['/profile/',SearchTask.assignedTo ]">
-       {{GetProfileName(SearchTask.assignedTo)}}
-      </a>
-    </div>
+
+<h5>Parent Task ID - {{SearchTask.parentTaskId}} </h5>
+
+
+
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
       <h6>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h6>
       <h6>Status:  {{ SearchTask.status }}</h6>
