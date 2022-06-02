@@ -2,7 +2,7 @@ import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import { asyncScheduler, Observable} from 'rxjs';
 import {observeOn} from 'rxjs/operators';
-import {mockProfileModel} from './Models/Mocks/mockProfile.model';
+import {mockProfile} from './Models/Mocks/mockProfile';
 import {UserService} from './core';
 import {routes} from './app-routing.module';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -13,7 +13,6 @@ import {Router} from '@angular/router';
 // Using Schedulers to create fake async function
 const mockUserService = {
   populate() {
-    const mockProfile = mockProfileModel;
     return new Observable((observer) => {
       observer.next(mockProfile);
     }).pipe(

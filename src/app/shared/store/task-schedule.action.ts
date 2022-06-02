@@ -10,6 +10,7 @@ import {TaskScheduleModel} from '../../profile/models/task-schedule.model';
 // Section 2
 // We're defining the type of action, which is in the form of a string constant.
 export const ADD_TASK_SCHEDULE      = '[TaskSchedule] Add';
+export const ADD_ALL_TASK_SCHEDULE      = '[TaskSchedule] AddAll';
 export const REMOVE_TASK_SCHEDULE    = '[TaskSchedule] Remove';
 export const REMOVE_ALL_TASK_SCHEDULE    = '[TaskSchedule] RemoveAll';
 
@@ -23,6 +24,12 @@ export class AddTaskSchedule implements Action {
   readonly type = ADD_TASK_SCHEDULE;
 
   constructor(public payload: TaskScheduleModel) {}
+}
+
+export class AddAllTaskSchedule implements Action {
+  readonly type = ADD_ALL_TASK_SCHEDULE;
+
+  constructor(public payload: TaskScheduleModel[]) {}
 }
 
 export class RemoveTaskSchedule implements Action {
@@ -40,5 +47,5 @@ export class RemoveAllTaskSchedule implements Action {
 
 
 // Section 4
-export type TaskScheduleActions = AddTaskSchedule | RemoveTaskSchedule |RemoveAllTaskSchedule;
+export type TaskScheduleActions = AddAllTaskSchedule | AddTaskSchedule | RemoveTaskSchedule |RemoveAllTaskSchedule;
 

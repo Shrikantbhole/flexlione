@@ -50,13 +50,9 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
     this.searchManagementService.getTaskSearchList(search)
       .subscribe({
         next: (taskList) => {
-          console.log(taskList);
           this.store.dispatch(new TaskActions.RemoveSearchTask());
-          for ( let i = 0; i < taskList.length; i++) {
-            // Add Search result in Store
-            this.store.dispatch(new TaskActions.AddSearchTask(taskList[i]));
-          }
-        },
+          this.store.dispatch(new TaskActions.AddSearchTask(taskList));
+          },
         error: (apiError: ApiError) => {
           this.messageBoxService.info('Error: TaskModel not updated .', apiError.title, apiError.detail);
         }
@@ -76,7 +72,6 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
           this.options = [];
           for (let i = 0; i < tagList.length; i++) {
             this.options.push(tagList[i].description);
-            console.log(this.options);
           }
           },
         error: (apiError: ApiError) => {

@@ -11,22 +11,18 @@ import {ProfileManagementService} from '../../Services/profile-management.servic
 })
 export class ArticlePreviewComponent {
   @Input() SearchTask: SearchTaskViewStoreModel;
+  @Input() Profiles: ProfileStoreModel[];
   sprintList: string[] = ['23', '24'];
-  public Profiles: ProfileStoreModel[] = [];
-  constructor( private profileManagementService: ProfileManagementService) {
-    this.GetProfiles();
-  }
 
-
-
-  private async GetProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-  }
+  constructor( private profileManagementService: ProfileManagementService) {}
   public GetProfileName(profileId: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.profileId === profileId);
-    });
-    return profile[0] === undefined ? profileId : profile[0].name;
+   let profile = [];
+    if (this.Profiles !== undefined) {
+     profile = this.Profiles.filter(function (value) {
+       return (value.profileId === profileId);
+     });
+   }
+   return profile[0] === undefined ? profileId : profile[0].name;
   }
 }
 

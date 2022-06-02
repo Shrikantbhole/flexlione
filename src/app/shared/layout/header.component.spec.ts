@@ -1,5 +1,5 @@
 
-import {mockProfileModel} from '../../Models/Mocks/mockProfile.model';
+import {mockProfile} from '../../Models/Mocks/mockProfile';
 import {asyncScheduler, Observable} from 'rxjs';
 import {observeOn} from 'rxjs/operators';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
@@ -32,7 +32,7 @@ class FakeRouterLink { // Not sure abt the error
 // Using Schedulers to create fake async function
 const mockUserService = {
   currentUser : new Observable((observer) => {
-    observer.next(mockProfileModel);
+    observer.next(mockProfile);
   }).pipe(
     observeOn(asyncScheduler)
   )
@@ -92,7 +92,7 @@ describe('HeaderComponent', () => {
 
     tick(); // Note: if you remove this then the test would run in synchronous mode and current user will remain undefined
     fixture.detectChanges();
-    expect(headerComponent.currentUser.name).toEqual(mockProfileModel.name);
+    expect(headerComponent.currentUser.name).toEqual(mockProfile.name);
   }));
   it('navigates to home page when home link is clicked', fakeAsync(() => {
     const fixture = TestBed.createComponent(HeaderComponent);

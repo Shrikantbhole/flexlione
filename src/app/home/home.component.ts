@@ -55,14 +55,9 @@ export class HomeComponent implements OnInit {
     this.searchManagementService.getTaskSearchList(query)
       .subscribe({
         next: (taskList) => {
-          console.log(taskList);
           this.store.dispatch(new TaskActions.RemoveSearchTask());
-          for ( let i = 0; i < taskList.length; i++) {
-            console.log('Date ' + new Date(taskList[i].deadline).getFullYear());
-            // Add Search result in Store
-            this.store.dispatch(new TaskActions.AddSearchTask(taskList[i]));
-          }
-        },
+          this.store.dispatch(new TaskActions.AddSearchTask(taskList));
+          },
         error: (apiError: ApiError) => {
           this.messageBoxService.info('Error: TaskModel not updated .', apiError.title, apiError.detail);
         }

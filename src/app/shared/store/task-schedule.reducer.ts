@@ -16,21 +16,22 @@ export function TaskScheduleReducer(state: TaskScheduleModel[] = [], action: Tas
 
   // What have we done in the return statement?
   // ...state,X is a method to push X into array state
-
-  console.log(state);
   switch ( action.type) {
-    case TaskActions.ADD_TASK_SCHEDULE:
-      console.log(action.payload);
-      console.log(state);
-      return [...state, action.payload];
+    case TaskActions.ADD_ALL_TASK_SCHEDULE:
+      const newStatePostAddingAllTask = action.payload;
+      console.log(newStatePostAddingAllTask);
+      return newStatePostAddingAllTask;
       case TaskActions.REMOVE_ALL_TASK_SCHEDULE:
-        const newState1 = [];
-        return newState1;
+        const newStatePostRemovingAllTask = [];
+        return newStatePostRemovingAllTask;
         case TaskActions.REMOVE_TASK_SCHEDULE:
-          let newState = [];
-          newState = state.filter(function (value) {return (value.taskScheduleId !== action.payload);
+          let newStatePostRemovingTask = [];
+          newStatePostRemovingTask = state.filter(function (value) {return (value.taskScheduleId !== action.payload);
           });
-          return newState;
+          return newStatePostRemovingTask;
+          case TaskActions.ADD_TASK_SCHEDULE:
+            console.log(action.payload);
+            return [...state, action.payload];
           default:
             return state;
   }

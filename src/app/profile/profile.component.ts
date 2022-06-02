@@ -56,21 +56,18 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
    ngOnInit() {
     // Store TaskModel Dump in @ngrx/Store
-    this.route.data.subscribe(
+     this.route.data.subscribe(
       (data: { profile: SearchTaskViewStoreModel[] }) => {
-        this.store.dispatch(new TaskActions.RemoveSearchTask()); // Clear Old Store Dump
-        for ( let i = 0; i < data.profile.length; i++) {
-          // Add Task Search result in Store
-          this.store.dispatch(new TaskActions.AddSearchTask(data.profile[i]));
-        }
-         this.parentForm.controls['assignedTo'].setValue(
+          this.store.dispatch(new TaskActions.RemoveSearchTask()); // Clear Old Store Dump
+          this.store.dispatch(new TaskActions.AddSearchTask(data.profile));
+          this.parentForm.controls['assignedTo'].setValue(
             this.GetProfileName(this.profileId)
         );
          this.profileName = this.GetProfileName(this.profileId);
         this.parentForm.controls['assignedTo'].disable();
-         }
+      }
     );
-  }
+   }
   // Fetch Task Schedules , bind to TaskScheduleList and store in Store Module
   private getAsyncTaskSchedules(profileId: string, month: number, year: number): void {
     this.taskScheduleManagementService.getTaskScheduleByProfileId(profileId, month, year)
@@ -81,11 +78,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
            return new Date(value.date).getDate() === new Date().getDate();
          });
          this.store.dispatch(new TaskScheduleActions.RemoveAllTaskSchedule()) ;
-         for ( let i = 0; i < taskScheduleList.length; i++) {
-            // Add Task Schedules in Store
-            this.store.dispatch(new TaskScheduleActions.AddTaskSchedule(taskScheduleList[i]));
-          }
-        },
+         this.store.dispatch(new TaskScheduleActions.AddAllTaskSchedule(taskScheduleList));
+         },
         error: () => {}
       });
   }
@@ -138,19 +132,18 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.togglePlanner = 'summary';
   }
   ngAfterViewInit(): void {
-
-    this.userService.currentUser.subscribe(
+     this.userService.currentUser.subscribe(
       (userData) => {
         this.profileId = userData.profileId;
         this.profileName = userData.name;
       }
     );
+
     // Fetch Sprint list
     this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
     // This component will handle storing of task schedules and
     // send relevant schedules to calendar component
     this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
-
     this.profileManagementService.getAllProfiles()
        .subscribe({
          next : (profiles) => {
@@ -184,7 +177,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       },
       error: () => {}
     });
-  }
+   }
 
   // Update Task Summary Id in case of new task summary Id
   private updateTaskSchedule(taskScheduleId: string) {

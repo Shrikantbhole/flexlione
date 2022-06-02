@@ -16,13 +16,11 @@ export function SearchTaskReducer(state: SearchTaskViewStoreModel[] = [], action
 
   // What have we done in the return statement?
   // ...state,X is a method to push X into array state
-
-  console.log(state);
   switch ( action.type) {
     case TaskActions.ADD_SEARCH_TASK:
-      console.log(action.payload);
-      console.log(state);
-      return [...state, action.payload];
+      const newAddState = action.payload;
+      console.log(newAddState);
+      return newAddState;
     case TaskActions.REMOVE_SEARCH_TASK:
       const newState = [];
       return newState;

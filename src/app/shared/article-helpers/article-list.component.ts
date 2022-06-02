@@ -11,6 +11,8 @@ import {SearchManagementService} from '../../Services/search-management.service'
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
+import {ProfileStoreModel} from '../store/interfaces/profile-store.model';
+import {ProfileManagementService} from '../../Services/profile-management.service';
 @Component({
   selector: 'app-article-list',
   styleUrls: ['article-list.component.css'],
@@ -22,6 +24,7 @@ export class ArticleListComponent {
   loading = false;
   currentPage = 1;
   totalPages: Array<number> = [1];
+  Profiles: ProfileStoreModel[] = [];
   @Input() limit: number;
   @Input()
   set config(config: ArticleListConfig) {
@@ -32,7 +35,8 @@ export class ArticleListComponent {
     private taskManagementService: TaskManagementService,
     private messageBoxService: MessageBoxService,
     private searchManagementService: SearchManagementService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private profileManagementService: ProfileManagementService
   ) {
      store.select('searchTaskView').subscribe(
       {
@@ -43,6 +47,7 @@ export class ArticleListComponent {
           },
         error: () => {}
       });
+     this.GetProfiles();
   }
 
   private getTime(date?: Date) {
@@ -53,7 +58,9 @@ export class ArticleListComponent {
     this.runQuery();
   }
 
-  runQuery() {
-    console.log('hi');
+  runQuery() {}
+
+  private async GetProfiles() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
   }
 }
