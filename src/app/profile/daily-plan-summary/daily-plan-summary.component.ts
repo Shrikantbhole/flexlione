@@ -22,10 +22,12 @@ export class DailyPlanSummaryComponent implements  OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   TaskScheduleList: TaskScheduleModel[] = [];
   public TaskSummaryModel: TaskSummaryModel = new TaskSummaryModel();
+  private sortedTaskScheduleList: TaskScheduleModel[];
   @Input()
   set config(taskScheduleList: TaskScheduleModel[]) {
     this.TaskScheduleList = taskScheduleList;
     console.log(this.TaskScheduleList);
+    this.sortedTaskScheduleList = this.TaskScheduleList.sort((a, b) => a.startHour - b.startHour);
   }
   constructor(
     private searchManagementService: DailyPlanSummaryService,

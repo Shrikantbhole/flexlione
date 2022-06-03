@@ -13,6 +13,8 @@ import {DatePipe} from '@angular/common';
 import {map, startWith} from 'rxjs/operators';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {ProfileModel} from '../profile/models/profile.model';
+import {TimeStampModel} from '../profile/models/time-stamp.model';
+import {Timestamp} from 'rxjs/internal-compatibility';
 
 
 
@@ -34,7 +36,8 @@ export class StandUpComponent implements OnInit {
   currentUser: ProfileModel;
   totalExpectedHr = 0;
   totalActualHr = 0;
-
+startStamp: TimeStampModel;
+stopStamp: TimeStampModel;
   constructor(
     private articlesService: ArticlesService,
     private route: ActivatedRoute,
@@ -104,4 +107,22 @@ export class StandUpComponent implements OnInit {
     this.Name = this.GetProfileName(this.profileId);
     this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
+
+  onClickStart(taskSummary) {
+    this.startStamp = {profileId : this.profileId,
+      taskSummaryId : taskSummary.taskSummaryId,
+      taskScheduleId : taskSummary.taskScheduleId,
+      stamp: new Date().toLocaleString(),
+      action : 'start'};
+    console.log(this.startStamp);
   }
+
+  onClickStop(taskSummary) {
+    this.stopStamp = {profileId : this.profileId,
+      taskSummaryId : taskSummary.taskSummaryId,
+      taskScheduleId : taskSummary.taskScheduleId,
+      stamp: new Date().toLocaleString(),
+      action : 'stop'};
+    console.log(this.stopStamp);
+  }
+}
