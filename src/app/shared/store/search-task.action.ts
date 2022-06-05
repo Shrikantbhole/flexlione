@@ -19,7 +19,7 @@ export const REMOVE_SEARCH_TASK    = '[TASK] Remove';
 export class AddSearchTask implements Action {
   readonly type = ADD_SEARCH_TASK;
 
-  constructor(public payload: SearchTaskViewStoreModel) {}
+  constructor(public payload: SearchTaskViewStoreModel[]) {}
 }
 
 export class RemoveSearchTask implements Action {

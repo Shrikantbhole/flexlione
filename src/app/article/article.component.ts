@@ -37,6 +37,20 @@ import {TaskFormComponent} from '../shared/task-form/task-form.component';
   styleUrls: ['article.component.css']
 })
 export class ArticleComponent implements OnInit {
+
+  task: TaskModel;
+  currentUser: ProfileModel;
+  canModify: boolean;
+  comments: TaskComment[] = [];
+  commentControl = new FormControl();
+  commentFormErrors = {};
+  isSubmitting = false;
+  isDeleting = false;
+  selectedCheckListItem = '';
+  TaskForm: FormGroup = CreateTaskForm();
+  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
+  Profiles: ProfileStoreModel[];
+
   constructor(
     private dialog: MatDialog,
     private route: ActivatedRoute,
@@ -64,6 +78,7 @@ export class ArticleComponent implements OnInit {
       }
     );   }
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
+  /*
   task: TaskModel;
   currentUser: ProfileModel;
   canModify: boolean;
@@ -76,6 +91,8 @@ export class ArticleComponent implements OnInit {
   TaskForm: FormGroup = CreateTaskForm();
   TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   Profiles: ProfileStoreModel[];
+   */
+
   text = '';
 
   async ngOnInit() {

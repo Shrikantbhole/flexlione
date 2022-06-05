@@ -6,6 +6,7 @@ import {CreateTaskStoreModel} from '../store/interfaces/create-task-store.model'
 import {AppState} from '../../app.state';
 import {Store} from '@ngrx/store';
 import {ProfileModel} from '../../profile/models/profile.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-layout-header',
@@ -14,7 +15,7 @@ import {ProfileModel} from '../../profile/models/profile.model';
 export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) {}
 
   currentUser: ProfileModel;

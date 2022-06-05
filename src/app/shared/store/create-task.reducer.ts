@@ -12,12 +12,10 @@ export function CreateTaskReducer(state: CreateTaskStoreModel[], action: TaskAct
 
   // What have we done in the return statement?
   // ...state,X is a method to push X into array state
-
-  console.log(state);
   switch (action.type) {
     case TaskActions.ADD_CREATE_TASK:
       console.log(action.payload);
-      return [action.payload];
+      return [...state, action.payload];
     case TaskActions.REMOVE_CREATE_TASK:
       const newState = [];
       return newState;

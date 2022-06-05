@@ -18,24 +18,26 @@ import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
 export class ArticlePreviewComponent implements OnChanges {
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() SearchTask: SearchTaskViewStoreModel;
+  @Input() Profiles: ProfileStoreModel[];
   sprintList: string[] = ['23', '24'];
-  public Profiles: ProfileStoreModel[] = [];
+
+ // public Profiles: ProfileStoreModel[] = [];
   public TaskHierarchy: TaskHierarchyModel;
   constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
   ) {
-    this.GetProfiles();
+   // this.GetProfiles();
   }
 
 
-
-  private async GetProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-  }
+ // constructor( private profileManagementService: ProfileManagementService) {}
   public GetProfileName(profileId: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.profileId === profileId);
-    });
-    return profile[0] === undefined ? profileId : profile[0].name;
+   let profile = [];
+    if (this.Profiles !== undefined) {
+     profile = this.Profiles.filter(function (value) {
+       return (value.profileId === profileId);
+     });
+   }
+   return profile[0] === undefined ? profileId : profile[0].name;
   }
 
   onUpdateOrScheduleNewTask(task): void {

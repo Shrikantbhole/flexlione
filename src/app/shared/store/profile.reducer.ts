@@ -17,8 +17,9 @@ export function ProfileReducer(state: ProfileModel[] = [], action: ProfileAction
   console.log(state);
   switch (action.type) {
     case ProfileAction.ADD_Profile:
-      console.log(action.payload);
-      return [...state, action.payload];
+      const newAddState = action.payload;
+      console.log(newAddState);
+      return newAddState;
     case ProfileAction.REMOVE_Profile:
       const newState = [];
       return newState;

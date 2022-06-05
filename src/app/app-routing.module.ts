@@ -1,8 +1,8 @@
 
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import {Routes, RouterModule, PreloadAllModules, Router} from '@angular/router';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
@@ -38,9 +38,14 @@ const routes: Routes = [
     // preload all modules; optionally we could
     // implement a custom preloading strategy for just some
     // of the modules (PRs welcome 😉)
-    preloadingStrategy: PreloadAllModules,
+   // preloadingStrategy: PreloadAllModules,
     relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+  constructor(
+    // public  router: Router,
+    // public  location: Location
+  ) {}
+}

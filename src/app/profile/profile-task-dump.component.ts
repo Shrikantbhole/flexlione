@@ -28,7 +28,6 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
       .subscribe({
         next: (SearchTaskView) => {
           this.results = SearchTaskView.filter(function (value) {
-            console.log('repeat');
             return  value.assignedTo === profileId;
           });
           this.sortedResult = this.results.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
