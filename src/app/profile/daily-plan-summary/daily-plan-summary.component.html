@@ -17,7 +17,7 @@
     <h5>Task Summary for date: {{TaskScheduleList[0].date}}</h5>
     <br/>
     <mat-accordion>
-      <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
+      <mat-expansion-panel  *ngFor="let taskSchedule of sortedTaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
 
                             [ngClass]= " taskSchedule.taskSummary !== null ?

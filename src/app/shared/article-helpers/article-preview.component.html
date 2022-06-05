@@ -42,9 +42,7 @@
     <ng-content></ng-content>
     <p class="master"> </p>
 
-<h5>Parent Task ID - {{SearchTask.parentTaskId}} </h5>
-
-
+<h6>Task Hierarchy-  {{TaskHierarchy.childrenTaskIdList}}</h6>
 
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
       <h6>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h6>

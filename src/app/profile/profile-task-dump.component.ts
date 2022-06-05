@@ -58,6 +58,4 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-
-
 }

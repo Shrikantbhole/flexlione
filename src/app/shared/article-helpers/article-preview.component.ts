@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {SearchTaskViewStoreModel} from '../store/interfaces/search-task-view-store.model';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
@@ -8,17 +8,21 @@ import {TaskModel} from '../../article/models/task-detail.model';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddOrEditScheduleDialogComponent} from '../../profile/schedule/add-or-edit-schedule-dialog.component';
 import {TaskScheduleModel} from '../../profile/models/task-schedule.model';
+import {TaskHierarchyManagementService} from '../../Services/task-hierarchy-management.service';
+import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
 
 @Component({
   selector: 'app-article-preview',
   templateUrl: './article-preview.component.html'
 })
-export class ArticlePreviewComponent {
+export class ArticlePreviewComponent implements OnChanges {
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() SearchTask: SearchTaskViewStoreModel;
   sprintList: string[] = ['23', '24'];
   public Profiles: ProfileStoreModel[] = [];
-  constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog) {
+  public TaskHierarchy: TaskHierarchyModel;
+  constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
+  ) {
     this.GetProfiles();
   }
 
@@ -50,5 +54,12 @@ export class ArticlePreviewComponent {
       error: () => {}
     });
   }
-}
 
+  ngOnChanges(): void {
+    this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.SearchTask.taskId, '', this.onSuccess);
+
+  }
+  public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
+    this.TaskHierarchy = taskHierarchy;
+  }
+}

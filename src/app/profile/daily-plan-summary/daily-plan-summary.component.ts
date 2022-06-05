@@ -22,7 +22,7 @@ export class DailyPlanSummaryComponent implements  OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   TaskScheduleList: TaskScheduleModel[] = [];
   public TaskSummaryModel: TaskSummaryModel = new TaskSummaryModel();
-  private sortedTaskScheduleList: TaskScheduleModel[];
+  public sortedTaskScheduleList: TaskScheduleModel[];
   @Input()
   set config(taskScheduleList: TaskScheduleModel[]) {
     this.TaskScheduleList = taskScheduleList;
