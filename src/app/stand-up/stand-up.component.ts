@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Article, ArticlesService, UserService} from '../core';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
 import {DailyPlanSummaryService} from '../Services/daily-plan-summary.service';
-import {TaskSummaryModel} from '../profile/models/task-summary.model';
+import {CreateTaskSummaryForm, TaskSummaryModel} from '../profile/models/task-summary.model';
 import {ApiError} from '../settings/api-error.model';
 import {MessageBoxService} from '../settings/message-box.service';
 import {ProfileManagementService} from '../Services/profile-management.service';
@@ -15,6 +15,7 @@ import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {ProfileModel} from '../profile/models/profile.model';
 import {TimeStampModel} from '../profile/models/time-stamp.model';
 import {Timestamp} from 'rxjs/internal-compatibility';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 
@@ -25,6 +26,18 @@ import {Timestamp} from 'rxjs/internal-compatibility';
   styleUrls: ['stand-up.component.css']
 })
 export class StandUpComponent implements OnInit {
+  constructor(
+    private articlesService: ArticlesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private dailyPlanSummaryService: DailyPlanSummaryService,
+    private  messageBoxService: MessageBoxService,
+    private  profileManagementService: ProfileManagementService,
+    private datePipe: DatePipe,
+    private userService: UserService,
+    private  snackBarService: MatSnackBar,
+  ) {
+  }
   public TaskSummaryList: TaskSummaryModel[] = [];
   public Profiles: ProfileStoreModel[] = [];
   options: string[] = [];
@@ -38,17 +51,17 @@ export class StandUpComponent implements OnInit {
   totalActualHr = 0;
 startStamp: TimeStampModel;
 stopStamp: TimeStampModel;
-  constructor(
-    private articlesService: ArticlesService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dailyPlanSummaryService: DailyPlanSummaryService,
-    private  messageBoxService: MessageBoxService,
-    private  profileManagementService: ProfileManagementService,
-    private datePipe: DatePipe,
-    private userService: UserService,
-  ) {
+/*
+  onClickStart(taskSummary) {
+    this.startStamp = {profileId : this.profileId,
+      taskSummaryId : taskSummary.taskSummaryId,
+      taskScheduleId : taskSummary.taskScheduleId,
+      stamp: new Date().toLocaleString(),
+      action : 'start'};
+    console.log(this.startStamp);
   }
+*/
+  newTaskSummary: FormGroup = CreateTaskSummaryForm();
 
   async ngOnInit() {
     this.userService.currentUser.subscribe(
@@ -107,22 +120,8 @@ stopStamp: TimeStampModel;
     this.Name = this.GetProfileName(this.profileId);
     this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
-
-  onClickStart(taskSummary) {
-    this.startStamp = {profileId : this.profileId,
-      taskSummaryId : taskSummary.taskSummaryId,
-      taskScheduleId : taskSummary.taskScheduleId,
-      stamp: new Date().toLocaleString(),
-      action : 'start'};
-    console.log(this.startStamp);
+  onClickStart() {
   }
-
-  onClickStop(taskSummary) {
-    this.stopStamp = {profileId : this.profileId,
-      taskSummaryId : taskSummary.taskSummaryId,
-      taskScheduleId : taskSummary.taskScheduleId,
-      stamp: new Date().toLocaleString(),
-      action : 'stop'};
-    console.log(this.stopStamp);
+  onClickStop() {
   }
 }

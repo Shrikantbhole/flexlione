@@ -21,27 +21,6 @@ import {Store} from '@ngrx/store';
 })
 export class TasksL1Component {
 
-  // members needed for data-binding with html
-
-  public l1TaskId: string;
-  public l2TaskId: string;
-  public l3TaskId: string;
-  public selectedTaskId: string;
-  public num: Number;
-
-
-
-
-
-  // services
-
-  private dialog: MatDialog;
-  private messageBoxService: MessageBoxService;
-  private snackBarService: MatSnackBar;
-  private taskManagementService: TaskManagementService;
-  private inUse: String;
-  public l1Task: TaskModel;
-
 
 
   constructor(dialog: MatDialog,
@@ -64,7 +43,28 @@ export class TasksL1Component {
       }
     });
   }
-  currentDate: Date = new Date();
+
+  // members needed for data-binding with html
+
+  public l1TaskId: string;
+  public l2TaskId: string;
+  public l3TaskId: string;
+  public selectedTaskId: string;
+  public num: Number;
+
+
+
+
+
+  // services
+
+  private dialog: MatDialog;
+  private messageBoxService: MessageBoxService;
+  private snackBarService: MatSnackBar;
+  private taskManagementService: TaskManagementService;
+  private inUse: String;
+  public l1Task: TaskModel;
+  currentDate = new Date().toISOString();
   onRowClick(taskId: string): void {
     this.selectedTaskId = taskId;
     this.l2TaskId = taskId;
@@ -176,5 +176,6 @@ export class TasksL1Component {
     );
  }
 }
+
 
 

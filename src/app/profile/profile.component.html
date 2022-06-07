@@ -41,11 +41,11 @@
   <div class = "container">
     <div class="row">
 
-      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'search' && togglePlanner !== 'day'">
+      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'search' ">
         <app-home-search-form [form] ="parentForm" ></app-home-search-form>
       </div>
 
-      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'search' ">
+      <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'search' && togglePlanner !== 'day'">
         <app-profile-task-dump [options]= "getSprintIds()"
                                [profile] = "profileId"></app-profile-task-dump>
       </div>

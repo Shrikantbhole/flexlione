@@ -15,15 +15,13 @@
   }
   .app-class .mat-list-item {
     height: auto;}
-<<<<<<< HEAD
+
   .unscheduled {background-color: white}
   .scheduled {background-color: #D9D7F1}
   .ongoing {background-color: #FFFDDE}
   .completed{background-color: #E7FBBE }
   .paused {background-color: gray}
   .critical {background-color: #FFCBCB}
-=======
->>>>>>> main
 
 </style>
 
@@ -55,7 +53,7 @@
       <mat-divider></mat-divider>
       <mat-list-item *ngFor="let task of l2Task.children"
                      (click)="onRowClick(task.taskId)"
-                     [ngClass]="{ 'critical' : task.deadline < this.currentDate,
+                     [ngClass]="{ 'critical' : task.deadline.toString() < this.currentDate,
                                     'unscheduled': task.status === '',
                                     'scheduled' : task.status === 'yettostart',
                                     'ongoing' : task.status === 'ongoing',

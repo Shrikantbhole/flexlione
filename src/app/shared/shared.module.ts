@@ -29,8 +29,7 @@ import {MatTreeModule} from '@angular/material/tree';
         MatAutocompleteModule,
         MatSelectModule,
         MatFormFieldModule,
-        MatInputModule,
-        MatTreeModule
+        MatInputModule
     ],
   declarations: [
     ArticleListComponent,

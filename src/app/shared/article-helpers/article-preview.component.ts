@@ -16,6 +16,10 @@ import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
   templateUrl: './article-preview.component.html'
 })
 export class ArticlePreviewComponent implements OnChanges {
+  constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
+  ) {
+   // this.GetProfiles();
+  }
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() SearchTask: SearchTaskViewStoreModel;
   @Input() Profiles: ProfileStoreModel[];
@@ -23,10 +27,7 @@ export class ArticlePreviewComponent implements OnChanges {
 
  // public Profiles: ProfileStoreModel[] = [];
   public TaskHierarchy: TaskHierarchyModel;
-  constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
-  ) {
-   // this.GetProfiles();
-  }
+  currentDate = new Date().toISOString();
 
 
  // constructor( private profileManagementService: ProfileManagementService) {}

@@ -67,7 +67,7 @@
         <mat-divider></mat-divider>
         <mat-list-item *ngFor="let Task of childTaskList"
                        (click)="onRowClick(Task.taskId)"
-                       [ngClass]="{ 'critical' : Task.deadline < this.currentDate,
+                       [ngClass]="{ 'critical' : Task.deadline.toString() < this.currentDate,
                                     'unscheduled': Task.status === '',
                                     'scheduled' : Task.status === 'yettostart',
                                     'ongoing' : Task.status === 'ongoing',

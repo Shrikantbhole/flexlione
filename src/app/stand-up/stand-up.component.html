@@ -10,7 +10,9 @@
     text-align: center;
   }
 
-.planned{color: green}
+.planned{
+  visibility: hidden;
+  }
 .unplanned {color: red}
 
 </style>
@@ -52,16 +54,16 @@
 <table class='table' *ngIf="TaskSummaryList">
   <thead>
   <tr>
-    <th class = "td-center">TSKID</th>
-    <th></th>
-    <th class = "td-center">SMRID</th>
+    <th class = "td-center">SUMR</th>
+
+
     <th>Description</th>
     <th>Expected Output</th>
     <th>Exp </th>
     <th>Actual Output</th>
+    <th>True</th>
+    <th>Stat</th>
     <th>Act</th>
-    <th>Status</th>
-    <th>Action</th>
 
 
   </tr>
@@ -71,11 +73,8 @@
 
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
-    <td class = "td-center"> <a [routerLink]="['/article/',taskSummary.taskId ]">
-      {{taskSummary.taskId}}
-    </a></td>
-<td  >  <mat-icon [ngClass]="{'planned':taskSummary.task.status === 'completed', 'unplanned' :taskSummary.task.status === 'yettostart'}">schedule</mat-icon></td>
-    <td class = "td-center">{{taskSummary.taskSummaryId}}</td>
+    <td class = "td-center"><span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{taskSummary.taskSummaryId}}</a> </span>{{'('+ taskSummary.taskId+')'}}
+    <span> <mat-icon [ngClass]="{'planned':taskSummary.task.status === 'ongoing', 'unplanned' :taskSummary.task.status === 'completed'}">schedule</mat-icon></span></td>
 
     <td>{{ taskSummary.description }} </td>
     <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
@@ -102,8 +101,8 @@
   </tbody>
   <tfoot>
   <tr>
-    <td></td>
-    <td></td>
+
+
     <td></td>
     <td></td>
     <td><b>Hrs</b></td>

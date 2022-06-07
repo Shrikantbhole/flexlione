@@ -19,13 +19,6 @@ import {ProfileManagementService} from '../../Services/profile-management.servic
   templateUrl: './article-list.component.html'
 })
 export class ArticleListComponent {
-  searchTaskViewModel: Observable<SearchTaskViewStoreModel[]>;
-  results: SearchTaskViewStoreModel[];
-  loading = false;
-  currentPage = 1;
-  totalPages: Array<number> = [1];
-  Profiles: ProfileStoreModel[] = [];
-  @Input() limit: number;
   @Input()
   set config(config: ArticleListConfig) {
     this.runQuery();
@@ -49,6 +42,14 @@ export class ArticleListComponent {
       });
      this.GetProfiles();
   }
+  searchTaskViewModel: Observable<SearchTaskViewStoreModel[]>;
+  results: SearchTaskViewStoreModel[];
+  loading = false;
+  currentPage = 1;
+  totalPages: Array<number> = [1];
+  Profiles: ProfileStoreModel[] = [];
+  @Input() limit: number;
+  currentDate = new Date().toISOString();
 
   private getTime(date?: Date) {
     return date != null ? date.getTime() : 0;
