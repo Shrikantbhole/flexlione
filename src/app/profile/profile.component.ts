@@ -30,7 +30,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   togglePlanner = 'sprint';
   TaskScheduleList: TaskScheduleModel[] = [];
   SelectedTaskScheduleList: TaskScheduleModel[] = []; // Shortlisted for seeing detail detail summary
-  sprintUpdateCounter = 0;
   sprintList: SprintModel[] = [];
   profileId ;
   profileName;
