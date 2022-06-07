@@ -1,6 +1,7 @@
 import DateTimeFormat = Intl.DateTimeFormat;
 import {FormControl, FormGroup} from '@angular/forms';
 import {Tag} from '@angular/compiler/src/i18n/serializers/xml_helper';
+import {TaskModel} from '../../article/models/task-detail.model';
 
 export class TaskSummaryModel {
   taskSummaryId: string;
@@ -12,6 +13,9 @@ export class TaskSummaryModel {
   actualOutput?: string;
   actualHour?: number;
   date?: string;
+  task: TaskModel;
+  timeStamp: string;
+  action: string;
 }
 
 export function CreateTaskSummaryForm(): FormGroup {
@@ -25,6 +29,8 @@ export function CreateTaskSummaryForm(): FormGroup {
     'actualOutput': new FormControl(''),
     'actualHours': new FormControl(''),
     'date': new FormControl(''),
+    'timeStamp': new FormControl(''),
+    'action': new FormControl('')
   });
 }
 

@@ -29,7 +29,7 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
   filteredOptions: Observable<string[]>;
   public AddTag = '';
   UserList: string[] = [];
-  TaskIdList: string[] = [];
+  TaskIdList: {'taskId': string, 'description': string}[] = [];
   StatusList: string[] = getStatusList();
   initialValue = true;
 
@@ -121,6 +121,9 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
     if (newSearch.getRawValue().taskId !== '' && newSearch.getRawValue().taskId !== undefined) {
       search.TaskId = newSearch.getRawValue().taskId;
     }
+    if (newSearch.getRawValue().createdAt !== '' && newSearch.getRawValue().createdAt !== undefined) {
+      search.CreatedAt = this.datePipe.transform(newSearch.getRawValue().createdAt, 'yyyy-MM-dd');
+    }
     return search;
   }
 
@@ -158,7 +161,7 @@ export class SearchFormComponent implements  OnInit, AfterViewInit  {
   ngAfterViewInit(): void {
     this.taskManagementService.getTaskIdList('', this.getTaskIdList);
   }
-  getTaskIdList = (taskIdList: string[]) => { // Assigning parent task id from all existing task
+  getTaskIdList = (taskIdList: {'taskId': string, 'description': string}[]) => { // Assigning parent task id from all existing task
     this.TaskIdList = taskIdList;
   }
 

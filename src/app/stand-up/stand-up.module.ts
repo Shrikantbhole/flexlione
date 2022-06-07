@@ -8,16 +8,19 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
-  imports: [SharedModule,
-    StandUpRoutingModule,
-    ArticleModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    imports: [SharedModule,
+        StandUpRoutingModule,
+        ArticleModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule, MatBadgeModule, MatIconModule, MatButtonToggleModule
+    ],
   declarations: [StandUpComponent],
   providers: [StandUpResolver]
 })

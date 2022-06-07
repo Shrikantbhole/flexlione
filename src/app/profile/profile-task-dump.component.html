@@ -2,10 +2,16 @@
 <app-article-preview
   *ngFor="let task of sortedResult"
   (click)="onRowClick(task.taskId)"
-  [SearchTask] ="task">
+  [SearchTask] ="task"
+
+>
 
   <app-auto-search class="pull-xs-right"
+
                    [options]="this.options"
                    [description]= "'Add to Sprint'"
                    (newItemEvent) = "addTaskToSprint($event)"></app-auto-search>
+
+
 </app-article-preview>
+

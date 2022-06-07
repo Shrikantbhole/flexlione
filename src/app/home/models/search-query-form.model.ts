@@ -10,6 +10,7 @@ export class  SearchQuery {
   Status?: string[];
   IncludeRemoved?: boolean;
   TaskId: string;
+  CreatedAt?: string;
 }
 
 export function SearchQueryForm(): FormGroup {
@@ -22,6 +23,7 @@ export function SearchQueryForm(): FormGroup {
     'status': new FormControl(''),
     'includeRemoved': new FormControl(''),
     'taskId': new FormControl(''),
+    'createdAt': new FormControl(''),
   });
 }
 

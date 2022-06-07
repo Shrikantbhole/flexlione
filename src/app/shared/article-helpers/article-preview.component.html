@@ -2,17 +2,39 @@
   .master {
     margin-right:5%
   }
+  .mat-expansion-panel-header-description {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .unscheduled {background-color: white}
+  .scheduled {background-color: #D9D7F1}
+  .ongoing {background-color: #FFFDDE}
+  .completed{background-color: #E7FBBE }
+  .paused {background-color: gray}
+  .critical {background-color: #FFCBCB}
+
 </style>
 
 <div class="author" xmlns="http://www.w3.org/1999/html">
 
 
 <mat-accordion>
-  <mat-expansion-panel >
+  <mat-expansion-panel [ngClass]="{
+                                    'critical' : SearchTask.deadline.toString() < this.currentDate,
+                                    'unscheduled': SearchTask.status === '',
+                                    'scheduled' : SearchTask.status === 'yettostart',
+                                    'ongoing' : SearchTask.status === 'ongoing',
+                                    'completed' : SearchTask.status === 'completed',
+                                    'paused' : SearchTask.status === 'onhold'
 
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <a [routerLink]="['/article/',SearchTask.taskId ]">
+                                     }">
+
+    <mat-expansion-panel-header >
+      <mat-panel-title
+        >
+        <a
+          [routerLink]="['/article/',SearchTask.taskId ]">
           {{SearchTask.taskId}} - {{SearchTask.description|slice:0:80 }}{{1 == 1 ? '...' : ''}}
         </a>
 
@@ -25,19 +47,21 @@
       </mat-panel-title>
       <mat-panel-description>
       </mat-panel-description>
+
+
+    <mat-panel-description>
+
+      <button  class="pull-xs-right btn btn-sm btn-outline-danger" (click)= "onUpdateOrScheduleNewTask(SearchTask)">
+        <i class="icon ion-star"></i>
+      </button>
+
+    </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-content></ng-content>
     <p class="master"> </p>
-    <a *ngFor="let sprint of sprintList"
-       [routerLink]="['/article/',sprint ]">
-      {{sprint}} >
-    </a>
-    <div class="info">
-      <a class="author"
-         [routerLink]="['/profile/',SearchTask.assignedTo ]">
-       {{GetProfileName(SearchTask.assignedTo)}}
-      </a>
-    </div>
+
+<h6 *ngIf="TaskHierarchy">Task Hierarchy- {{TaskHierarchy.childrenTaskIdList}}</h6>
+
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
       <h6>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h6>
       <h6>Status:  {{ SearchTask.status }}</h6>

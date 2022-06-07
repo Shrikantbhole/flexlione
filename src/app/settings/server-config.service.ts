@@ -38,7 +38,6 @@ export class ServerConfigService {
   getBaseUrl(): string {
 
     const currentUrl = window.location.href;
-
     if (currentUrl.includes('localhost')) {
       this.base_url = 'https://ptl-api-dev.flexli.in/flexlione-webapi-alpha/api/v1';
     } else if (currentUrl.includes('beta')) {

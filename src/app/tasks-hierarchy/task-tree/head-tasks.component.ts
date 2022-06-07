@@ -11,6 +11,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import * as TaskActions from '../../shared/store/create-task.action';
 import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
+import {formatDate} from '@angular/common';
 
 
 
@@ -21,19 +22,6 @@ import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-st
   templateUrl: './head-tasks.component.html',
 })
 export class HeadTasksComponent {
-
-  // members needed for data-binding with html
-  public selectedTaskId: string;
-  public data: TaskModel[];
-  public childTaskList: TaskModel[];
-  public Task: TaskModel ;
-
-  // services
-  private dialog: MatDialog;
-  private messageBoxService: MessageBoxService;
-  private snackBarService: MatSnackBar;
-  private taskManagementService: TaskManagementService;
-  private router: Router;
 
 
   constructor(dialog: MatDialog, messageBoxService: MessageBoxService, snackBarService: MatSnackBar,
@@ -51,8 +39,26 @@ export class HeadTasksComponent {
 
   }
 
+  // members needed for data-binding with html
+  public selectedTaskId: string;
+  public data: TaskModel[];
+  public childTaskList: TaskModel[];
+  public Task: TaskModel ;
 
+  // services
+  private dialog: MatDialog;
+  private messageBoxService: MessageBoxService;
+  private snackBarService: MatSnackBar;
+  private taskManagementService: TaskManagementService;
+  private router: Router;
 
+  // Open a dialog box component to capture data about new resource.
+  // It can be argued whether api request should be sent by dialog or the parent
+  // component. The dialog should only send api request. In some cases, server might return
+  // error. In such a case, if dialog is open then user can make changes to data
+  // and send request again.
+
+  currentDate = new Date().toISOString();
 
   loadParentTasks() {
 
@@ -76,14 +82,8 @@ export class HeadTasksComponent {
 
   onRowClick(taskId: string): void {
     this.selectedTaskId = taskId;
-
   }
 
-  // Open a dialog box component to capture data about new resource.
-  // It can be argued whether api request should be sent by dialog or the parent
-  // component. The dialog should only send api request. In some cases, server might return
-  // error. In such a case, if dialog is open then user can make changes to data
-  // and send request again.
   onAddNewTaskButtonClick(): void {
     this.store.dispatch(new TaskActions.RemoveCreateTask());
     const task: CreateTaskStoreModel = {parentTaskId : '0'};
