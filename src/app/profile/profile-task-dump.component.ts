@@ -19,7 +19,6 @@ import {TaskScheduleModel} from './models/task-schedule.model';
 export class ProfileTaskDumpComponent implements AfterViewInit {
   results: SearchTaskViewStoreModel[];
   sortedResult: SearchTaskViewStoreModel[];
-  ProfileId = '';
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() options: string[] ;
   @Input()
@@ -42,7 +41,6 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
     private  snackBarService: MatSnackBar,
     private profileComponent: ProfileComponent,
     private taskManagementService: TaskManagementService,
-    private dialog: MatDialog,
   ) {}
   public onRowClick(taskId: string) {
     this.taskId = taskId;
@@ -55,6 +53,10 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+  }
+
+  addScheduleToCalender(taskSchedule: TaskScheduleModel) {
+    this.newScheduleEvent.emit(taskSchedule);
   }
 
 }

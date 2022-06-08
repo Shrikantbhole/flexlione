@@ -20,7 +20,9 @@
 
 
 <mat-accordion>
-  <mat-expansion-panel [ngClass]="{
+  <mat-expansion-panel
+    (click)= "getTaskHierarchy()"
+    [ngClass]="{
                                     'critical' : SearchTask.deadline.toString() < this.currentDate,
                                     'unscheduled': SearchTask.status === '',
                                     'scheduled' : SearchTask.status === 'yettostart',
@@ -59,8 +61,17 @@
     </mat-expansion-panel-header>
     <ng-content></ng-content>
     <p class="master"> </p>
+    <div  *ngIf="TaskHierarchy">
 
-<h6 *ngIf="TaskHierarchy">Task Hierarchy- {{TaskHierarchy.childrenTaskIdList}}</h6>
+
+      <a
+        *ngFor="let childTaskId of TaskHierarchy.childrenTaskIdList"
+        [routerLink]="['/article',childTaskId]">
+        {{childTaskId}} >
+      </a>
+    </div>
+
+
 
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
       <h6>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h6>

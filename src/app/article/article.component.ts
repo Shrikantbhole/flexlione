@@ -28,7 +28,7 @@ import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 import {ApiError} from '../settings/api-error.model';
 import {ProfileManagementService} from '../Services/profile-management.service';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
-import {TaskFormComponent} from '../shared/task-form/task-form.component';
+
 
 
 @Component({
@@ -40,13 +40,9 @@ export class ArticleComponent implements OnInit {
 
   task: TaskModel;
   currentUser: ProfileModel;
-  canModify: boolean;
   comments: TaskComment[] = [];
   commentControl = new FormControl();
-  commentFormErrors = {};
   isSubmitting = false;
-  isDeleting = false;
-  selectedCheckListItem = '';
   TaskForm: FormGroup = CreateTaskForm();
   TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   Profiles: ProfileStoreModel[];
@@ -77,22 +73,6 @@ export class ArticleComponent implements OnInit {
         this.populateComments();
       }
     );   }
-  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
-  /*
-  task: TaskModel;
-  currentUser: ProfileModel;
-  canModify: boolean;
-  comments: TaskComment[] = [];
-  commentControl = new FormControl();
-  commentFormErrors = {};
-  isSubmitting = false;
-  isDeleting = false;
-  selectedCheckListItem = '';
-  TaskForm: FormGroup = CreateTaskForm();
-  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
-  Profiles: ProfileStoreModel[];
-   */
-
   text = '';
 
   async ngOnInit() {
@@ -145,16 +125,7 @@ export class ArticleComponent implements OnInit {
       this.router.navigateByUrl('/article/' + this.task.parentTaskId);
   }
 
-  deleteArticle() {
-    this.isDeleting = true;
 
-    this.articlesService.destroy(this.task.taskId)
-      .subscribe(
-        success => {
-          this.router.navigateByUrl('/');
-        }
-      );
-  }
 
   populateComments() {
     this.commentManagementService.getCommentsByTaskId(this.task.taskId).subscribe({
@@ -211,7 +182,7 @@ export class ArticleComponent implements OnInit {
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
-        this.newScheduleEvent.emit(taskSchedule);
+        // No Action to be done after tasks schedule added. No need to immediately add to calendar
       },
       error: () => {}
     });

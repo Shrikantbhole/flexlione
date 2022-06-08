@@ -2,6 +2,7 @@
 <app-article-preview
   *ngFor="let task of sortedResult"
   (click)="onRowClick(task.taskId)"
+  (newScheduleEvent) = "addScheduleToCalender($event)"
   [SearchTask] ="task"
 
 >

@@ -20,7 +20,6 @@ import {ProfileManagementService} from '../../Services/profile-management.servic
 export class TaskFormComponent implements OnInit, AfterViewInit {
    UserList: string[] = [];
    StatusList: string[] = getStatusList();
-   newTask: FormGroup;
    @Input() parentForm; // Fetch preloaded details in the form
   public taskIdListForPosition: {'taskId': string, 'description': string}[];
   public taskIdListForParent: {'taskId': string, 'description': string}[];
@@ -56,6 +55,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     this.parentForm.controls['createdBy'].setValue(await this.GetProfileName(
       this.parentForm.getRawValue().createdBy));
     this.parentForm.controls['hrsSpentTillNow'].disable();
+    this.parentForm.controls['createdAt'].disable();
   }
 
   async onClick() {

@@ -47,7 +47,8 @@
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint' && togglePlanner !== 'search' && togglePlanner !== 'day'">
         <app-profile-task-dump [options]= "getSprintIds()"
-                               [profile] = "profileId"></app-profile-task-dump>
+                               [profile] = "profileId"
+                               (newScheduleEvent)="AddNewTaskSchedule($event)"></app-profile-task-dump>
       </div>
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint'">

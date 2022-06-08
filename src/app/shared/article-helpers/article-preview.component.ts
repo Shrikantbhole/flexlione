@@ -15,7 +15,7 @@ import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
   selector: 'app-article-preview',
   templateUrl: './article-preview.component.html'
 })
-export class ArticlePreviewComponent implements OnChanges {
+export class ArticlePreviewComponent {
   constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
   ) {
    // this.GetProfiles();
@@ -23,7 +23,6 @@ export class ArticlePreviewComponent implements OnChanges {
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() SearchTask: SearchTaskViewStoreModel;
   @Input() Profiles: ProfileStoreModel[];
-  sprintList: string[] = ['23', '24'];
 
  // public Profiles: ProfileStoreModel[] = [];
   public TaskHierarchy: TaskHierarchyModel;
@@ -58,11 +57,12 @@ export class ArticlePreviewComponent implements OnChanges {
     });
   }
 
-  ngOnChanges(): void {
+  getTaskHierarchy(): void {
     this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.SearchTask.taskId, '', this.onSuccess);
 
   }
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
     this.TaskHierarchy = taskHierarchy;
+    this.TaskHierarchy.childrenTaskIdList = this.TaskHierarchy.childrenTaskIdList.reverse();
   }
 }
