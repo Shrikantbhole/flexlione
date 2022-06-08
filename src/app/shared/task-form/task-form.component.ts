@@ -56,6 +56,8 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     this.parentForm.controls['createdBy'].setValue(await this.GetProfileName(
       this.parentForm.getRawValue().createdBy));
     this.parentForm.controls['hrsSpentTillNow'].disable();
+    this.parentForm.controls['createdAt'].setValue(new Date());
+    this.parentForm.controls['createdAt'].disable();
   }
 
   async onClick() {
