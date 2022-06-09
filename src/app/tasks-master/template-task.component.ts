@@ -62,7 +62,8 @@ export class TemplateTaskComponent {
   }
   onClickSelectAll() {
        for (let i = 0; i < this.templateTasks.length; i++) {
-         this.selectedTasks.push(this.templateTasks[i]);
+         if (!this.selectedTasks.includes(this.templateTasks[i])) {
+         this.selectedTasks.push(this.templateTasks[i]); }
        }
      }
 }

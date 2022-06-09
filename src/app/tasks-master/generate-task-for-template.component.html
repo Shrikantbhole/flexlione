@@ -19,7 +19,7 @@
     border-right: 2px solid #dbdbdb;
   }
   .slave {
-    width: 405px;
+    width: 345px;
     position: fixed;
     height: 700px;
     overflow: auto;
@@ -35,10 +35,11 @@
 </style>
 
 <div class = "slave">
-  <h3>Template task to generate</h3>
+  <h3>Generate task</h3>
   <br>
+
 <div *ngIf = "generatedTask">
-  <app-task-form [parentForm]="TaskForm"></app-task-form>
+  <app-task-form2 [parentForm]="TaskForm"></app-task-form2>
 </div>
 
 </div>
