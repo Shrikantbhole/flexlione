@@ -74,7 +74,7 @@
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
     <td class = "td-center"><span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{taskSummary.taskSummaryId}}</a> </span>{{'('+ taskSummary.taskId+')'}}
-    <span> <mat-icon [ngClass]="{'planned':taskSummary.task.status === 'ongoing', 'unplanned' :taskSummary.task.status === 'completed'}">schedule</mat-icon></span></td>
+    <span> <mat-icon [ngClass]="{'planned':taskSummary.taskSchedule.isPlanned === true, 'unplanned' :taskSummary.taskSchedule.isPlanned === false}">schedule</mat-icon></span></td>
 
     <td>{{ taskSummary.description }} </td>
     <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
