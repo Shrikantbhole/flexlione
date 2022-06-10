@@ -7,23 +7,23 @@ import {RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {TaskMasterRoutingModule} from './task-master-routing.module';
+import {TemplateTasksRoutingModule} from './template-tasks-routing.module';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
-import {TaskMasterComponent} from './task-master.component';
+import {TemplateComponent} from './template/template.component';
 import {ArticleModule} from '../article/article.module';
-import {TasksMasterResolverService} from './tasks-master-resolver.service';
-import {TemplateTaskComponent} from './template-task.component';
-import {SelectedTasksDisplayComponent} from './selected-tasks.component';
-import {GenerateTaskForTemplateComponent} from './generate-task-for-template.component';
+import {TemplateTasksResolverService} from './template-tasks-resolver.service';
+import {TemplateTaskComponent} from './tasks/template-task.component';
+import {SelectedTasksDisplayComponent} from './selectedTasks/selected-tasks.component';
+import {GenerateTaskForTemplateComponent} from './generateTasks/generate-task-for-template.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
-import {EditTemplateComponent} from './edit-template.component';
-import {AddTemplateComponent} from './add-template.component';
+import {EditTemplateComponent} from './add&editTemplate/edit-template.component';
+import {AddTemplateComponent} from './add&editTemplate/add-template.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TaskFormComponent} from '../shared/task-form/task-form.component';
 
@@ -33,7 +33,7 @@ import {TaskFormComponent} from '../shared/task-form/task-form.component';
 @NgModule({
   imports: [
     SharedModule,
-    TaskMasterRoutingModule,
+    TemplateTasksRoutingModule,
     MatMenuModule,
     MatIconModule,
     MatListModule,
@@ -52,13 +52,13 @@ import {TaskFormComponent} from '../shared/task-form/task-form.component';
     ReactiveFormsModule
   ],
   declarations: [
-    TaskMasterComponent, TemplateTaskComponent,
+    TemplateComponent, TemplateTaskComponent,
     SelectedTasksDisplayComponent, GenerateTaskForTemplateComponent,
     EditTemplateComponent, AddTemplateComponent
   ],
   providers: [
     MatSnackBar,
-    TasksMasterResolverService
+    TemplateTasksResolverService
   ]
 })
-export class TaskMasterModule {}
+export class TemplateTasksModule {}

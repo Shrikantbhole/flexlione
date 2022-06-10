@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
-import {TaskModel} from '../article/models/task-detail.model';
-import {ApiError} from '../settings/api-error.model';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {ApiError} from '../../settings/api-error.model';
 import {MatDialog} from '@angular/material/dialog';
-import {MessageBoxService} from '../settings/message-box.service';
+import {MessageBoxService} from '../../settings/message-box.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {TaskManagementService} from '../Services/task-management-service';
+import {TaskManagementService} from '../../Services/task-management-service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AppState} from '../app.state';
-import {Template} from '../article/models/template.model';
+import {AppState} from '../../app.state';
+import {Template} from '../../article/models/template.model';
 
 @Component({
   selector: 'app-edit-template',

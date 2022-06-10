@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit {
 
   }
   onAddFromTemplate(): void {
-    this.router.navigateByUrl('/master');
+    this.router.navigateByUrl('/template');
   }
 
   private GetProfileName(profileId: string): string {

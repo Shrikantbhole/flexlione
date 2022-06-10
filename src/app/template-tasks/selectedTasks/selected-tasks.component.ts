@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TaskModel} from '../article/models/task-detail.model';
-import {Template} from '../article/models/template.model';
+import {TaskModel} from '../../article/models/task-detail.model';
+import {Template} from '../../article/models/template.model';
 
 
 

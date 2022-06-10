@@ -8,7 +8,7 @@ import {TaskManagementService} from '../Services/task-management-service';
 import {TaskMaster} from '../core/models/master.model';
 
 @Injectable()
-export class TasksMasterResolverService implements Resolve<TaskMaster> {
+export class TemplateTasksResolverService implements Resolve<TaskMaster> {
   constructor(
     private articlesService: ArticlesService,
     private router: Router,

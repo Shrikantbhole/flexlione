@@ -2,20 +2,20 @@
 import {Component, OnInit} from '@angular/core';
 
 import {Router} from '@angular/router';
-import {Template} from '../article/models/template.model';
-import {TaskManagementService} from '../Services/task-management-service';
-import {MessageBoxService} from '../settings/message-box.service';
+import {Template} from '../../article/models/template.model';
+import {TaskManagementService} from '../../Services/task-management-service';
+import {MessageBoxService} from '../../settings/message-box.service';
 import {MatDialog} from '@angular/material/dialog';
-import {EditTemplateComponent} from './edit-template.component';
-import {AddTemplateComponent} from './add-template.component';
+import {EditTemplateComponent} from '../add&editTemplate/edit-template.component';
+import {AddTemplateComponent} from '../add&editTemplate/add-template.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
-  selector: 'app-task-master',
-  templateUrl: './task-master.component.html',
+  selector: 'app-template-tasks',
+  templateUrl: './template.component.html',
 })
-export class TaskMasterComponent implements  OnInit {
+export class TemplateComponent implements  OnInit {
   public selectedTemplateId: string;
   public taskManagementService: TaskManagementService;
   public templateData: Template[] ;

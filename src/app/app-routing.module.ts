@@ -24,8 +24,8 @@ export const routes: Routes = [
     loadChildren: () => import('./article/article.module').then(m => m.ArticleModule)
   },
   {
-    path: 'master',
-    loadChildren: () => import('./template-tasks/task-master.module').then(m => m.TaskMasterModule)
+    path: 'template',
+    loadChildren: () => import('./template-tasks/template-tasks.module').then(m => m.TemplateTasksModule)
   },
   {
     path: 'stand-up',

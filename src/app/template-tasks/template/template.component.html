@@ -66,7 +66,7 @@
                        [ngClass]="{highlight: template.templateId == selectedTemplateId}"
                        (click)="onRowClick(template.templateId)"
                        [routerLinkActive]="['is-active']"
-                       [routerLink]='["/master"]' [queryParams]="{templateId: template.templateId}">
+                       [routerLink]='["/template"]' [queryParams]="{templateId: template.templateId}">
 
           <div mat-line>{{ template.templateId}}</div>
           <div mat-line>{{template.description}} </div>

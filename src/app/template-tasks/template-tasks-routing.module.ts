@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core';
-import {TaskMasterComponent} from './task-master.component';
+import {TemplateComponent} from './template/template.component';
 import {ArticleResolver} from '../article/article-resolver.service';
-import {TasksMasterResolverService} from './tasks-master-resolver.service';
+import {TemplateTasksResolverService} from './template-tasks-resolver.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: TaskMasterComponent,
+    component: TemplateComponent,
     resolve: {
-      // taskMaster: TasksMasterResolverService
+      // taskMaster: TemplateTasksResolverService
     }
   }
 ];
@@ -19,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TaskMasterRoutingModule {}
+export class TemplateTasksRoutingModule {}
