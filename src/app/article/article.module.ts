@@ -24,7 +24,7 @@ import {AddOrEditDependencyDialogComponent} from './dependency/add-or-edit-depen
 import {MatExpansionModule} from '@angular/material/expansion';
 import {TimeCalculationComponent} from './time-calculation/time-calculation.component';
 import {TaskSessionSummaryComponent} from './time-calculation/task-session-summary.component';
-import {TaskForm2Component} from '../shared/task-form/task-form2.component';
+import {TemplateTaskFormComponent} from '../shared/task-form/template-task-form.component';
 
 
 
@@ -57,12 +57,12 @@ import {TaskForm2Component} from '../shared/task-form/task-form2.component';
       AddOrEditDependencyDialogComponent,
       TimeCalculationComponent,
       TaskSessionSummaryComponent,
-      TaskForm2Component
+      TemplateTaskFormComponent
     ],
     exports: [
         TaskFormComponent,
         TaskSessionSummaryComponent,
-      TaskForm2Component
+      TemplateTaskFormComponent
     ],
 
     providers: [

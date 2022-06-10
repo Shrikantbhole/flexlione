@@ -14,10 +14,10 @@ import {ProfileManagementService} from '../../Services/profile-management.servic
 
 @Component({
   selector: 'app-task-form2',
-  templateUrl: './task-form2.component.html',
+  templateUrl: './template-task-form.component.html',
   styleUrls: ['../../article/article.component.css']
 })
-export class TaskForm2Component implements AfterViewInit, OnChanges {
+export class TemplateTaskFormComponent implements AfterViewInit, OnChanges {
   UserList: string[] = [];
   StatusList: string[] = getStatusList();
   newTask: FormGroup;
