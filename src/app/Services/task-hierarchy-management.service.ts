@@ -26,7 +26,7 @@ export class TaskHierarchyManagementService {
   private http_: HttpClient;
 
   private baseUrl: string;
-  // public url = '../../tasks-master/templateData.json';
+  // public url = '../../template-tasks/templateData.json';
   public url = 'http://localhost:3000/posts';
   public url1 = 'http://localhost:3000/written';
 
