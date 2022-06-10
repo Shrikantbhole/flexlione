@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProfileTaskDumpComponent } from './profile-task-dump.component';
+import { ProfileTaskDumpComponent } from './profile-task-dump/profile-task-dump.component';
 import { ProfileFavoritesComponent } from './profile-favorites.component';
 import { ProfileResolver } from './profile-resolver.service';
 import { ProfileComponent } from './profile.component';

@@ -67,14 +67,15 @@ export class TaskScheduleManagementService {
       );
   }
 
-  getTaskScheduleById(taskScheduleId: string): Observable<TaskScheduleModel> {
+  getTaskScheduleById(taskScheduleId: string, include: string =  null): Observable<TaskScheduleModel> {
 
     const httpHeaders = {
       'Content-Type': 'application/json',
       // 'accept': 'application/json;v=1.0'
     };
-    const queryStringParams
-      = {taskScheduleId: taskScheduleId
+    const queryStringParams = {
+      taskScheduleId: taskScheduleId,
+      include: include
     };
     return this.http_.get<TaskScheduleModel>(this.baseUrl + '/TaskSchedule/GetTaskScheduleById', {
       params: queryStringParams, headers: httpHeaders })

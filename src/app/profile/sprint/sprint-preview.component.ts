@@ -23,7 +23,6 @@ import {ProfileModel} from '../models/profile.model';
 export class SprintPreviewComponent implements OnInit {
  @Input() sprintList: SprintModel[];
  @Output() newItemEvent  = new EventEmitter<string>();
-  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @ViewChild(MatAccordion) accordion: MatAccordion;
   public currentUser: ProfileModel;
   public selectedSprint: SprintModel = new SprintModel();
@@ -56,7 +55,7 @@ export class SprintPreviewComponent implements OnInit {
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
         if (taskSchedule !== undefined) {
-          this.newScheduleEvent.emit(taskSchedule);
+          this.router.navigateByUrl(this.router.url + '?addTaskScheduleId=' + taskSchedule.taskScheduleId);
         }
         },
       error: () => {}

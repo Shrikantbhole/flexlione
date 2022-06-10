@@ -11,7 +11,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import * as TaskActions from '../../shared/store/create-task.action';
 import {CreateTaskStoreModel} from '../../shared/store/interfaces/create-task-store.model';
-import {formatDate} from '@angular/common';
+
 
 
 
@@ -20,6 +20,7 @@ import {formatDate} from '@angular/common';
 @Component({
   selector: 'app-ptl-stations-blaa',
   templateUrl: './head-tasks.component.html',
+  styleUrls: ['../../app.component.css']
 })
 export class HeadTasksComponent {
 

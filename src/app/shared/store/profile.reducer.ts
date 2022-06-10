@@ -14,7 +14,6 @@ export function ProfileReducer(state: ProfileModel[] = [], action: ProfileAction
   // What have we done in the return statement?
   // ...state,X is a method to push X into array state
 
-  console.log(state);
   switch (action.type) {
     case ProfileAction.ADD_Profile:
       const newAddState = action.payload;

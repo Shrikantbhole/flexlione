@@ -20,7 +20,10 @@ export function TaskScheduleReducer(state: TaskScheduleModel[] = [], action: Tas
     case TaskActions.ADD_ALL_TASK_SCHEDULE:
       const newStatePostAddingAllTask = action.payload;
       console.log(newStatePostAddingAllTask);
-      return newStatePostAddingAllTask;
+        action.payload.forEach(function (value) {
+          state.push(value);
+        });
+      return state;
       case TaskActions.REMOVE_ALL_TASK_SCHEDULE:
         const newStatePostRemovingAllTask = [];
         return newStatePostRemovingAllTask;

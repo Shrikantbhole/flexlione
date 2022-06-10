@@ -33,14 +33,10 @@ export class HomeComponent implements OnInit {
     public personalSearch: SearchQuery
   ) {
   }
-
-
-  isAuthenticated: boolean;
   listConfig: ArticleListConfig = {
     type: 'all',
     filters: {}
   };
-  tags: Array<string> = [];
   ngOnInit() {
     this.globalSearch = this.searchManagementService.getGlobalSearch();
     this.setListTo(this.searchManagementService.getGlobalSearch());

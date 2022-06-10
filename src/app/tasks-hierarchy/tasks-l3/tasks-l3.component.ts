@@ -17,6 +17,7 @@ import {Store} from '@ngrx/store';
 @Component({
   selector: 'app-tasks-l3',
   templateUrl: './tasks-l3.component.html',
+  styleUrls: ['../../app.component.css']
 })
 export class TasksL3Component {
 

@@ -13,7 +13,8 @@ import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
 
 @Component({
   selector: 'app-article-preview',
-  templateUrl: './article-preview.component.html'
+  templateUrl: './article-preview.component.html',
+  styleUrls: ['../../app.component.css']
 })
 export class ArticlePreviewComponent {
   constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,

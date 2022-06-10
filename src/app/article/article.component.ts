@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import {TaskModel} from './models/task-detail.model';
@@ -36,7 +36,7 @@ import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model'
   templateUrl: './article.component.html',
   styleUrls: ['article.component.css']
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, AfterViewInit {
 
   task: TaskModel;
   currentUser: ProfileModel;
@@ -84,8 +84,6 @@ export class ArticleComponent implements OnInit {
     );
     // Receiving estimated hours and spent hours separately and then plugging into taskform
     this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
-    // Get All Profiles
-    await this.getAllProfiles();
   }
 
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
@@ -188,43 +186,30 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  async getAllProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-  }
-
-  public  GetProfileId(profileName: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.name === profileName);
-    });
-    return profile[0] === undefined ? profileName : profile[0].profileId;
-  }
-
-
   onAddSiblingTask(task: TaskModel) {
-
-     this.text = 'Sibling of task ID';
+    this.text = 'Sibling of task ID: ';
     this.TaskForm = GetTaskFormFromTaskModel(task);
     this.TaskForm.controls['createdBy'].setValue(task.createdBy);
     this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
     this.TaskForm.controls['parentTaskId'].setValue(task.parentTaskId);
-    this.TaskForm.controls['taskId'].setValue('server generated');
-    this.TaskForm.controls['taskId'].disable();
     this.TaskForm.controls['description'].setValue('');
     this.TaskForm.controls['positionAfter'].setValue(task.taskId);
     this.TaskForm.controls['expectedHours'].setValue('');
   }
 
   onAddChildTask(task: TaskModel) {
-     this.text = 'Child of task ID';
+     this.text = 'Child of task ID: ';
     this.TaskForm = GetTaskFormFromTaskModel(task);
     this.TaskForm.controls['parentTaskId'].setValue(task.taskId);
-    this.TaskForm.controls['taskId'].setValue('server generated');
-    this.TaskForm.controls['taskId'].disable();
     this.TaskForm.controls['createdBy'].setValue(task.createdBy);
     this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
     this.TaskForm.controls['description'].setValue('');
     this.TaskForm.controls['positionAfter'].setValue('');
     this.TaskForm.controls['expectedHours'].setValue('');
 
+  }
+
+  async ngAfterViewInit() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
   }
 }

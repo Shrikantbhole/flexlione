@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 
-import { ProfileTaskDumpComponent } from './profile-task-dump.component';
+import { ProfileTaskDumpComponent } from './profile-task-dump/profile-task-dump.component';
 import { ProfileComponent } from './profile.component';
 import { ProfileFavoritesComponent } from './profile-favorites.component';
 import { ProfileResolver } from './profile-resolver.service';
@@ -28,6 +28,7 @@ import {ActivatedRouteSnapshot} from '@angular/router';
 import {AddOrEditSprintDialogComponent} from './sprint/add-or-edit-sprint-dialog.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
+import {TaskScheduleHandlerComponent} from './schedule/task-schedule-handler.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     SprintPreviewComponent,
     DailyPlanCalenderComponent,
     DailyPlanSummaryComponent,
-    TaskSummaryFormComponent
+    TaskSummaryFormComponent,
+    TaskScheduleHandlerComponent
   ],
   providers: [
     ProfileResolver,

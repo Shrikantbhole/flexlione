@@ -15,8 +15,6 @@ import {CreateTaskForm} from '../article/models/task-detail.form';
 })
 export class EditorComponent implements OnInit {
   article: Article = {} as Article;
-  articleForm: FormGroup;
-  tagField = new FormControl();
   errors: Object = {};
   isSubmitting = false;
   EditTaskForm: FormGroup = CreateTaskForm();
@@ -28,19 +26,10 @@ export class EditorComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private store: Store<AppState>,
-  ) {
-    this.store.select('profile')
-      .subscribe({ next: (profiles) => {
-          this.Profiles = profiles;
-        },
-        error: () => {}
-      });
-
-    // Optional: subscribe to value changes on the form
-    // this.articleForm.valueChanges.subscribe(value => this.updateArticle(value));
-  }
+  ) {}
 
   ngOnInit() {
+    // Creating a Form EditTaskForm of Class Formgroup and passing it down to Task-Form Component
     this.store.select('createTask').subscribe({
       next: (x) => {
         if (x === undefined) {
@@ -57,18 +46,4 @@ export class EditorComponent implements OnInit {
   onAddFromTemplate(): void {
     this.router.navigateByUrl('/master');
   }
-
-  private GetProfileName(profileId: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.profileId === profileId);
-    });
-    return profile[0] === undefined ? profileId : profile[0].name;
-  }
-  private GetProfileId(profileName: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.name === profileName);
-    });
-    return profile[0] === undefined ? profileName : profile[0].profileId;
-  }
-
 }

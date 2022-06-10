@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Output, EventEmitter, OnInit, Input, ViewChild, ApplicationRef, ChangeDetectorRef, NgZone} from '@angular/core';
 import {DailyPlanSummaryService} from '../../Services/daily-plan-summary.service';
 import {MessageBoxService} from '../../settings/message-box.service';
 import {Store} from '@ngrx/store';
@@ -21,13 +21,12 @@ import {TaskScheduleManagementService} from '../../Services/task-schedule-manage
 export class DailyPlanSummaryComponent implements  OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   TaskScheduleList: TaskScheduleModel[] = [];
-  public TaskSummaryModel: TaskSummaryModel = new TaskSummaryModel();
-  public sortedTaskScheduleList: TaskScheduleModel[];
+  public UpdatedTaskSummary: TaskSummaryModel = new TaskSummaryModel();
   @Input()
   set config(taskScheduleList: TaskScheduleModel[]) {
     this.TaskScheduleList = taskScheduleList;
-    console.log(this.TaskScheduleList);
-    this.sortedTaskScheduleList = this.TaskScheduleList.sort((a, b) => a.startHour - b.startHour);
+    // console.log(this.TaskScheduleList);
+    this.TaskScheduleList = this.TaskScheduleList.sort((a, b) => a.startHour - b.startHour);
   }
   constructor(
     private searchManagementService: DailyPlanSummaryService,
@@ -38,16 +37,13 @@ export class DailyPlanSummaryComponent implements  OnInit {
     private route: ActivatedRoute,
     private  dailyPlanSummaryService: DailyPlanSummaryService,
     private taskScheduleManagementService: TaskScheduleManagementService,
-    private router: Router
+    private router: Router,
+    private applicationRef: NgZone
   ) {
   }
 
   ngOnInit() {}
   getTaskSummary(taskSchedule: TaskScheduleModel) {
-    // Avoid unnecessary updates on Task Summary Page
-    if (this.TaskSummaryModel.taskScheduleId === taskSchedule.taskScheduleId) {
-      return;
-    }
     let newTaskSummaryModel: TaskSummaryModel = new TaskSummaryModel(); // Assigned new model for config function in form to work
     this.dailyPlanSummaryService.getTaskSummaryById(taskSchedule.taskSummaryId)
       .subscribe({
@@ -62,7 +58,7 @@ export class DailyPlanSummaryComponent implements  OnInit {
           newTaskSummaryModel.expectedHour = (taskSchedule.stopHour - taskSchedule.startHour)
                                             + (taskSchedule.stopMinute - taskSchedule.startMinute) / 60;
           newTaskSummaryModel.date = taskSchedule.date;
-          this.TaskSummaryModel = newTaskSummaryModel;
+          this.UpdatedTaskSummary = newTaskSummaryModel;
           },
         error: () => {}
       });
@@ -76,6 +72,4 @@ export class DailyPlanSummaryComponent implements  OnInit {
     this.TaskScheduleList = newTaskScheduleList;
      this.router.navigateByUrl(this.router.url + '?removeTaskScheduleId=' + taskScheduleId);
   }
-
-
 }

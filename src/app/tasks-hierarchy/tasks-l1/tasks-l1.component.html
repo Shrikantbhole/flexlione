@@ -17,12 +17,6 @@
   .app-class .mat-list-item {
     height: auto;}
 
-  .unscheduled {background-color: white}
-  .scheduled {background-color: #D9D7F1}
-  .ongoing {background-color: #FFFDDE}
-  .completed{background-color: #E7FBBE }
-  .paused {background-color: gray}
-  .critical {background-color: #FFCBCB}
 
 </style>
 
@@ -51,8 +45,7 @@
 
                      (click)="onRowClick(task.taskId)"
                      [ngClass]="{ 'critical' : task.deadline.toString() < this.currentDate,
-                                    'unscheduled': task.status === '',
-                                    'scheduled' : task.status === 'yettostart',
+                                    'unscheduled': task.status === 'yettostart',
                                     'ongoing' : task.status === 'ongoing',
                                     'completed' : task.status === 'completed',
                                     'paused' : task.status === 'onhold'}"
