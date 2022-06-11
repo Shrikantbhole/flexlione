@@ -12,6 +12,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.userService.populate();
-    this.router.navigateByUrl('/profile'); // dummy used for testing. Remove later
   }
 }

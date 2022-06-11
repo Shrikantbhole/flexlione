@@ -20,6 +20,7 @@ import {Store} from '@ngrx/store';
 @Component({
   selector: 'app-tasks-l2',
   templateUrl: './tasks-l2.component.html',
+  styleUrls: ['../../app.component.css']
 })
 export class TasksL2Component {
 

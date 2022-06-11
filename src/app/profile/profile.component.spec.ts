@@ -1,21 +1,21 @@
-import { MockBuilder, MockRender, ngMocks } from 'ng-mocks';
-import {ProfileComponent} from '../../profile/profile.component';
-import {AutoSearchComponent} from './auto-search.component';
+import {MockBuilder, MockInstance, MockRender, ngMocks} from 'ng-mocks';
 import {TestBed} from '@angular/core/testing';
-import {HeaderComponent} from '../layout';
-import {UserService} from '../../core';
 import {Store} from '@ngrx/store';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {ProfileManagementService} from '../../Services/profile-management.service';
-import {SearchFormComponent} from '../../home/Search/search-form.component';
-import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
-import {MessageBoxService} from '../../settings/message-box.service';
-import {asyncScheduler, Observable} from 'rxjs';
-import {mockParams, mockProfile, mockProfiles, mockSearchTaskViewStoresForRoute, mockTaskSchedules} from '../../Models/Mocks/mockProfile';
+import {asyncScheduler, EMPTY, EmptyError, Observable} from 'rxjs';
 import {observeOn} from 'rxjs/operators';
 import {ReactiveFormsModule} from '@angular/forms';
 import {EventEmitter} from '@angular/core';
+import {HeaderComponent} from '../shared';
+import {ProfileComponent} from './profile.component';
+import {AutoSearchComponent} from '../shared/search/auto-search.component';
+import {ProfileManagementService} from '../Services/profile-management.service';
+import {MessageBoxService} from '../settings/message-box.service';
+import {UserService} from '../core';
+import {TaskScheduleManagementService} from '../Services/task-schedule-management.service';
+import {SearchFormComponent} from '../home/Search/search-form.component';
+import {mockParams, mockProfile, mockProfiles, mockSearchTaskViewStoresForRoute, mockTaskSchedules} from '../Models/Mocks/mockProfile';
 
 
 
@@ -83,13 +83,13 @@ class MockUserService  {
 
 
 class MockTaskScheduleManagementService  {
-   public getTaskScheduleByProfileId(profileId: string, month: number, year: number) {
-     return new Observable((observer) => {
-       observer.next(mockTaskSchedules);
-     }).pipe(
-       observeOn(asyncScheduler)
-     );
-   }
+  public getTaskScheduleByProfileId(profileId: string, month: number, year: number) {
+    return new Observable((observer) => {
+      observer.next(mockTaskSchedules);
+    }).pipe(
+      observeOn(asyncScheduler)
+    );
+  }
 }
 
 const params = {newItemEvent: new  EventEmitter};
@@ -107,22 +107,43 @@ describe('mockDirectiveAttribute', () => {
       .mock(MatDialog)
       .mock(Router)
       .mock(MessageBoxService)
+      .mock(UserService)
       .keep(ReactiveFormsModule)
       .provide({provide: ProfileManagementService, useClass: MockProfileManagementService})
-      .provide({provide: UserService, useClass: MockUserService})
       .provide({provide: TaskScheduleManagementService, useClass: MockTaskScheduleManagementService}) // Remember to use UseClass
       .provide({provide: SearchFormComponent, useValue: mockSearchFormComponent});
   });
 
+  beforeEach(() => {
+    // Application of mock Instance - Set Desired value to any declaration of our concerned component
+    MockInstance(UserService, () => ({
+       currentUser: EMPTY
+    }));
+  });
   it('sends correct value to the input', () => {
     const fixture = MockRender(ProfileComponent);
     const component = fixture.point.componentInstance;
-    const mockDirective = ngMocks.get(
+    const mockAutoSearchComponent = ngMocks.get(
       ngMocks.find('app-auto-search'),
       AutoSearchComponent
     );
     component.options = ['blaaa'];
     fixture.detectChanges();
-    expect(mockDirective.options).toEqual(['blaaa']);
+    expect(mockAutoSearchComponent.options).toEqual(['blaaa']);
+  });
+
+  it('does something on emit of child directive', () => {
+    const fixture = MockRender(ProfileComponent);
+    const component = fixture.point.componentInstance;
+    const mockAutoSearchComponent = ngMocks.get(
+      ngMocks.find('app-auto-search'),
+      AutoSearchComponent
+    );
+    // ProfileComponent Listens to newItemEvent Emitter via updateProfile()
+    // Let's install a spy and trigger the output
+    ngMocks.stubMember(component, 'updateProfile', jasmine.createSpy());
+    // Emitting some value from mock AutoSearch Component
+    mockAutoSearchComponent.newItemEvent.emit('5');
+    expect(component.updateProfile).toHaveBeenCalledWith('5');
   });
 });

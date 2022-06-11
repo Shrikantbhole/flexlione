@@ -86,7 +86,7 @@ stopStamp: TimeStampModel;
       next : (taskSummaryList) => {
         this.TaskSummaryList = taskSummaryList;
         this.totalExpectedHr = 0;
-        this.TaskSummaryList.forEach(item => { this.totalExpectedHr += item.expectedHour; });
+        this.TaskSummaryList.forEach(item => { if (item.taskSchedule.isPlanned === true) {this.totalExpectedHr += item.expectedHour; } });
         this.totalActualHr = 0;
         this.TaskSummaryList.forEach(item => { this.totalActualHr += item.actualHour; });
 

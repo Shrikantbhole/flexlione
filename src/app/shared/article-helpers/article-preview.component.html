@@ -7,20 +7,15 @@
     justify-content: flex-end;
   }
 
-  .unscheduled {background-color: white}
-  .scheduled {background-color: #D9D7F1}
-  .ongoing {background-color: #FFFDDE}
-  .completed{background-color: #E7FBBE }
-  .paused {background-color: gray}
-  .critical {background-color: #FFCBCB}
-
 </style>
 
 <div class="author" xmlns="http://www.w3.org/1999/html">
 
 
 <mat-accordion>
-  <mat-expansion-panel [ngClass]="{
+  <mat-expansion-panel
+    (click)= "getTaskHierarchy()"
+    [ngClass]="{
                                     'critical' : SearchTask.deadline.toString() < this.currentDate,
                                     'unscheduled': SearchTask.status === '',
                                     'scheduled' : SearchTask.status === 'yettostart',
@@ -59,8 +54,17 @@
     </mat-expansion-panel-header>
     <ng-content></ng-content>
     <p class="master"> </p>
+    <div  *ngIf="TaskHierarchy">
 
-<h6 *ngIf="TaskHierarchy">Task Hierarchy- {{TaskHierarchy.childrenTaskIdList}}</h6>
+
+      <a
+        *ngFor="let childTaskId of TaskHierarchy.childrenTaskIdList"
+        [routerLink]="['/article',childTaskId]">
+        {{childTaskId}} >
+      </a>
+    </div>
+
+
 
     <a [routerLink]="['/article',SearchTask.taskId]" class="preview-link">
       <h6>Deadline:  {{ SearchTask.deadline|date: 'longDate'}}</h6>

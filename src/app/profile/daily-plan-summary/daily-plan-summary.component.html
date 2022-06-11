@@ -1,6 +1,6 @@
 <style>
-.expectedOutputAdded {background-color: #F9FFA4}
-.actualOutputAdded {background-color: #B4FF9F}
+.expectedOutputAdded {background-color: lightblue}
+.actualOutputAdded {background-color: beige}
 .noTaskId { background-color: white}
 </style>
 
@@ -17,11 +17,11 @@
     <h5>Task Summary for date: {{TaskScheduleList[0].date}}</h5>
     <br/>
     <mat-accordion>
-      <mat-expansion-panel  *ngFor="let taskSchedule of sortedTaskScheduleList"
+      <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
                             (click) = "getTaskSummary(taskSchedule)"
 
                             [ngClass]= " taskSchedule.taskSummary !== null ?
-                            ({'expectedOutputAdded':  taskSchedule.taskSummary.actualOutput === null,
+                            ({'expectedOutputAdded':  taskSchedule.taskSummaryId !== null,
                             'actualOutputAdded': taskSchedule.taskSummary.actualOutput !== null}): 'noTaskId'">
 
 
@@ -37,7 +37,7 @@
             </button>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <app-profile-task-summary-form [config]="TaskSummaryModel "
+        <app-profile-task-summary-form [config]="UpdatedTaskSummary"
         ></app-profile-task-summary-form>
 
 

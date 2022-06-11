@@ -13,9 +13,7 @@
 .mat-form-field--inline .mat-form-field:nth-child(1) {
   margin-right: 10px;
 }
-.make-light-blue {
-  background-color: lightblue;
-}
+
 
 td , th {
   white-space: normal;

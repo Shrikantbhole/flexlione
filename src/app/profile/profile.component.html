@@ -52,8 +52,7 @@
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'sprint'">
         <app-sprint-preview [sprintList]="sprintList"
-                            (newItemEvent)="updateSprintList($event)"
-                            (newScheduleEvent)="AddNewTaskSchedule($event)"></app-sprint-preview>
+                            (newItemEvent)="updateSprintList($event)"></app-sprint-preview>
       </div>
 
       <div class="col-xs-6" [hidden]="togglePlanner !== 'day' && togglePlanner !== 'summary'">
@@ -66,5 +65,9 @@
       </div>
     </div>
   </div>
-
+  <!-- handler component does not render any UI, used only for managing Task ScheduleList Directives -->
+ <app-task-schedule-handler [profileId] = "profileId"
+                            (newTaskScheduleList)="updateTaskScheduleList($event)"
+                            (newSelectedTaskScheduleList)="updateSelectedTaskScheduleList($event)"
+                            (daySummary)="onDaySummary()"></app-task-schedule-handler>
 </div>

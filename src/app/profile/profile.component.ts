@@ -11,12 +11,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../app.state';
 import {SearchTaskViewStoreModel} from '../shared/store/interfaces/search-task-view-store.model';
 import {ProfileManagementService} from '../Services/profile-management.service';
-import {SearchFormComponent} from '../home/Search/search-form.component';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
-import {TaskScheduleManagementService} from '../Services/task-schedule-management.service';
-import * as TaskScheduleActions from '../shared/store/task-schedule.action';
-import {ApiError} from '../settings/api-error.model';
-import {MessageBoxService} from '../settings/message-box.service';
 import {FormGroup} from '@angular/forms';
 import {SearchQueryForm} from '../home/models/search-query-form.model';
 @Component({
@@ -27,13 +22,12 @@ import {SearchQueryForm} from '../home/models/search-query-form.model';
 
 export class ProfileComponent implements OnInit, AfterViewInit {
   options: string[] = [];
-  togglePlanner = 'sprint';
+  togglePlanner = 'day';
   TaskScheduleList: TaskScheduleModel[] = [];
   SelectedTaskScheduleList: TaskScheduleModel[] = []; // Shortlisted for seeing detail detail summary
-  sprintUpdateCounter = 0;
   sprintList: SprintModel[] = [];
   profileId ;
-  profileName;
+  profileName = '';
   parentForm: FormGroup = SearchQueryForm();
   public Profiles: ProfileStoreModel[] = [];
   @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -45,63 +39,48 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     private router: Router,
     private store: Store<AppState>,
     private profileManagementService: ProfileManagementService,
-    private searchFormComponent: SearchFormComponent,
-    private taskScheduleManagementService: TaskScheduleManagementService,
-    private messageBoxService: MessageBoxService
   ) {}
 
   profile: Profile;
   currentUser: User;
-  isUser: boolean;
 
    ngOnInit() {
     // Store TaskModel Dump in @ngrx/Store
      this.route.data.subscribe(
       (data: { profile: SearchTaskViewStoreModel[] }) => {
-          this.store.dispatch(new TaskActions.RemoveSearchTask()); // Clear Old Store Dump
-          this.store.dispatch(new TaskActions.AddSearchTask(data.profile));
-          this.parentForm.controls['assignedTo'].setValue(
-            this.GetProfileName(this.profileId)
-        );
-         this.profileName = this.GetProfileName(this.profileId);
-        this.parentForm.controls['assignedTo'].disable();
-      }
-    );
+        this.store.dispatch(new TaskActions.RemoveSearchTask()); // Clear Old Store Dump
+        this.store.dispatch(new TaskActions.AddSearchTask(data.profile)); // Add new Dump for Profile id
+      });
+     this.userService.currentUser.subscribe(
+       (userData) => {
+         this.profileId = userData.profileId; // Update  profile id and name
+         this.profileName = userData.name;
+         this.updateSprintList(this.profileId);
+       }
+     );
+     this.parentForm.controls['assignedTo'].setValue( // cannot edit Owner on search Task filter
+       this.GetProfileName(this.profileId)
+     );
+     this.parentForm.controls['assignedTo'].disable();
    }
-  // Fetch Task Schedules , bind to TaskScheduleList and store in Store Module
-  private getAsyncTaskSchedules(profileId: string, month: number, year: number): void {
-    this.taskScheduleManagementService.getTaskScheduleByProfileId(profileId, month, year)
+  ngAfterViewInit(): void {
+    this.updateSprintList(this.profileId);
+    this.profileManagementService.getAllProfiles()
       .subscribe({
-        next: (taskScheduleList) => {
-         this.TaskScheduleList = taskScheduleList;
-         console.log(this.TaskScheduleList);
-         this.SelectedTaskScheduleList = taskScheduleList.filter(function(value) { // List for Task Summary
-           return new Date(value.date).getDate() === new Date().getDate();
-         });
-         this.store.dispatch(new TaskScheduleActions.RemoveAllTaskSchedule()) ;
-         this.store.dispatch(new TaskScheduleActions.AddAllTaskSchedule(taskScheduleList));
-         },
-        error: () => {}
-      }
-      );
-    console.log(month);
-  }
-// Add a Task Schedule to current task schedule
-  public AddNewTaskSchedule(taskScheduleModel: TaskScheduleModel) {
-    const newTaskScheduleList: TaskScheduleModel[] = [];
-    newTaskScheduleList.push(taskScheduleModel);
-    this.TaskScheduleList.forEach(function (taskSchedule) {
-      newTaskScheduleList.push(taskSchedule);
-    });
-    this.TaskScheduleList = newTaskScheduleList;
-    this.store.dispatch(new TaskScheduleActions.AddTaskSchedule(taskScheduleModel));
+        next : (profiles) => {
+          this.Profiles = profiles;
+          this.profileName = this.GetProfileName(this.profileId);
+          for (let i = 0; i <   this.Profiles.length; i++ ) {
+            this.options.push( this.Profiles[i].name);
+          }
+        },
+        error : () => {}
+      });
   }
   public async updateProfile(profileName: string) {
-    this.profileId = await this.GetProfileId(profileName);
-    this.updateSprintList(this.profileId);
-    this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
-
-    this.router.navigateByUrl('/profile/' + this.profileId);
+     this.profileId = await this.GetProfileId(profileName);
+     this.profileName = this.GetProfileName(this.profileId);
+     this.router.navigateByUrl('/profile/' + this.profileId);
   }
   public updateSprintList(profileId: string) {
     this.profileManagementService.getProfileById(profileId, 'sprint')
@@ -126,6 +105,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
   onPlanSprint() {
     this.togglePlanner = 'sprint';
+    // Fetch Sprint list
+    this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
   }
   onPlanDay() {
     this.togglePlanner = 'day';
@@ -134,137 +115,20 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public onDaySummary() {
     this.togglePlanner = 'summary';
   }
-  ngAfterViewInit(): void {
-     this.userService.currentUser.subscribe(
-      (userData) => {
-        this.profileId = userData.profileId;
-        this.profileName = userData.name;
-      }
-    );
 
-    // Fetch Sprint list
-    this.updateSprintList(this.profileId); // Asynchronously Update Sprint lIST
-    // This component will handle storing of task schedules and
-    // send relevant schedules to calendar component
-    this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
-    this.profileManagementService.getAllProfiles()
-       .subscribe({
-         next : (profiles) => {
-           this.Profiles = profiles;
-           for (let i = 0; i <   this.Profiles.length; i++ ) {
-             this.options.push( this.Profiles[i].name);
-           }
-         },
-         error : () => {}
-       });
-     this.route.queryParams.subscribe({
-      next: (param) => {
-        if ( param !== undefined) {
-          if ( param.taskId !== undefined) {
-          this.filterTaskById(param.taskId);
-          }
-          if ( param.month !== undefined) {
-           this.filterTaskByMonth(param.month, param.year);
-          }
-          if ( param.date !== undefined) {
-            this.getTaskScheduleListForaDate(param.date);
-          }
-          if ( param.updateTaskScheduleId !== undefined) {
-           this.updateTaskSchedule(param.updateTaskScheduleId);
-          }
-          if ( param.removeTaskScheduleId !== undefined) {
-            this.removeTaskSchedule(param.removeTaskScheduleId);
-          }
-          this.cleanQueryParams();
-        }
-      },
-      error: () => {}
-    });
-   }
-
-  // Update Task Summary Id in case of new task summary Id
-  private updateTaskSchedule(taskScheduleId: string) {
-    this.taskScheduleManagementService.getTaskScheduleById(taskScheduleId).subscribe({
-      next: (taskSchedule) => {
-        this.store.dispatch(new TaskScheduleActions.RemoveTaskSchedule(taskScheduleId));
-        this.store.dispatch(new TaskScheduleActions.AddTaskSchedule(taskSchedule));
-        this.getTaskScheduleListForaDate(new Date(taskSchedule.date).getDate().toString());
-      },
-      error: (apiError: ApiError) => {
-        this.messageBoxService.info('Error in getting task Id', apiError.title, apiError.detail);
-      }
-    });
+  public  updateTaskScheduleList(taskScheduleList: TaskScheduleModel[]) {
+     const newTaskScheduleList: TaskScheduleModel[] = [];
+     taskScheduleList.forEach(function (taskSchedule) {
+       newTaskScheduleList.push(taskSchedule);
+     });
+     this.TaskScheduleList = newTaskScheduleList;
   }
-  private removeTaskSchedule(taskScheduleId: string) {
-    this.store.dispatch(new TaskScheduleActions.RemoveTaskSchedule(taskScheduleId));
-    let revisedTaskSchedule: TaskScheduleModel[] = [];
-    this.getTaskSchedulesFromStore(function (taskScheduleList) {
-      revisedTaskSchedule = taskScheduleList;
+  public  updateSelectedTaskScheduleList(selectedTaskScheduleList: TaskScheduleModel[]) {
+    const newSelectedTaskScheduleList: TaskScheduleModel[] = [];
+    selectedTaskScheduleList.forEach(function (taskSchedule) {
+      newSelectedTaskScheduleList.push(taskSchedule);
     });
-    this.TaskScheduleList = revisedTaskSchedule;
-  }
-  private filterTaskByMonth(month: string, year: string) {
-    let filteredTaskSchedule: TaskScheduleModel[] = [];
-    this.getTaskSchedulesFromStore(function (taskScheduleList: TaskScheduleModel[]) {
-      filteredTaskSchedule = taskScheduleList.filter(function (value) {
-        return (new Date(value.date).getMonth().toString() === month &&
-          new Date(value.date).getFullYear().toString() === year);
-      });
-    });
-    if (filteredTaskSchedule.length === 0) {
-      this.getAsyncTaskSchedules(this.profileId, +month + 1, +year);
-    } else {
-      this.TaskScheduleList = filteredTaskSchedule;
-    }
-  }
-
-  private getTaskScheduleListForaDate(date: string) {
-    this.onDaySummary();
-    let filteredTaskSchedule: TaskScheduleModel[] = [];
-    this.getTaskSchedulesFromStore(function (taskScheduleList: TaskScheduleModel[]) {
-       filteredTaskSchedule = taskScheduleList.filter(function (value) {
-        return (new Date(value.date).getDate().toString() === date);
-      });
-    });
-    this.SelectedTaskScheduleList = filteredTaskSchedule;
-  }
-   private filterTaskById(taskId: string) {
-    let filteredTaskSchedule: TaskScheduleModel[] = [];
-    if (taskId === 'all') {
-      this.getTaskSchedulesFromStore(function (taskScheduleList: TaskScheduleModel[]) {
-        filteredTaskSchedule = taskScheduleList;
-      });
-    } else if (taskId !== undefined) {
-      this.getTaskSchedulesFromStore(function (taskScheduleList: TaskScheduleModel[]) {
-        filteredTaskSchedule = taskScheduleList.filter(function (value) {
-          return value.taskId === taskId;
-        });
-      });
-    }
-    this.TaskScheduleList = filteredTaskSchedule;
-  }
-
-  private cleanQueryParams() {
-    this.router.navigate([], {
-      queryParams: {
-        'taskId': null,
-        'month': null,
-        'year': null,
-        'date': null,
-        'updateTaskScheduleId': null,
-        'removeTaskScheduleId': null
-      },
-      queryParamsHandling: 'merge'
-    });
-  }
-  private getTaskSchedulesFromStore(callback: (taskScheduleList: TaskScheduleModel[]) => any) {
-    this.store.select('taskSchedule')
-      .subscribe({
-        next: (taskSchedules) => {
-          callback(taskSchedules);
-        },
-        error: () => {}
-      });
+     this.SelectedTaskScheduleList = newSelectedTaskScheduleList;
   }
   public  GetProfileId(profileName: string): string {
     const profile = this.Profiles.filter(function (value) {

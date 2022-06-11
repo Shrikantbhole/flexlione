@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import {TaskModel} from './models/task-detail.model';
@@ -28,7 +28,7 @@ import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 import {ApiError} from '../settings/api-error.model';
 import {ProfileManagementService} from '../Services/profile-management.service';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
-import {TaskFormComponent} from '../shared/task-form/task-form.component';
+
 
 
 @Component({
@@ -36,17 +36,13 @@ import {TaskFormComponent} from '../shared/task-form/task-form.component';
   templateUrl: './article.component.html',
   styleUrls: ['article.component.css']
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, AfterViewInit {
 
   task: TaskModel;
   currentUser: ProfileModel;
-  canModify: boolean;
   comments: TaskComment[] = [];
   commentControl = new FormControl();
-  commentFormErrors = {};
   isSubmitting = false;
-  isDeleting = false;
-  selectedCheckListItem = '';
   TaskForm: FormGroup = CreateTaskForm();
   TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
   Profiles: ProfileStoreModel[];
@@ -77,22 +73,6 @@ export class ArticleComponent implements OnInit {
         this.populateComments();
       }
     );   }
-  @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
-  /*
-  task: TaskModel;
-  currentUser: ProfileModel;
-  canModify: boolean;
-  comments: TaskComment[] = [];
-  commentControl = new FormControl();
-  commentFormErrors = {};
-  isSubmitting = false;
-  isDeleting = false;
-  selectedCheckListItem = '';
-  TaskForm: FormGroup = CreateTaskForm();
-  TaskHierarchy: TaskHierarchyModel = new TaskHierarchyModel();
-  Profiles: ProfileStoreModel[];
-   */
-
   text = '';
 
   async ngOnInit() {
@@ -104,8 +84,6 @@ export class ArticleComponent implements OnInit {
     );
     // Receiving estimated hours and spent hours separately and then plugging into taskform
     this.taskHierarchyManagementService.getTaskHierarchyByTaskId(this.task.taskId, 'children', this.onSuccess);
-    // Get All Profiles
-    await this.getAllProfiles();
   }
 
   public onSuccess = (taskHierarchy: TaskHierarchyModel) => {
@@ -145,16 +123,7 @@ export class ArticleComponent implements OnInit {
       this.router.navigateByUrl('/article/' + this.task.parentTaskId);
   }
 
-  deleteArticle() {
-    this.isDeleting = true;
 
-    this.articlesService.destroy(this.task.taskId)
-      .subscribe(
-        success => {
-          this.router.navigateByUrl('/');
-        }
-      );
-  }
 
   populateComments() {
     this.commentManagementService.getCommentsByTaskId(this.task.taskId).subscribe({
@@ -211,49 +180,36 @@ export class ArticleComponent implements OnInit {
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
-        this.newScheduleEvent.emit(taskSchedule);
+        // No Action to be done after tasks schedule added. No need to immediately add to calendar
       },
       error: () => {}
     });
   }
 
-  async getAllProfiles() {
-    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
-  }
-
-  public  GetProfileId(profileName: string): string {
-    const profile = this.Profiles.filter(function (value) {
-      return (value.name === profileName);
-    });
-    return profile[0] === undefined ? profileName : profile[0].profileId;
-  }
-
-
   onAddSiblingTask(task: TaskModel) {
-
-     this.text = 'Sibling of task ID';
+    this.text = 'Sibling of task ID: ';
     this.TaskForm = GetTaskFormFromTaskModel(task);
     this.TaskForm.controls['createdBy'].setValue(task.createdBy);
     this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
     this.TaskForm.controls['parentTaskId'].setValue(task.parentTaskId);
-    this.TaskForm.controls['taskId'].setValue('server generated');
-    this.TaskForm.controls['taskId'].disable();
     this.TaskForm.controls['description'].setValue('');
     this.TaskForm.controls['positionAfter'].setValue(task.taskId);
     this.TaskForm.controls['expectedHours'].setValue('');
   }
 
   onAddChildTask(task: TaskModel) {
-     this.text = 'Child of task ID';
+     this.text = 'Child of task ID: ';
     this.TaskForm = GetTaskFormFromTaskModel(task);
     this.TaskForm.controls['parentTaskId'].setValue(task.taskId);
-    this.TaskForm.controls['taskId'].setValue('server generated');
-    this.TaskForm.controls['taskId'].disable();
     this.TaskForm.controls['createdBy'].setValue(task.createdBy);
     this.TaskForm.controls['assignedTo'].setValue(task.assignedTo);
     this.TaskForm.controls['description'].setValue('');
     this.TaskForm.controls['positionAfter'].setValue('');
     this.TaskForm.controls['expectedHours'].setValue('');
 
+  }
+
+  async ngAfterViewInit() {
+    this.Profiles = await this.profileManagementService.getAllProfiles().toPromise();
   }
 }

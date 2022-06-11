@@ -1,0 +1,5 @@
+.unscheduled {background-color: lightgray}
+.ongoing {background-color: white}
+.completed{background-color: #f6fef6 }
+.paused {background-color: beige}
+.critical {background-color: #FFBFBF}

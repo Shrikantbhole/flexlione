@@ -23,7 +23,6 @@ export class TaskSummaryFormComponent implements  OnInit {
   set config(taskSummary: TaskSummaryModel) {
     this.updateTaskSummaryForm(taskSummary);
   }
-
   constructor(
     private searchManagementService: DailyPlanSummaryService,
     private  messageBoxService: MessageBoxService,

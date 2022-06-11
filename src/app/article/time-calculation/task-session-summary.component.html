@@ -6,7 +6,7 @@
 <table class='table' *ngIf="TaskSummaryList">
   <thead>
   <tr>
-    <th>Task Summary Id</th>
+    <th>Task Id</th>
     <th>Date</th>
     <th>Expected Output</th>
     <th>Expected Hours</th>
@@ -19,7 +19,7 @@
   <tbody>
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
-    <td>{{ taskSummary.owner }}</td>
+    <td>{{ taskSummary.taskId }}</td>
     <td>{{ taskSummary.date }}</td>
     <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
     <td>{{ taskSummary.expectedOutput }}</td>
