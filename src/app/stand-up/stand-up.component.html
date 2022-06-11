@@ -73,7 +73,7 @@
 
   <tr *ngFor="let taskSummary of TaskSummaryList">
 
-    <td class = "td-center"><span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{taskSummary.taskSummaryId}}</a> </span>{{'('+ taskSummary.taskId+')'}}
+    <td class = "td-center">{{taskSummary.taskSummaryId}}<span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{'('+ taskSummary.taskId+')'}}</a> </span>
     <span> <mat-icon [ngClass]="{'planned':taskSummary.taskSchedule.isPlanned === true, 'unplanned' :taskSummary.taskSchedule.isPlanned === false}">schedule</mat-icon></span></td>
 
     <td>{{ taskSummary.description }} </td>
