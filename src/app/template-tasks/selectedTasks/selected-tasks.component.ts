@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {Template} from '../../article/models/template.model';
+
 
 
 
@@ -23,6 +24,7 @@ export class SelectedTasksDisplayComponent implements OnInit {
     public taskForGeneration: TaskModel;
     public isEdit = false;
     public action = 'generate';
+  @Output() refreshClicked: EventEmitter<string> = new EventEmitter<string>();
 
   onClickGenerate(task: TaskModel) {
 this.taskForGeneration = task;
@@ -36,6 +38,7 @@ this.taskForGeneration = task;
 }
 
   onClickRefresh() {
+    this.refreshClicked.emit();
     this.selectedTasks.splice(0, this.selectedTasks.length);
    }
 }

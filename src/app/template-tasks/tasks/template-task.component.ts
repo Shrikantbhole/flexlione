@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Template} from '../../article/models/template.model';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TaskManagementService} from '../../Services/task-management-service';
+import {MatSelectionList} from '@angular/material/list';
 
 @Component({
   selector: 'app-template-task',
@@ -11,7 +12,7 @@ import {TaskManagementService} from '../../Services/task-management-service';
 })
 
 export class TemplateTaskComponent {
-
+  @ViewChild('select') select: MatSelectionList;
   public templateTasks: TaskModel[] = [];
   public selectedTaskId: string;
   public selectedTemplate: Template;
@@ -61,11 +62,15 @@ export class TemplateTaskComponent {
     console.log(this.selectedTasks);
   }
   onClickSelectAll() {
+    this.select.selectAll();
        for (let i = 0; i < this.templateTasks.length; i++) {
          if (!this.selectedTasks.includes(this.templateTasks[i])) {
          this.selectedTasks.push(this.templateTasks[i]); }
        }
      }
+  onRefreshClicked() {
+    this.select.deselectAll();
+  }
 }
 
 

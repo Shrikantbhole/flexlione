@@ -42,7 +42,7 @@
   <div>
     <mat-list>
       <mat-divider></mat-divider>
-      <mat-selection-list #t [multiple]="false">
+      <mat-selection-list #select >
       <mat-list-option *ngFor="let task of templateTasks" [value]="task"
                        (click)="onRowClick(task)">
 
@@ -67,7 +67,7 @@
 <div class='detail'>
   <div class='master'>
 
-    <app-selected-tasks [bundleSelectedTask] = "this.selectedTasks" ></app-selected-tasks>
+    <app-selected-tasks [bundleSelectedTask] = "this.selectedTasks" (refreshClicked)="onRefreshClicked()"></app-selected-tasks>
 </div>
 
 </div>
