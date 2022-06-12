@@ -71,7 +71,7 @@
 
   <tbody>
 
-  <tr *ngFor="let taskSummary of TaskSummaryList">
+  <tr *ngFor="let taskSummary of TaskSummaryList" (click)="selectTaskSummary($event, taskSummary)">
 
     <td class = "td-center">{{taskSummary.taskSummaryId}}<span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{'('+ taskSummary.taskId+')'}}</a> </span>
     <span> <mat-icon [ngClass]="{'planned':taskSummary.taskSchedule.isPlanned === true, 'unplanned' :taskSummary.taskSchedule.isPlanned === false}">schedule</mat-icon></span></td>
@@ -91,9 +91,11 @@
 
                                      }">{{taskSummary.task.status}}</td>
     <td><mat-button-toggle-group>
-      <mat-button-toggle value="start" (click) = onClickStart(taskSummary)><mat-icon>play_arrow</mat-icon></mat-button-toggle>
-      <mat-button-toggle value="stop"(click) = onClickStop(taskSummary)><mat-icon>stop</mat-icon></mat-button-toggle>
-    </mat-button-toggle-group></td>
+      <mat-button-toggle   value="start" (click) = onClickStart(taskSummary)><mat-icon>play_arrow</mat-icon></mat-button-toggle>
+      <mat-button-toggle   value="stop" (click) = onClickStop(taskSummary)><mat-icon>stop</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+      <mat-spinner [diameter]="30" [hidden] = "taskSummary.taskSummaryId !== taskSummaryStarted"></mat-spinner>
+
 
 
   </tr>

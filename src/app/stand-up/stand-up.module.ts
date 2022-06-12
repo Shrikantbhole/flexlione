@@ -11,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
     imports: [SharedModule,
@@ -19,7 +20,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
         MatButtonModule,
         MatDatepickerModule,
         MatFormFieldModule,
-        MatInputModule, MatBadgeModule, MatIconModule, MatButtonToggleModule
+        MatInputModule, MatBadgeModule, MatIconModule, MatButtonToggleModule, MatProgressSpinnerModule
     ],
   declarations: [StandUpComponent],
   providers: [StandUpResolver]

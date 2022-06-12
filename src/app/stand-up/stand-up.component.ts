@@ -40,6 +40,7 @@ export class StandUpComponent implements OnInit {
     private  snackBarService: MatSnackBar,
   ) {
   }
+  public currentTaskSummary;
   public TaskSummaryList: TaskSummaryModel[] = [];
   public Profiles: ProfileStoreModel[] = [];
   options: string[] = [];
@@ -62,6 +63,9 @@ export class StandUpComponent implements OnInit {
   }
 */
   newTaskSummary: FormGroup = CreateTaskSummaryForm();
+  timeRecording = false;
+taskSummaryStarted: string;
+taskSummaryStopped: string;
 
   async ngOnInit() {
     this.userService.currentUser.subscribe(
@@ -122,6 +126,7 @@ export class StandUpComponent implements OnInit {
   }
 
   onClickStart(taskSummary: TaskSummaryModel) {
+    this.timeRecording = true;
     const newTaskSummary: TaskSummaryModel = {
       systemHours: taskSummary.systemHours,
       task: taskSummary.task,
@@ -137,13 +142,16 @@ export class StandUpComponent implements OnInit {
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (summary) => {
-          this.snackBarService.open('Task started at' +  summary.action , '' , {duration: 300});
+          this.snackBarService.open('Task Summary ' + summary[0].taskSummaryId + ' started at ' + summary[0].stamp.substr(11, 20) , '' , {duration: 3000});
           console.log(summary);
+          this.taskSummaryStarted = summary[0].taskSummaryId;
+          this.taskSummaryStopped = '';
           },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });
   }
-  onClickStop(taskSummary) {
+  onClickStop(taskSummary: TaskSummaryModel) {
+    this.timeRecording = false;
     const newTaskSummary: TaskSummaryModel = {
       systemHours: taskSummary.systemHours,
       task: taskSummary.task,
@@ -159,10 +167,17 @@ export class StandUpComponent implements OnInit {
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (Summary) => {
-          this.snackBarService.open('Task stopped at' + Summary.stamp, '' , {duration: 300});
+          this.snackBarService.open('Task Summary ' + Summary[0].taskSummaryId + ' stopped at ' + Summary[0].stamp.substr(11, 20), '' , {duration: 3000});
           console.log(Summary);
+          this.taskSummaryStopped = Summary[0].taskSummaryId;
+          this.taskSummaryStarted = '';
         },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });
+  }
+
+  public selectTaskSummary(event: any, item: TaskSummaryModel) {
+
+    this.currentTaskSummary = item.taskSummaryId;
   }
 }
