@@ -16,6 +16,8 @@ import {ProfileModel} from '../profile/models/profile.model';
 import {TimeStampModel} from '../profile/models/time-stamp.model';
 import {Timestamp} from 'rxjs/internal-compatibility';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {TaskModel} from '../article/models/task-detail.model';
+import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 
 
 
@@ -49,8 +51,6 @@ export class StandUpComponent implements OnInit {
   currentUser: ProfileModel;
   totalExpectedHr = 0;
   totalActualHr = 0;
-startStamp: TimeStampModel;
-stopStamp: TimeStampModel;
 /*
   onClickStart(taskSummary) {
     this.startStamp = {profileId : this.profileId,
@@ -120,8 +120,49 @@ stopStamp: TimeStampModel;
     this.Name = this.GetProfileName(this.profileId);
     this.GetDailyTaskSummary(this.profileId,  this.datePipe.transform(this.newDate.getRawValue().newDate1, 'yyyy-MM-dd'));
   }
-  onClickStart() {
+
+  onClickStart(taskSummary: TaskSummaryModel) {
+    const newTaskSummary: TaskSummaryModel = {
+      systemHours: taskSummary.systemHours,
+      task: taskSummary.task,
+      taskSchedule: taskSummary.taskSchedule,
+      taskSummaryId : taskSummary.taskSummaryId,
+      taskScheduleId : taskSummary.taskScheduleId,
+      taskId : taskSummary.taskId,
+      stamp: new Date().toLocaleString(),
+      action: 'start'
+    };
+    console.log(newTaskSummary);
+
+    this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
+      .subscribe({
+        next: (summary) => {
+          this.snackBarService.open('Task started at' +  summary.action , '' , {duration: 300});
+          console.log(summary);
+          },
+        error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
+      });
   }
-  onClickStop() {
+  onClickStop(taskSummary) {
+    const newTaskSummary: TaskSummaryModel = {
+      systemHours: taskSummary.systemHours,
+      task: taskSummary.task,
+      taskSchedule: taskSummary.taskSchedule,
+      taskSummaryId : taskSummary.taskSummaryId,
+      taskScheduleId : taskSummary.taskScheduleId,
+      taskId : taskSummary.taskId,
+      stamp: new Date().toLocaleString(),
+      action: 'stop'
+    };
+    console.log(newTaskSummary);
+
+    this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
+      .subscribe({
+        next: (Summary) => {
+          this.snackBarService.open('Task stopped at' + Summary.stamp, '' , {duration: 300});
+          console.log(Summary);
+        },
+        error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
+      });
   }
 }

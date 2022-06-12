@@ -15,9 +15,10 @@ export class TaskSummaryModel {
   actualHour?: number;
   date?: string;
   task: TaskModel;
-  timeStamp: string;
+  stamp: string;
   action: string;
   taskSchedule: TaskScheduleModel;
+  systemHours: number;
 }
 
 export function CreateTaskSummaryForm(): FormGroup {

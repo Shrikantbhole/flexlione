@@ -102,5 +102,21 @@ export class DailyPlanSummaryService {
       );
   }
 
+  UpdateDailyTaskActualTime(profileId: string, taskSummary: TaskSummaryModel): Observable<TaskSummaryModel> {
 
+    const httpHeaders = {
+      'Content-Type': 'application/json'
+    };
+    const queryParams = {
+      'profileId': profileId,
+      'taskSummaryId' : taskSummary.taskSummaryId,
+      'action': taskSummary.action,
+      'stamp': taskSummary.stamp
+    };
+    return this.http_.post<TaskSummaryModel>(this.baseUrl + '/TaskSummary/UpdateDailyTaskActualTime' , '',  {headers: httpHeaders, params: queryParams})
+      .pipe(
+        retry(1),
+        catchError(HandlerError.handleError)
+      );
+  }
 }

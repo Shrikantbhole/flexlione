@@ -81,7 +81,7 @@
     <td>{{ taskSummary.expectedOutput }}</td>
     <td>{{ taskSummary.expectedHour }}</td>
     <td>{{ taskSummary.actualOutput}} </td>
-    <td>{{taskSummary.actualHour}}</td>
+    <td>{{taskSummary.actualHour}}{{'('+  taskSummary.systemHours   +')'}}</td>
     <td [ngClass]="{
                                     'unscheduled': taskSummary.task.status === '',
                                     'scheduled' : taskSummary.task.status === 'yettostart',
