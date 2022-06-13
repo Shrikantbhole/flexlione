@@ -18,6 +18,7 @@ export class SelectedTasksDisplayComponent implements OnInit {
   public selectedTemplate: Template;
   public selectedTemplateId: string;
   public selectedTasks: TaskModel [] = [];
+  public generatedTaskForUpdate: TaskModel [] = [];
   constructor() {}
 
   @Input() bundleSelectedTask: TaskModel [];
@@ -33,14 +34,16 @@ this.taskForGeneration = task;
   ngOnInit(): void {
     this.selectedTasks = this.bundleSelectedTask;
   }
-  changeButtonStatus() {
-    this.isEdit = true;
-}
 
   onClickRefresh() {
     this.refreshClicked.emit();
     this.selectedTasks.splice(0, this.selectedTasks.length);
    }
+
+  onTaskGeneration(task: TaskModel) {
+    console.log(task);
+    this.generatedTaskForUpdate.push(task);
+  }
 }
 
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {FormControl, FormGroup} from '@angular/forms';
 import {DatePipe} from '@angular/common';
@@ -19,7 +19,7 @@ import {CreateTaskForm, GetTaskFormFromTaskModel} from '../../article/models/tas
 
 export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
   @Input() generatedTask: TaskModel;
-
+  @Output() taskGeneratedForSelectedTaskComponent: EventEmitter<TaskModel> = new EventEmitter<TaskModel>();
   UserList: string[] = getUserList();
   StatusList: string[] = getStatusList();
   deadline: FormControl = new FormControl(new Date());
@@ -58,20 +58,6 @@ export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
 
   ngOnInit() {}
 
-  onAddTaskClick() {
-    this.taskManagementService.createOrUpdateTask(this.createTask(this.newTask))
-      .subscribe({
-        next: (task) => {
-          console.log(task);
-          this.snackBarService.open('Success. Task has been added.', '', { duration: 3000 });
-         // this.router.navigateByUrl('/article/' + task.taskId);
-        },
-        error: (apiError: ApiError) => {
-          this.messageBoxService.info('Error: Task not added .', apiError.title, apiError.detail);
-        }
-      });
-  }
-
   createTask(newTask: FormGroup): TaskModel {
     const task = new TaskModel();
     task.taskId = newTask.getRawValue().taskId;
@@ -98,4 +84,8 @@ export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
       }
   }
 
+
+  onTaskGeneration(task: TaskModel) {
+    this.taskGeneratedForSelectedTaskComponent.emit(task);
+  }
 }

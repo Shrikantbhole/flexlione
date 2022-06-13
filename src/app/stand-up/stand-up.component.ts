@@ -137,12 +137,11 @@ taskSummaryStopped: string;
       stamp: new Date().toLocaleString(),
       action: 'start'
     };
-    console.log(newTaskSummary);
 
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (summary) => {
-          this.snackBarService.open('Task Summary ' + summary[0].taskSummaryId + ' started at ' + summary[0].stamp.substr(11, 20) , '' , {duration: 3000});
+          this.snackBarService.open('Task Summary ' + summary[0].taskSummaryId + ' started' , '' , {duration: 3000});
           console.log(summary);
           this.taskSummaryStarted = summary[0].taskSummaryId;
           this.taskSummaryStopped = '';
@@ -162,12 +161,11 @@ taskSummaryStopped: string;
       stamp: new Date().toLocaleString(),
       action: 'stop'
     };
-    console.log(newTaskSummary);
 
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (Summary) => {
-          this.snackBarService.open('Task Summary ' + Summary[0].taskSummaryId + ' stopped at ' + Summary[0].stamp.substr(11, 20), '' , {duration: 3000});
+          this.snackBarService.open('Task Summary ' + Summary[0].taskSummaryId + ' stopped', '' , {duration: 3000});
           console.log(Summary);
           this.taskSummaryStopped = Summary[0].taskSummaryId;
           this.taskSummaryStarted = '';

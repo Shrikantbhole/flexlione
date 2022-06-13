@@ -54,7 +54,7 @@
                 <div mat-line> {{task.description}} </div>
 
                 <button mat-raised-button color="primary" (click) = "onClickGenerate(task)">
-                 {{isEdit ? 'Update': 'Generate'  }}  </button>
+                 {{'Generate'}}  </button>
 
               </mat-list-item>
 
@@ -67,12 +67,52 @@
       </div>
 
     </div>
+
+
+    <mat-divider></mat-divider>
+
+
+
+    <div >
+      <div *ngIf = "generatedTaskForUpdate">
+        <br>
+        <h4>Generated Tasks</h4>
+        <div>
+          <mat-list>
+            <mat-divider></mat-divider>
+            <mat-selection-list #t>
+              <mat-list-item *ngFor="let task of generatedTaskForUpdate"
+
+                             [ngClass]="{highlight: task.taskId == selectedTaskId}">
+                <div mat-line>{{task.taskId}}</div>
+                <div mat-line> {{task.description}} </div>
+
+                <button mat-raised-button color="primary" (click) = "onClickGenerate(task)">
+                  {{'Update' }}  </button>
+
+              </mat-list-item>
+
+            </mat-selection-list>
+          </mat-list>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+
+
+
   </div>
 </div>
 
 
 <div class='detail'>
   <div class='slave'>
-<app-generate-task (click) = "changeButtonStatus()"  [generatedTask] = "this.taskForGeneration"></app-generate-task>
+<app-generate-task (taskGeneratedForSelectedTaskComponent) = "onTaskGeneration($event)" [generatedTask] = "this.taskForGeneration"></app-generate-task>
   </div>
 </div>

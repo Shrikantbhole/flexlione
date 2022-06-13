@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {FormGroup} from '@angular/forms';
@@ -22,6 +22,7 @@ export class TemplateTaskFormComponent implements AfterViewInit, OnChanges {
   StatusList: string[] = getStatusList();
   newTask: FormGroup;
   @Input() parentForm; // Fetch preloaded details in the form
+  @Output() taskGenerated: EventEmitter<TaskModel> = new EventEmitter<TaskModel>();
   public taskIdListForPosition: {'taskId': string, 'description': string}[];
   public taskIdListForParent: {'taskId': string, 'description': string}[];
   constructor(
@@ -65,8 +66,9 @@ export class TemplateTaskFormComponent implements AfterViewInit, OnChanges {
       .subscribe({
         next: (task) => {
           console.log(task);
-          this.snackBarService.open('Success. Task has been updated.', '', {duration: 3000});
-        },
+          this.snackBarService.open('Success. Task ' + task.taskId + ' has been updated.', '', {duration: 3000});
+        this.taskGenerated.emit(task);
+          },
         error: (apiError: ApiError) => {
           this.messageBoxService.info('Error: Task not updated .', apiError.title, apiError.detail);
         }

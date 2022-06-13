@@ -39,7 +39,7 @@
   <br>
 
 <div *ngIf = "generatedTask">
-  <app-task-form2 [parentForm]="TaskForm"></app-task-form2>
+  <app-task-form2 (taskGenerated) = "onTaskGeneration($event)" [parentForm]="TaskForm"></app-task-form2>
 </div>
 
 </div>

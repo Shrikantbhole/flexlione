@@ -18,7 +18,7 @@ import {ProfileStoreModel} from '../store/interfaces/profile-store.model';
   templateUrl: './task-form.component.html',
   styleUrls: ['../../article/article.component.css']
 })
-export class TaskFormComponent implements OnChanges, AfterViewInit {
+export class TaskFormComponent implements OnChanges, AfterViewInit, OnInit {
    UserList: string[] = []; // get From Api
    StatusList: string[] = getStatusList(); // Hard coded
    @Input() parentForm; // Fetch preloaded details in the form
@@ -65,19 +65,19 @@ export class TaskFormComponent implements OnChanges, AfterViewInit {
     this.taskIdListForPosition = taskIdList;
   }
 
- // async ngOnInit() {
- //   const profiles = await this.profileManagementService.getAllProfiles().toPromise();
- //   for (let i = 0; i < profiles.length; i++ ) {
- //     this.UserList.push(profiles[i].name);
- //   }
- //   this.parentForm.controls['assignedTo'].setValue( await this.GetProfileName(
- //     this.parentForm.getRawValue().assignedTo));
- //   this.parentForm.controls['createdBy'].setValue(await this.GetProfileName(
- //     this.parentForm.getRawValue().createdBy));
- //   this.parentForm.controls['hrsSpentTillNow'].disable();
- //   this.parentForm.controls['createdAt'].setValue(new Date());
- //   this.parentForm.controls['createdAt'].disable();
- //  }
+ async ngOnInit() {
+   const profiles = await this.profileManagementService.getAllProfiles().toPromise();
+   for (let i = 0; i < profiles.length; i++ ) {
+     this.UserList.push(profiles[i].name);
+   }
+   this.parentForm.controls['assignedTo'].setValue( await this.GetProfileName(
+     this.parentForm.getRawValue().assignedTo));
+   this.parentForm.controls['createdBy'].setValue(await this.GetProfileName(
+     this.parentForm.getRawValue().createdBy));
+   this.parentForm.controls['hrsSpentTillNow'].disable();
+   this.parentForm.controls['createdAt'].setValue(new Date());
+   this.parentForm.controls['createdAt'].disable();
+  }
 
 
   async onClick() {
