@@ -15,23 +15,25 @@
   }
 .unplanned {color: red}
 
+.line { display: inline;
+ vertical-align: text-top}
 </style>
 <div class="profile-page">
-<div class="user-info">
-  <div class="container">
+<div class="user-info" style="padding:  0 ">
+  <div class="container" >
     <div class="row">
       <div class="col-xs-12 col-md-10">
 
-        <h3>{{Name}}'s Profile</h3>
 
+        <h3 class = "line"  >{{Name | titlecase }}'s Profile</h3>
         <app-auto-search class="pull-xs-right" [options]="this.options"
                          [description]= "'Select Other Profile'"
-                         (newItemEvent) = "updateProfile($event)">
+                         (newItemEvent) = "updateProfile($event)" style="display: inline " >
 
 
           ></app-auto-search>
 
-        <form [formGroup]="newDate" class="example-form">
+        <form [formGroup]="newDate" class="example-form" style="display: inline">
         <mat-form-field class="pull-xs-left">
           <label >Select Date</label>
           <input matInput formControlName ="newDate1" [matDatepicker]="picker3"
@@ -42,6 +44,7 @@
 
 
         </form>
+
       </div>
 
 
@@ -54,15 +57,15 @@
 <table class='table' *ngIf="TaskSummaryList">
   <thead>
   <tr>
-    <th class = "td-center">Id</th>
+    <th class = "td-center">Summary</th>
 
 
     <th>Description</th>
     <th>Expected Output</th>
-    <th>Exp </th>
+    <th>Planned </th>
     <th>Actual Output</th>
-    <th>Act</th>
-    <th>Stat</th>
+    <th>Actual</th>
+    <th>Status</th>
     <th>Action</th>
 
 
