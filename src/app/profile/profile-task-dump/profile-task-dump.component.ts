@@ -11,6 +11,7 @@ import {TaskModel} from '../../article/models/task-detail.model';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddOrEditScheduleDialogComponent} from '../schedule/add-or-edit-schedule-dialog.component';
 import {TaskScheduleModel} from '../models/task-schedule.model';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 
 @Component({
   selector: 'app-profile-task-dump',
@@ -40,6 +41,7 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
     private  snackBarService: MatSnackBar,
     private profileComponent: ProfileComponent,
     private taskManagementService: TaskManagementService,
+    private taskScheduleManagementService: TaskScheduleManagementService
   ) {}
   public onRowClick(taskId: string) {
     this.taskId = taskId;
@@ -54,8 +56,5 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  addScheduleToCalender(taskSchedule: TaskScheduleModel) {
-    this.router.navigateByUrl(this.router.url + '?addTaskScheduleId=' + taskSchedule.taskScheduleId);
-  }
-
+  addScheduleToCalender(taskSchedule: TaskScheduleModel) {}
 }

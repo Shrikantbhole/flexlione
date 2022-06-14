@@ -38,7 +38,6 @@ export class DailyPlanSummaryComponent implements  OnInit {
     private  dailyPlanSummaryService: DailyPlanSummaryService,
     private taskScheduleManagementService: TaskScheduleManagementService,
     private router: Router,
-    private applicationRef: NgZone
   ) {
   }
 

@@ -28,6 +28,7 @@ import {TaskScheduleModel} from '../profile/models/task-schedule.model';
 import {ApiError} from '../settings/api-error.model';
 import {ProfileManagementService} from '../Services/profile-management.service';
 import {ProfileStoreModel} from '../shared/store/interfaces/profile-store.model';
+import {TaskScheduleManagementService} from '../Services/task-schedule-management.service';
 
 
 
@@ -60,7 +61,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     private datepipe: DatePipe,
     private  taskHierarchyManagementService: TaskHierarchyManagementService,
     private  snackBarService: MatSnackBar,
-    private profileManagementService: ProfileManagementService
+    private profileManagementService: ProfileManagementService,
+    private taskScheduleManagementService: TaskScheduleManagementService
   ) {// Retreive the prefetched article
     this.route.data.subscribe(
       (data: { article: TaskModel }) => {
@@ -180,7 +182,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     this.dialog.open(AddOrEditScheduleDialogComponent, dialogConfig)
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
-        // No Action to be done after tasks schedule added. No need to immediately add to calendar
+       this.taskScheduleManagementService.emitTaskSchedule(taskSchedule);
       },
       error: () => {}
     });

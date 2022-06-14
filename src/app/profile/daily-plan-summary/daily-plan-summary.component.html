@@ -18,7 +18,7 @@
     <br/>
     <mat-accordion>
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
-                            (click) = "getTaskSummary(taskSchedule)"
+                            (opened) = "getTaskSummary(taskSchedule)"
 
                             [ngClass]= " taskSchedule.taskSummary !== null ?
                             ({'expectedOutputAdded':  taskSchedule.taskSummaryId !== null,

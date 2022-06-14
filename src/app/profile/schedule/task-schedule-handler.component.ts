@@ -36,6 +36,11 @@ export class TaskScheduleHandlerComponent implements AfterViewInit, OnInit {
         this.getAsyncTaskSchedules(this.profileId, new Date().getMonth() + 1 , new Date().getFullYear());
       }
     );
+    // Instead of using Query params for New Task Schedule using provider as a middle man
+    this.taskScheduleManagementService.newTaskSchedule$.subscribe(
+      (newTaskSchedule) => {this.AddNewTaskScheduleToCalender(newTaskSchedule.taskScheduleId); },
+      () => {}
+    );
   }
   ngAfterViewInit(): void {
     this.route.queryParams.subscribe({
@@ -51,13 +56,10 @@ export class TaskScheduleHandlerComponent implements AfterViewInit, OnInit {
             this.getTaskScheduleListForaDate(param.date);
           }
           if ( param.updateTaskScheduleId !== undefined) {
-            this.updateTaskSchedule(param.updateTaskScheduleId);
+            this.updateTaskSummaryIdOfTaskSchedule(param.updateTaskScheduleId);
           }
           if ( param.removeTaskScheduleId !== undefined) {
             this.removeTaskSchedule(param.removeTaskScheduleId);
-          }
-          if ( param.addTaskScheduleId !== undefined) {
-            this.AddNewTaskSchedule(param.addTaskScheduleId);
           }
           this.cleanQueryParams();
         }
@@ -113,7 +115,7 @@ export class TaskScheduleHandlerComponent implements AfterViewInit, OnInit {
     return TaskScheduleList;
   }
   // Update Task Summary Id in case of new task summary Id
-  private updateTaskSchedule(taskScheduleId: string) {
+  private updateTaskSummaryIdOfTaskSchedule(taskScheduleId: string) {
     this.taskScheduleManagementService.getTaskScheduleById(taskScheduleId, 'taskSummary').subscribe({
       next: (taskSchedule) => {
         this.store.dispatch(new TaskScheduleActions.RemoveTaskSchedule(taskScheduleId));
@@ -165,7 +167,7 @@ export class TaskScheduleHandlerComponent implements AfterViewInit, OnInit {
   }
 
   // Add a Task Schedule to current task schedule
-  public AddNewTaskSchedule(taskScheduleId: string) {
+  public AddNewTaskScheduleToCalender(taskScheduleId: string) {
     let TaskScheduleList: TaskScheduleModel[] = [];
     this.taskScheduleManagementService.getTaskScheduleById(taskScheduleId).subscribe({
       next: (taskSchedule) => {
