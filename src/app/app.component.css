@@ -3,3 +3,8 @@
 .completed{background-color: #f6fef6 }
 .paused {background-color: beige}
 .critical {background-color: #FFBFBF}
+
+
+body{
+  /*background-color: darkred;*/
+}

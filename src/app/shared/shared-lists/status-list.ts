@@ -1,4 +1,4 @@
 export function getStatusList(): string[] {
-  return ['yettostart', 'ongoing', 'onhold', 'completed', 'dropped' ];
+  return ['yet to start', 'ongoing', 'on hold', 'completed', 'dropped' ];
 }
 
