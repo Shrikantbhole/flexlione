@@ -11,7 +11,7 @@
  </style>[m
  [m
 [36m@@ -17,7 +17,7 @@[m
-     <h5>Task Summary for date: {{TaskScheduleList[0].date}}</h5>[m
+     <h5>Task Summary for date: {{TaskScheduleList[0].date.}}</h5>[m
      <br/>[m
      <mat-accordion>[m
 [31m-      <mat-expansion-panel  *ngFor="let taskSchedule of sortedTaskScheduleList"[m
