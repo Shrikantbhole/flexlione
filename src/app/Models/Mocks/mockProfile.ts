@@ -30,7 +30,8 @@ export const mockTaskSchedules: TaskScheduleModel[] = [{
   stopHour: 11,
   stopMinute: 11,
   owner: 'blaa',
-  isPlanned: true
+  isPlanned: true,
+  taskSummary: null
 }];
 
 

@@ -10,6 +10,8 @@ import {AddOrEditScheduleDialogComponent} from '../../profile/schedule/add-or-ed
 import {TaskScheduleModel} from '../../profile/models/task-schedule.model';
 import {TaskHierarchyManagementService} from '../../Services/task-hierarchy-management.service';
 import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
+import {Router} from '@angular/router';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 
 @Component({
   selector: 'app-article-preview',
@@ -17,10 +19,10 @@ import {TaskHierarchyModel} from '../../article/models/task-hierarchy.model';
   styleUrls: ['../../app.component.css']
 })
 export class ArticlePreviewComponent {
-  constructor( private profileManagementService: ProfileManagementService, private dialog: MatDialog, private  taskHierarchyManagementService: TaskHierarchyManagementService,
-  ) {
-   // this.GetProfiles();
-  }
+  constructor( private profileManagementService: ProfileManagementService,
+               private dialog: MatDialog,
+               private  taskHierarchyManagementService: TaskHierarchyManagementService,
+               private taskScheduleManagementService: TaskScheduleManagementService) {}
   @Output() newScheduleEvent  = new EventEmitter<TaskScheduleModel>();
   @Input() SearchTask: SearchTaskViewStoreModel;
   @Input() Profiles: ProfileStoreModel[];
@@ -30,16 +32,7 @@ export class ArticlePreviewComponent {
   currentDate = new Date().toISOString();
 
 
- // constructor( private profileManagementService: ProfileManagementService) {}
-  public GetProfileName(profileId: string): string {
-   let profile = [];
-    if (this.Profiles !== undefined) {
-     profile = this.Profiles.filter(function (value) {
-       return (value.profileId === profileId);
-     });
-   }
-   return profile[0] === undefined ? profileId : profile[0].name;
-  }
+
 
   onUpdateOrScheduleNewTask(task): void {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
@@ -51,7 +44,7 @@ export class ArticlePreviewComponent {
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
         if (taskSchedule !== undefined) {
-          this.newScheduleEvent.emit(taskSchedule);
+          this.taskScheduleManagementService.emitTaskSchedule(taskSchedule);
         }
       },
       error: () => {}

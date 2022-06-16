@@ -16,12 +16,17 @@ import {UserService} from '../core';
 import {TaskScheduleManagementService} from '../Services/task-schedule-management.service';
 import {SearchFormComponent} from '../home/Search/search-form.component';
 import {mockParams, mockProfile, mockProfiles, mockSearchTaskViewStoresForRoute, mockTaskSchedules} from '../Models/Mocks/mockProfile';
+import {ProfileTaskDumpComponent} from './profile-task-dump/profile-task-dump.component';
+import {SprintModel} from './models/sprint.model';
+import {SprintPreviewComponent} from './sprint/sprint-preview.component';
+import {TaskScheduleHandlerComponent} from './schedule/task-schedule-handler.component';
 
 
 
 const mockSearchFormComponent = [];
 
 const mockActivatedRoute = Object.assign({});
+// asyncScheduler is used to convert Synchronous object into async
 mockActivatedRoute.data =  new Observable((observer) => {
   observer.next(mockSearchTaskViewStoresForRoute);
 }).pipe(
@@ -33,27 +38,6 @@ mockActivatedRoute.queryParams =  new Observable((observer) => {
   observeOn(asyncScheduler)
 );
 
-
-
-class MockProfileManagementService {
-  public getAllProfiles() {
-    console.log('getting mock profiles!');
-    return new Observable((observer) => {
-      observer.next(mockProfiles);
-    }).pipe(
-      observeOn(asyncScheduler)
-    );
-  }
-
-  public getProfileById() {
-    console.log('getting mock profiles!');
-    return new Observable((observer) => {
-      observer.next(mockProfile);
-    }).pipe(
-      observeOn(asyncScheduler)
-    );
-  }
-}
 
 // Creating Fake Store Class
 class MockStore {
@@ -72,16 +56,6 @@ class MockStore {
   }
 }
 
-
-class MockUserService  {
-  currentUser = new Observable((observer) => {
-    observer.next(mockProfile);
-  }).pipe(
-    observeOn(asyncScheduler)
-  );
-}
-
-
 class MockTaskScheduleManagementService  {
   public getTaskScheduleByProfileId(profileId: string, month: number, year: number) {
     return new Observable((observer) => {
@@ -92,9 +66,6 @@ class MockTaskScheduleManagementService  {
   }
 }
 
-const params = {newItemEvent: new  EventEmitter};
-
-
 describe('mockDirectiveAttribute', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
@@ -102,14 +73,14 @@ describe('mockDirectiveAttribute', () => {
     }).compileComponents();
     return MockBuilder(ProfileComponent)
       .mock(AutoSearchComponent)
-      .mock(Store, MockStore)
+      .mock(Store)
       .mock(ActivatedRoute, mockActivatedRoute)
       .mock(MatDialog)
       .mock(Router)
       .mock(MessageBoxService)
       .mock(UserService)
+      .mock(ProfileManagementService)
       .keep(ReactiveFormsModule)
-      .provide({provide: ProfileManagementService, useClass: MockProfileManagementService})
       .provide({provide: TaskScheduleManagementService, useClass: MockTaskScheduleManagementService}) // Remember to use UseClass
       .provide({provide: SearchFormComponent, useValue: mockSearchFormComponent});
   });
@@ -119,6 +90,11 @@ describe('mockDirectiveAttribute', () => {
     MockInstance(UserService, () => ({
        currentUser: EMPTY
     }));
+    // here in Mock Instance you replace return value of the function with value you wish to return
+    MockInstance(ProfileManagementService, 'getProfileById', () => EMPTY);
+    MockInstance(ProfileManagementService, 'getAllProfiles', () => EMPTY);
+    MockInstance(Store, 'select', () => EMPTY);
+    MockInstance(Store, 'dispatch', () => 'fake');
   });
   it('sends correct value to the input', () => {
     const fixture = MockRender(ProfileComponent);
@@ -145,5 +121,17 @@ describe('mockDirectiveAttribute', () => {
     // Emitting some value from mock AutoSearch Component
     mockAutoSearchComponent.newItemEvent.emit('5');
     expect(component.updateProfile).toHaveBeenCalledWith('5');
+  });
+
+  it('send correct value to profile task dump', () => {
+    const fixture = MockRender(ProfileComponent);
+    const component = fixture.point.componentInstance;
+    // Created a mock for profileTaskDumpComponent
+    const mockProfileTaskDumpComponent = ngMocks.get(
+      ngMocks.find('app-task-schedule-handler'),
+      TaskScheduleHandlerComponent);
+    component.sprintList = [{ sprintId : '1', deliverable: '', owner : '', description: '', delivered: '', score: 0, tasks: null, toDate: null, fromDate: null }];
+    component.getSprintIds();
+    fixture.detectChanges();
   });
 });
