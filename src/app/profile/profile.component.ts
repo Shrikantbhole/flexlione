@@ -45,12 +45,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   currentUser: User;
 
    ngOnInit() {
+     /*
     // Store TaskModel Dump in @ngrx/Store
      this.route.data.subscribe(
       (data: { profile: SearchTaskViewStoreModel[] }) => {
         this.store.dispatch(new TaskActions.RemoveSearchTask()); // Clear Old Store Dump
         this.store.dispatch(new TaskActions.AddSearchTask(data.profile)); // Add new Dump for Profile id
       });
+      */
      this.userService.currentUser.subscribe(
        (userData) => {
          this.profileId = userData.profileId; // Update  profile id and name

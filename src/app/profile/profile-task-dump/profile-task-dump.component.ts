@@ -12,6 +12,9 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddOrEditScheduleDialogComponent} from '../schedule/add-or-edit-schedule-dialog.component';
 import {TaskScheduleModel} from '../models/task-schedule.model';
 import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
+import {SearchQuery} from '../../home/models/search-query-form.model';
+import {catchError, map} from 'rxjs/operators';
+import {SearchManagementService} from '../../Services/search-management.service';
 
 @Component({
   selector: 'app-profile-task-dump',
@@ -23,15 +26,13 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
   @Input() options: string[] ;
   @Input()
   set profile(profileId: string) {
-    this.store.select('searchTaskView')
-      .subscribe({
-        next: (SearchTaskView) => {
-          this.results = SearchTaskView.filter(function (value) {
-            return  value.assignedTo === profileId;
-          });
-          this.sortedResult = this.results.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
-        }
-      });
+    const search = new SearchQuery();
+    search.AssignedTo = [profileId];
+     this.searchManagementService.getTaskSearchList(search).subscribe({
+      next : (taskList) => {this.sortedResult = taskList.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()); },
+      error : () => {}
+    });
+
   }
   taskId = '';
   constructor(
@@ -41,7 +42,7 @@ export class ProfileTaskDumpComponent implements AfterViewInit {
     private  snackBarService: MatSnackBar,
     private profileComponent: ProfileComponent,
     private taskManagementService: TaskManagementService,
-    private taskScheduleManagementService: TaskScheduleManagementService
+    private searchManagementService: SearchManagementService
   ) {}
   public onRowClick(taskId: string) {
     this.taskId = taskId;
