@@ -19,7 +19,7 @@
  vertical-align: text-top}
 </style>
 <div class="profile-page">
-<div class="user-info" style="padding:  0 ">
+<div class="user-info" style ="padding:  0 ">
   <div class="container" >
     <div class="row">
       <div class="col-xs-12 col-md-10">
@@ -62,11 +62,11 @@
 
     <th>Description</th>
     <th>Expected Output</th>
-    <th>Planned </th>
+    <th>Hrs </th>
     <th>Actual Output</th>
-    <th>Actual</th>
-    <th>Status</th>
-    <th>Action</th>
+
+
+    <th>Act</th>
 
 
   </tr>
@@ -74,17 +74,19 @@
 
   <tbody>
 
-  <tr *ngFor="let taskSummary of TaskSummaryList" (click)="selectTaskSummary($event, taskSummary)">
+  <tr *ngFor="let taskSummary of TaskSummaryList" (click)="selectTaskSummary($event, taskSummary)"
+      >
 
-    <td class = "td-center">{{taskSummary.taskSummaryId}}<span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{'('+ taskSummary.taskId+')'}}</a> </span>
-    <span> <mat-icon [ngClass]="{'planned':taskSummary.taskSchedule.isPlanned === true, 'unplanned' :taskSummary.taskSchedule.isPlanned === false}">schedule</mat-icon></span></td>
+    <td class = "td-center" [ngClass]="{
+                                    'unscheduled': taskSummary.task.status === '',
+                                    'scheduled' : taskSummary.task.status === 'yettostart',
+                                    'ongoing' : taskSummary.task.status === 'ongoing',
+                                    'completed' : taskSummary.task.status === 'completed',
+                                    'paused' : taskSummary.task.status === 'onhold'
 
-    <td>{{ taskSummary.description }} </td>
-    <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
-    <td>{{ taskSummary.expectedOutput }}</td>
-    <td>{{ taskSummary.expectedHour }}</td>
-    <td>{{ taskSummary.actualOutput}} </td>
-    <td>{{taskSummary.actualHour}}{{'('+  taskSummary.systemHours   +')'}}</td>
+                                     }">{{taskSummary.taskSummaryId}}<span> <a [routerLink]="['/article/',taskSummary.taskId ]">{{'('+ taskSummary.taskId+')'}}</a> </span>
+    <span> <mat-icon [ngClass]="{'planned':taskSummary.taskSchedule.isPlanned === true, 'unplanned' :taskSummary.taskSchedule.isPlanned === false}">schedule</mat-icon></span> </td>
+
     <td [ngClass]="{
                                     'unscheduled': taskSummary.task.status === '',
                                     'scheduled' : taskSummary.task.status === 'yettostart',
@@ -92,12 +94,19 @@
                                     'completed' : taskSummary.task.status === 'completed',
                                     'paused' : taskSummary.task.status === 'onhold'
 
-                                     }">{{taskSummary.task.status}}</td>
+                                     }">
+      {{ taskSummary.description }} </td>
+    <!-- <td>{{ taskSummary.expectedOutput |slice:0:20 }}{{1 == 1 ? '...' : ''}} </td> -->
+    <td>{{ taskSummary.expectedOutput }}</td>
+    <td>{{ taskSummary.expectedHour }}/{{ taskSummary.actualHour}}{{'('+  taskSummary.systemHours |slice:0:5}}{{ ')'}}</td>
+    <td>{{ taskSummary.actualOutput}} </td>
+
+
     <td><mat-button-toggle-group>
-      <mat-button-toggle   value="start" (click) = onClickStart(taskSummary)><mat-icon>play_arrow</mat-icon></mat-button-toggle>
-      <mat-button-toggle   value="stop" (click) = onClickStop(taskSummary)><mat-icon>stop</mat-icon></mat-button-toggle>
+      <mat-button-toggle [hidden] = "taskSummary.action == 'start'" value="start" (click) = onClickStart(taskSummary)><mat-icon>play_arrow</mat-icon></mat-button-toggle>
+      <mat-button-toggle [hidden] = "taskSummary.action == 'stop'|| taskSummary.action == null" value="stop" (click) = onClickStop(taskSummary)><mat-icon>stop</mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
-      <mat-spinner [diameter]="30" [hidden] = "taskSummary.taskSummaryId !== taskSummaryStarted"></mat-spinner>
+      <mat-spinner [diameter] ="30" [hidden] = "taskSummary.action == 'stop' || taskSummary.action == null"></mat-spinner>
 
 
 
@@ -111,10 +120,10 @@
     <td></td>
     <td></td>
     <td><b>Hrs</b></td>
-    <td> <b>{{ totalExpectedHr }} </b></td>
+    <td> <b>{{ totalExpectedHr }}/{{ totalActualHr }} </b></td>
     <td></td>
-    <td><b> {{ totalActualHr }}</b></td>
-    <td></td>
+
+
     <td></td>
   </tr>
   </tfoot>
