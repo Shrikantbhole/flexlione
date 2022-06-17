@@ -43,7 +43,8 @@ export class DailyPlanSummaryComponent implements  OnInit {
 
   ngOnInit() {}
   getTaskSummary(taskSchedule: TaskScheduleModel) {
-    let newTaskSummaryModel: TaskSummaryModel = new TaskSummaryModel(); // Assigned new model for config function in form to work
+    let newTaskSummaryModel: TaskSummaryModel = new TaskSummaryModel();
+    // Assigned new model for config function in form to work
     this.dailyPlanSummaryService.getTaskSummaryById(taskSchedule.taskSummaryId)
       .subscribe({
         next: (taskSummaryModel) => {
