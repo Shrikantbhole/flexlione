@@ -68,10 +68,11 @@
         <mat-list-item *ngFor="let Task of childTaskList"
                        (click)="onRowClick(Task.taskId)"
                        [ngClass]="{ 'critical' : Task.deadline.toString() < this.currentDate,
+                       'unscheduled': Task.status === '',
                                     'ongoing' : Task.status === 'ongoing',
                                     'completed' : Task.status === 'completed',
                                     'paused' : Task.status === 'onhold',
-                                    'unscheduled' : Task.status === 'yettostart'
+                                    'scheduled' : Task.status === 'yettostart'
 
                                      }"
                        [routerLinkActive]="['is-active']"

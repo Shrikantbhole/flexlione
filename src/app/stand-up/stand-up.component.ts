@@ -52,20 +52,8 @@ export class StandUpComponent implements OnInit {
   currentUser: ProfileModel;
   totalExpectedHr = 0;
   totalActualHr = 0;
-/*
-  onClickStart(taskSummary) {
-    this.startStamp = {profileId : this.profileId,
-      taskSummaryId : taskSummary.taskSummaryId,
-      taskScheduleId : taskSummary.taskScheduleId,
-      stamp: new Date().toLocaleString(),
-      action : 'start'};
-    console.log(this.startStamp);
-  }
-*/
+
   newTaskSummary: FormGroup = CreateTaskSummaryForm();
-  timeRecording = false;
-taskSummaryStarted: string;
-taskSummaryStopped: string;
 
   async ngOnInit() {
     this.userService.currentUser.subscribe(
@@ -82,7 +70,7 @@ taskSummaryStopped: string;
   onDateChange(event: MatDatepickerInputEvent<Date | null>) {
     console.log(event.value);
     this.GetDailyTaskSummary(this.profileId, this.datePipe.transform(event.value, 'yyyy-MM-dd'));
-
+    console.log(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
   }
 
   private  GetDailyTaskSummary(profileId: string, date: string) {
@@ -126,7 +114,6 @@ taskSummaryStopped: string;
   }
 
   onClickStart(taskSummary: TaskSummaryModel) {
-    this.timeRecording = true;
     const newTaskSummary: TaskSummaryModel = {
       systemHours: taskSummary.systemHours,
       task: taskSummary.task,
@@ -134,23 +121,23 @@ taskSummaryStopped: string;
       taskSummaryId : taskSummary.taskSummaryId,
       taskScheduleId : taskSummary.taskScheduleId,
       taskId : taskSummary.taskId,
-      stamp: new Date().toLocaleString(),
+      stamp: new Date().toLocaleTimeString(),
       action: 'start'
     };
-
+console.log(newTaskSummary);
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (summary) => {
-          this.snackBarService.open('Task Summary ' + summary[0].taskSummaryId + ' started' , '' , {duration: 3000});
+          this.snackBarService.open('Task Summary ' + summary[0].taskSummaryId + ' started at ' + summary[0].stamp.slice(11 , 19), '' , {duration: 3000});
           console.log(summary);
-          this.taskSummaryStarted = summary[0].taskSummaryId;
-          this.taskSummaryStopped = '';
+          this.GetDailyTaskSummary(this.profileId, summary[0].stamp.slice(0 , 10));
+          // console.log()
           },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });
+
   }
   onClickStop(taskSummary: TaskSummaryModel) {
-    this.timeRecording = false;
     const newTaskSummary: TaskSummaryModel = {
       systemHours: taskSummary.systemHours,
       task: taskSummary.task,
@@ -158,17 +145,16 @@ taskSummaryStopped: string;
       taskSummaryId : taskSummary.taskSummaryId,
       taskScheduleId : taskSummary.taskScheduleId,
       taskId : taskSummary.taskId,
-      stamp: new Date().toLocaleString(),
+      stamp: new Date().toLocaleTimeString(),
       action: 'stop'
     };
-
+    console.log(newTaskSummary);
     this.dailyPlanSummaryService.UpdateDailyTaskActualTime(this.profileId, newTaskSummary)
       .subscribe({
         next: (Summary) => {
-          this.snackBarService.open('Task Summary ' + Summary[0].taskSummaryId + ' stopped', '' , {duration: 3000});
-          console.log(Summary);
-          this.taskSummaryStopped = Summary[0].taskSummaryId;
-          this.taskSummaryStarted = '';
+          this.snackBarService.open('Task Summary ' + Summary[0].taskSummaryId + ' stopped at ' + Summary[0].stamp.slice(11 , 19), '' , {duration: 3000});
+          console.log(Summary[0].stamp);
+          this.GetDailyTaskSummary(this.profileId, Summary[0].stamp.slice(0 , 10));
         },
         error: (apiError: ApiError) => {this.messageBoxService.info('Task summary not updated', apiError.title, apiError.detail); }
       });

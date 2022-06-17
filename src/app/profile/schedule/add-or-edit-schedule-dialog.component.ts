@@ -9,6 +9,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TaskScheduleModel} from '../models/task-schedule.model';
 import {TaskModel} from '../../article/models/task-detail.model';
 import {isBoolean} from 'util';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class AddOrEditScheduleDialogComponent implements OnInit {
   constructor(private datepipe: DatePipe, public dialogRef: MatDialogRef<AddOrEditScheduleDialogComponent>,
               messageBoxService: MessageBoxService, @Inject(MAT_DIALOG_DATA) data,
               private taskScheduleManagementService: TaskScheduleManagementService,
-              private snackBarService: MatSnackBar) {
+              private snackBarService: MatSnackBar, private  router: Router) {
     this.messageBoxService = messageBoxService;
     this.newTaskSchedule.setValue({
       taskScheduleId: 'Server Generated',

@@ -79,7 +79,7 @@ export class GenerateTaskForTemplateComponent implements OnChanges, OnInit {
       if (this.generatedTask !== undefined) {
       //  this.newTask = this.createTaskForm(this.generatedTask);
         this.TaskForm = GetTaskFormFromTaskModel(this.generatedTask);
-        this.TaskForm.controls['taskId'].setValue('server generated');
+       // this.TaskForm.controls['taskId'].setValue('server generated');
         this.TaskForm.controls['taskId'].disable();
       }
   }

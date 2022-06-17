@@ -29,7 +29,7 @@ export class SelectedTasksDisplayComponent implements OnInit {
 
   onClickGenerate(task: TaskModel) {
 this.taskForGeneration = task;
-        }
+       this.taskForGeneration.taskId = 'server generated'; }
 
   ngOnInit(): void {
     this.selectedTasks = this.bundleSelectedTask;
@@ -41,8 +41,12 @@ this.taskForGeneration = task;
    }
 
   onTaskGeneration(task: TaskModel) {
-    console.log(task);
     this.generatedTaskForUpdate.push(task);
+    console.log(this.generatedTaskForUpdate);
+  }
+
+  onClickUpdate(task: TaskModel) {
+    this.taskForGeneration = task;
   }
 }
 

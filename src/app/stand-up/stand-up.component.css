@@ -14,8 +14,8 @@
   margin-right: 10px;
 }
 
-td , th {
-  white-space: normal;
-  word-wrap: break-word;
-  max-width: 200px;
+
+
+.table{
+  width: 100%;
 }

@@ -2,6 +2,10 @@
 .expectedOutputAdded {background-color: lightblue}
 .actualOutputAdded {background-color: beige}
 .noTaskId { background-color: white}
+
+mat-panel-description.right-aligned {
+  flex-grow: 0;
+}
 </style>
 
 
@@ -14,27 +18,30 @@
 
   <p *ngIf="TaskScheduleList.length == 0">No Task Scheduled for selected date</p>
   <div *ngIf="TaskScheduleList.length != 0">
-    <h5>Task Summary for date: {{TaskScheduleList[0].date}}</h5>
+    <h5>Task Summary for date: {{TaskScheduleList[0].date | date}}</h5>
     <br/>
     <mat-accordion>
       <mat-expansion-panel  *ngFor="let taskSchedule of TaskScheduleList"
-                            (click) = "getTaskSummary(taskSchedule)"
+                            (opened) = "getTaskSummary(taskSchedule)"
 
                             [ngClass]= " taskSchedule.taskSummary !== null ?
                             ({'expectedOutputAdded':  taskSchedule.taskSummaryId !== null,
                             'actualOutputAdded': taskSchedule.taskSummary.actualOutput !== null}): 'noTaskId'">
 
 
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header >
           <mat-panel-title>
-            {{taskSchedule.taskId}} - {{taskSchedule.description |slice:0:30 }}{{1 == 1 ? '...' : ''}}
+            {{taskSchedule.taskId}} - {{taskSchedule.description  }}
 
           </mat-panel-title>
-          <mat-panel-description>
-            <button class="btn btn-sm btn-outline-danger pull-xs-right"
+
+          <mat-panel-description class="right-aligned">
+
+            <button class=" pull-xs-right btn btn-sm btn-outline-danger"
                     (click)="onDeleteTaskSchedule(taskSchedule.taskScheduleId)">
-              <i class="ion-edit"></i> Delete Schedule
+              <mat-icon>delete</mat-icon>
             </button>
+
           </mat-panel-description>
         </mat-expansion-panel-header>
         <app-profile-task-summary-form [config]="UpdatedTaskSummary"
@@ -46,9 +53,5 @@
   </div>
  <p></p>
 </div>
-
-
-
-
 
 

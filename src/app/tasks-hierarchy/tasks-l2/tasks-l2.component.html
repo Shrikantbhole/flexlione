@@ -53,7 +53,8 @@
       <mat-list-item *ngFor="let task of l2Task.children"
                      (click)="onRowClick(task.taskId)"
                      [ngClass]="{ 'critical' : task.deadline.toString() < this.currentDate,
-                                    'unscheduled' : task.status === 'yettostart',
+                     'unscheduled': task.status === '',
+                                    'scheduled' : task.status === 'yettostart',
                                     'ongoing' : task.status === 'ongoing',
                                     'completed' : task.status === 'completed',
                                     'paused' : task.status === 'onhold'}"

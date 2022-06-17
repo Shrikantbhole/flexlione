@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs';
 
 import {Profile, ProfilesService, UserService} from '../core';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, take} from 'rxjs/operators';
 import {TaskModel} from '../article/models/task-detail.model';
 import {ApiError} from '../settings/api-error.model';
 import { MessageBoxService } from '../settings/message-box.service';
@@ -14,8 +14,8 @@ import {SearchManagementService} from '../Services/search-management.service';
 import {ProfileManagementService} from '../Services/profile-management.service';
 
 @Injectable()
-export class ProfileResolver implements Resolve<Profile> {
-  results: TaskModel[];
+export class ProfileResolver implements Resolve<boolean> {
+
   constructor(
     private profilesService: ProfilesService,
     private router: Router,
@@ -26,23 +26,8 @@ export class ProfileResolver implements Resolve<Profile> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<any> {
+  ): Observable<boolean> {
 
-    const search = new SearchQuery();
-    search.AssignedTo = [route.params['username']];
-    return this.searchManagementService.getTaskSearchList(search)
-      .pipe(
-        map(
-          article => {
-            if (this.userService.getCurrentUser().name !== undefined) {
-              return article;
-            } else {
-              // this.router.navigateByUrl('/login');
-              return article;
-            }
-          }
-        ),
-        catchError((err) => this.router.navigateByUrl('/'))
-      );
+    return this.userService.isAuthenticated.pipe(take(1));
   }
 }

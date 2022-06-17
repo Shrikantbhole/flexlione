@@ -13,6 +13,7 @@ import {TaskModel} from '../../article/models/task-detail.model';
 import {TaskManagementService} from '../../Services/task-management-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProfileModel} from '../models/profile.model';
+import {TaskScheduleManagementService} from '../../Services/task-schedule-management.service';
 
 
 
@@ -33,7 +34,8 @@ export class SprintPreviewComponent implements OnInit {
     private sprintManagementService: SprintManagementService,
     private router: Router,
     private taskManagementService: TaskManagementService,
-    private snackBarService: MatSnackBar
+    private snackBarService: MatSnackBar,
+    private  taskScheduleManagementService: TaskScheduleManagementService
   ) {  }
 
   ngOnInit() {
@@ -55,7 +57,7 @@ export class SprintPreviewComponent implements OnInit {
       .afterClosed().subscribe({
       next: (taskSchedule: TaskScheduleModel) => {
         if (taskSchedule !== undefined) {
-          this.router.navigateByUrl(this.router.url + '?addTaskScheduleId=' + taskSchedule.taskScheduleId);
+          this.taskScheduleManagementService.emitTaskSchedule(taskSchedule);
         }
         },
       error: () => {}

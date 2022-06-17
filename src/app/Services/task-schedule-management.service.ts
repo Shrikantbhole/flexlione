@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 
 import {catchError, retry} from 'rxjs/operators';
@@ -25,6 +25,12 @@ export class TaskScheduleManagementService {
   private http_: HttpClient;
   private baseUrl: string ;
 
+  // Observable string sources
+  private newTaskSchedule = new Subject<TaskScheduleModel>();
+  // Observable string streams
+  newTaskSchedule$ = this.newTaskSchedule.asObservable();
+
+
   constructor(http: HttpClient,
               serverConfigService: ServerConfigService,
               private snackBarService: MatSnackBar,
@@ -44,6 +50,10 @@ export class TaskScheduleManagementService {
         retry(1),
         catchError(HandlerError.handleError)
       );
+  }
+  // emit an event into newTaskSchedule$ Observable Stream
+  emitTaskSchedule(taskSchedule: TaskScheduleModel) {
+    this.newTaskSchedule.next(taskSchedule);
   }
 
   getTaskScheduleByProfileId(profileId: string, month: number, year: number): Observable<any> {
