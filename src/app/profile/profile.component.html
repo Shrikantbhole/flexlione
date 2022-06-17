@@ -56,8 +56,10 @@
       </div>
 
       <div class="col-xs-6" [hidden]="togglePlanner !== 'day' && togglePlanner !== 'summary'">
+
         <app-profile-daily-plan-calender [profile]="profileId" [config] = "TaskScheduleList"></app-profile-daily-plan-calender>
       </div>
+
 
       <div class=  "col-xs-6" [hidden]="togglePlanner !== 'summary'">
         <app-profile-daily-plan-summary [config]="SelectedTaskScheduleList"

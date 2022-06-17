@@ -35,7 +35,7 @@ export class EditorComponent implements OnInit {
         if (x === undefined) {
           return;
         }
-        this.EditTaskForm.controls['parentTaskId'].setValue(x[0].parentTaskId);
+       // this.EditTaskForm.controls['parentTaskId'].setValue(x[0].parentTaskId);
         this.EditTaskForm.controls['taskId'].setValue('server generated');
         this.EditTaskForm.controls['taskId'].disable();
       }
